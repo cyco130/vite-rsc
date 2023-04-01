@@ -6,6 +6,7 @@ import {
 	use,
 	useEffect,
 	useState,
+	useTransition,
 } from "react";
 
 import "../devtools/devtools.client";
@@ -97,6 +98,7 @@ async function mount() {
 				window.removeEventListener("popstate", navigate);
 			};
 		}, []);
+
 		return <ServerResponse url={url} />;
 	}
 

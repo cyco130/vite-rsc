@@ -4,11 +4,8 @@ import { createServerContext, useContext, Suspense, use } from "react";
 import { RouterContext } from "@hattip/router";
 import Search from "./Search";
 import A from "../modules/router/A";
-// globalThis.serverContext = globalThis.serverContext ?? createServerContext("Hello", {});
 
-async function MoreData() {
-	// const con = useContext(context);
-	// console.log(con);
+async function PackageJSON() {
 	const packageJson = await fs.promises.readFile("package.json", "utf8");
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 	return <pre>{packageJson}</pre>;
@@ -37,7 +34,7 @@ function SearchPage({ searchParams }: PageProps) {
 
 const routes = {
 	"/": SearchPage,
-	"/more": MoreData,
+	"/pkg": PackageJSON,
 } as Record<string, any>;
 
 export default function Routes(context: RouterContext) {
@@ -46,7 +43,7 @@ export default function Routes(context: RouterContext) {
 		<>
 			<div>
 				<A href="/">Home</A>
-				<A href="/more">More</A>
+				<A href="/pkg">Package</A>
 			</div>
 			{(
 				<Component
