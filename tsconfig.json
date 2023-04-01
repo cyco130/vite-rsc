@@ -7,7 +7,15 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"moduleResolution": "Node",
-		"types": ["vite/client"],
-		"jsx": "react-jsx"
+		"types": [
+			"vite/client",
+			"unplugin-icons/types/react",
+			"react/experimental"
+		],
+		"jsx": "react-jsx",
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["app/*"]
+		}
 	}
 }

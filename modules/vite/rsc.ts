@@ -14,7 +14,7 @@ export function rsc(): Plugin {
 		},
 
 		async resolveId(id, importer, options) {
-			if (!importer?.endsWith("?RSC")) return;
+			if (!importer?.endsWith("?rsc")) return;
 
 			const resolved = await this.resolve(id, importer, {
 				...options,
@@ -28,10 +28,10 @@ export function rsc(): Plugin {
 				!resolved.external &&
 				!resolved.id.includes("node_modules")
 			) {
-				return resolved.id + "?RSC";
+				return resolved.id + "?rsc";
 			}
 
-			if (!resolved.external) return resolved.id + "?RSC";
+			if (!resolved.external) return resolved.id + "?rsc";
 
 			if (resolved.id.startsWith("node:")) return resolved;
 
@@ -49,13 +49,13 @@ export function rsc(): Plugin {
 			const resolvedId = fileURLToPath(resolvedUrl);
 
 			return {
-				id: resolvedId + "?RSC",
+				id: resolvedId + "?rsc",
 				external: true,
 			};
 		},
 
 		transform(code, id, options) {
-			if (!id.endsWith("?RSC") || !options?.ssr) return;
+			if (!id.endsWith("?rsc") || !options?.ssr) return;
 
 			// Does it have "use client"?
 			if (code.match(/^\s*[\'\"]use client[\'\"]/)) {
@@ -75,8 +75,8 @@ export function rsc(): Plugin {
 	};
 }
 
-export default Object.defineProperties({} as any, {
-	$$typeof: { value: Symbol.for("react.client.reference") },
-	$$id: { value: "Counter" },
-	$$async: { value: false },
-});
+// export default Object.defineProperties({} as any, {
+// 	$$typeof: { value: Symbol.for("react.client.reference") },
+// 	$$id: { value: "Counter" },
+// 	$$async: { value: false },
+// });

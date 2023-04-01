@@ -3,24 +3,43 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "hattip serve -C ./src/entry-client.ts",
-    "build": "hattip build -C ./src/entry-client.ts"
+    "dev": "hattip serve -C ./modules/router/client.tsx",
+    "build": "hattip build -C ./modules/router/client.tsx"
   },
   "dependencies": {
-    "@hattip/adapter-node": "^0.0.33",
-    "@hattip/response": "^0.0.33",
-    "@hattip/router": "^0.0.33",
     "react": "18.3.0-next-85de6fde5-20230328",
     "react-dom": "18.3.0-next-85de6fde5-20230328",
+    "react-resizable": "^3.0.5",
     "react-server-dom-webpack": "18.3.0-next-85de6fde5-20230328"
   },
   "devDependencies": {
+    "@hattip/adapter-node": "^0.0.33",
+    "@hattip/response": "^0.0.33",
+    "@hattip/router": "^0.0.33",
     "@hattip/vite": "^0.0.33",
+    "@iconify/json": "^2.2.43",
+    "@tanstack/react-query": "^4.28.0",
+    "@tanstack/react-query-devtools": "^4.28.0",
     "@types/react": "^18.0.31",
     "@types/react-dom": "^18.0.11",
+    "@types/react-resizable": "^3.0.4",
+    "@unocss/core": "^0.50.6",
+    "@unocss/preset-mini": "^0.50.6",
+    "@unocss/preset-uno": "^0.50.6",
+    "@unocss/reset": "^0.50.6",
+    "clsx": "^1.2.1",
+    "comlink": "^4.4.1",
     "import-meta-resolve": "^2.2.2",
+    "prettier": "^2.8.7",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "react-router-dom": "^6.10.0",
+    "tailwind-merge": "^1.11.0",
     "typescript": "^5.0.2",
+    "unocss": "^0.50.6",
+    "unplugin-icons": "^0.16.1",
     "vite": "^4.2.1",
-    "vite-plugin-inspect": "^0.7.18"
+    "vite-dev-rpc": "^0.1.1",
+    "vite-plugin-inspect": "^0.7.18",
+    "zustand": "^4.3.7"
   }
 }
