@@ -155,7 +155,6 @@ export default function mount() {
 
 	// Shortcut to toggle devtools
 	addEventListener("keypress", (e) => {
-		console.log(e);
 		if (e.code === "KeyD" && e.ctrlKey) togglePanel();
 	});
 

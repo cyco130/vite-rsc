@@ -43,7 +43,7 @@ const bundlerConfig = new Proxy(
 router.get("/__rsc/*", async (context) => {
 	let url = context.url;
 	let pathname = url.pathname.slice("/__rsc".length);
-	let appUrl = new URL(pathname, "http://localhost:3000");
+	let appUrl = new URL(pathname + url.search, "http://localhost:3000");
 	return new Response(
 		renderRscToReadableStream(
 			createElement(Root, { ...context, url: appUrl }),
@@ -90,13 +90,14 @@ router.get("/*", async (context) => {
 							<head>
 								<title>RSC Playground</title>
 								<link rel="icon" type="image/x-icon" href="/favicon.ico">
-							</head>`,
+							</head>
+							<body>`,
 				),
 			);
 		},
 
 		flush(controller) {
-			controller.enqueue(encoder.encode(`</html>`));
+			controller.enqueue(encoder.encode(`</body></html>`));
 		},
 	});
 

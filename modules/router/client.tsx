@@ -1,16 +1,28 @@
 import { createFromReadableStream } from "react-server-dom-webpack/client.browser";
 import { hydrateRoot } from "react-dom/client";
-import { createElement, startTransition, use } from "react";
+import {
+	createElement,
+	startTransition,
+	use,
+	useEffect,
+	useState,
+} from "react";
 
 import "../devtools/devtools.client";
 
-mount().catch((err) => console.error(err));
-
 const decoder = new TextDecoder();
 
+declare global {
+	interface Window {
+		router: {
+			push(url: string): void;
+			replace(url: string): void;
+		};
+	}
+}
+
 async function mount() {
-	let url = new URL(location.href);
-	let callbacks = [];
+	let callbacks: (() => void)[] = [];
 
 	function createHrefFromUrl(
 		url: Pick<URL, "pathname" | "search" | "hash">,
@@ -20,14 +32,20 @@ async function mount() {
 	}
 
 	const router = {
-		push(url: string) {},
-		navigate(url: string) {
+		push(url: string) {
+			window.history.pushState({}, "", url);
+			callbacks.forEach((cb) => cb());
+		},
+		replace(url: string) {
 			window.history.replaceState({}, "", url);
+			callbacks.forEach((cb) => cb());
 		},
 	};
 
-	async function fetchRSC() {
-		let stream = await fetch(`/__rsc${url.pathname}`).then((res) => res.body!);
+	window.router = router;
+
+	async function fetchFromServer(url: string) {
+		let stream = await fetch(`/__rsc${url}`).then((res) => res.body!);
 		let previousChunkTime: number | null = null;
 		let transformStream = new TransformStream({
 			transform(chunk, controller) {
@@ -61,14 +79,32 @@ async function mount() {
 	const responseCache = new Map<string, any>();
 
 	function Router() {
-		return <ServerResponse />;
+		const [url, setUrl] = useState(() =>
+			createHrefFromUrl(new URL(location.href)),
+		);
+
+		useEffect(() => {
+			function navigate() {
+				startTransition(() => {
+					setUrl(createHrefFromUrl(new URL(location.href)));
+				});
+			}
+
+			callbacks.push(navigate);
+			window.addEventListener("popstate", navigate);
+			return () => {
+				callbacks = callbacks.filter((cb) => cb !== navigate);
+				window.removeEventListener("popstate", navigate);
+			};
+		}, []);
+		return <ServerResponse url={url} />;
 	}
 
-	function ServerResponse() {
-		if (!responseCache.has("rsc")) {
-			responseCache.set("rsc", fetchRSC());
+	function ServerResponse({ url }: { url: string }) {
+		if (!responseCache.has(url)) {
+			responseCache.set(url, fetchFromServer(url));
 		}
-		return use(responseCache.get("rsc")) as any;
+		return use(responseCache.get(url)) as any;
 	}
 
 	startTransition(() => {
@@ -88,3 +124,5 @@ const cache = new Map<string, any>();
 	if (!cache.has(id)) throw new Error(`Module ${id} not found`);
 	return cache.get(id);
 };
+
+mount().catch((err) => console.error(err));
