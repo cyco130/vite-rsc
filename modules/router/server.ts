@@ -63,7 +63,7 @@ router.get("/*", async (context) => {
 	if (!devServer) {
 		const manifest: { default: Manifest } = await import(
 			// @ts-expect-error: manifest.json is only available at build time
-			"../dist/client/manifest.json"
+			"../../dist/client/manifest.json"
 		);
 		clientScript = manifest.default[clientScript.slice(1)].file ?? clientScript;
 	}
