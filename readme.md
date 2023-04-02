@@ -2,8 +2,8 @@
 
 ## Things to do
 
-- [ ] Server side rendering for RSC (pass initial RSC stream to React's streaming server renderer)
-- [ ] Hydrate server rendered HTML stream with client side RSC stream
+- [x] Server side rendering for RSC (pass initial RSC stream to React's streaming server renderer)
+- [x] Hydrate server rendered HTML stream with client side RSC stream
 - [ ] Inline Server components stream data to SSRed HTML stream and use that for hydration
 - [x] Client side navigation for path
 - [x] Client side navigation for search params
