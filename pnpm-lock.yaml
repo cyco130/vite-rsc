@@ -13,6 +13,9 @@ dependencies:
   react-server-dom-webpack:
     specifier: 18.3.0-next-85de6fde5-20230328
     version: 18.3.0-next-85de6fde5-20230328(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)(webpack@5.77.0)
+  rsc-things:
+    specifier: ^0.0.1
+    version: 0.0.1(react@18.3.0-next-85de6fde5-20230328)
 
 devDependencies:
   '@hattip/adapter-node':
@@ -1009,6 +1012,10 @@ packages:
     engines: {node: '>=6.0'}
     dev: false
 
+  /client-only@0.0.1:
+    resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
+    dev: false
+
   /clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
@@ -1715,6 +1722,16 @@ packages:
       fsevents: 2.3.2
     dev: true
 
+  /rsc-things@0.0.1(react@18.3.0-next-85de6fde5-20230328):
+    resolution: {integrity: sha512-2HgZ56FY+ckQkVcFMErRpaG2XoLoNp4WED0Rch/51+7JmI/Ll4zm9FAx5rF96fnkfO2yDI1zcMLal0FX5PBcSw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      client-only: 0.0.1
+      react: 18.3.0-next-85de6fde5-20230328
+      server-only: 0.0.1
+    dev: false
+
   /run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
     dependencies:
@@ -1743,6 +1760,10 @@ packages:
     resolution: {integrity: sha512-owoXEFjWRllis8/M1Q+Cw5k8ZH40e3zhp/ovX+Xr/vi1qj6QesbyXXViFbpNvWvPNAD62SutwEXavefrLJWj7w==}
     dependencies:
       randombytes: 2.1.0
+    dev: false
+
+  /server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
     dev: false
 
   /shebang-command@2.0.0:

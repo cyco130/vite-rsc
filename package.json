@@ -10,7 +10,8 @@
     "react": "18.3.0-next-85de6fde5-20230328",
     "react-dom": "18.3.0-next-85de6fde5-20230328",
     "react-resizable": "^3.0.5",
-    "react-server-dom-webpack": "18.3.0-next-85de6fde5-20230328"
+    "react-server-dom-webpack": "18.3.0-next-85de6fde5-20230328",
+    "rsc-things": "^0.0.1"
   },
   "devDependencies": {
     "@hattip/adapter-node": "^0.0.33",

@@ -1,9 +1,9 @@
-import Counter from "./Counter";
 import fs from "node:fs";
-import { createServerContext, useContext, use } from "react";
 import { RouterContext } from "@hattip/router";
 import A from "../modules/router/A";
 import { SearchPage } from "./SearchPage";
+import { Good } from "./Good";
+import { Bad } from "./Bad";
 
 async function PackageJSON() {
 	const packageJson = await fs.promises.readFile("package.json", "utf8");
@@ -14,6 +14,8 @@ async function PackageJSON() {
 const routes = {
 	"/": SearchPage,
 	"/pkg": PackageJSON,
+	"/good": Good,
+	"/bad": Bad,
 } as Record<string, any>;
 
 export default function Root(context: RouterContext) {
@@ -26,8 +28,8 @@ export default function Root(context: RouterContext) {
 			</head>
 			<body>
 				<div>
-					<A href="/">Home</A>
-					<A href="/pkg">Package</A>
+					<A href="/">Home</A> | <A href="/pkg">Package</A> |{" "}
+					<A href="/good">Good</A> | <A href="/bad">Bad</A>
 				</div>
 				{(
 					<Component
