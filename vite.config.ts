@@ -13,6 +13,11 @@ export default defineConfig({
 			configFile: "unocss.config.ts",
 		}),
 	],
+	resolve: {
+		alias: {
+			winter: "modules",
+		},
+	},
 	ssr: {
 		external: ["react-server-dom-webpack"],
 	},

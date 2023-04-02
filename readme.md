@@ -75,6 +75,6 @@ Existing implementations:
  - https://github.com/cyco130/vite-rsc (this repo)
  - https://github.com/parcel-bundler/parcel/commits/rsc
  - Next.js's implementation (PR welcome to add a link to its code)
-
+ - Remix Router/React Router
 Related:
  - https://github.com/Ephem/rollup-plugin-preserve-directives

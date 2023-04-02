@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import "../devtools/devtools.client";
+import { createBrowserHistory } from "../router/client/history";
 
 const decoder = new TextDecoder();
 
@@ -22,6 +23,10 @@ declare global {
 		init_rsc: ReadableStream<Uint8Array> | null;
 		rsc_chunk(chunk: string): Promise<void>;
 	}
+}
+
+function createRouter() {
+	const history = createBrowserHistory();
 }
 
 async function mount() {
