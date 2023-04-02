@@ -1,15 +1,84 @@
 import fs from "node:fs";
-import A from "../modules/router/client/A";
 import { SearchPage } from "./SearchPage";
 import { createRouter } from "../modules/router/server/createRouter";
+import A from "../modules/router/client/A";
+import { getContacts, getContact, Contact } from "./contacts";
+import { PageProps } from "../modules/router/types";
 
-async function PackageJSON() {
-	const packageJson = await fs.promises.readFile("package.json", "utf8");
-	await new Promise((resolve) => setTimeout(resolve, 1000));
-	return <pre>{packageJson}</pre>;
+async function ContactPage({ params }: PageProps) {
+	const contact = await getContact(params.contactId);
+
+	if (!contact) {
+		return <div>Contact not found</div>;
+	}
+
+	return (
+		<div id="contact">
+			<div>
+				<img key={contact.avatar} src={contact.avatar} />
+			</div>
+
+			<div>
+				<h1>
+					{contact.first || contact.last ? (
+						<>
+							{contact.first} {contact.last}
+						</>
+					) : (
+						<i>No Name</i>
+					)}{" "}
+					<Favorite contact={contact} />
+				</h1>
+
+				{contact.twitter && (
+					<p>
+						<a target="_blank" href={`https://twitter.com/${contact.twitter}`}>
+							{contact.twitter}
+						</a>
+					</p>
+				)}
+
+				{contact.notes && <p>{contact.notes}</p>}
+
+				<div>
+					<form action="edit">
+						<button type="submit">Edit</button>
+					</form>
+					<form
+						method="post"
+						action="destroy"
+						// onSubmit={(event) => {
+						// 	if (!confirm("Please confirm you want to delete this record.")) {
+						// 		event.preventDefault();
+						// 	}
+						// }}
+					>
+						<button type="submit">Delete</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	);
 }
 
-function Root({ children }: { children: any }) {
+function Favorite({ contact }: { contact: Contact }) {
+	// yes, this is a `let` for later
+	let favorite = contact.favorite;
+	return (
+		<form method="post">
+			<button
+				name="favorite"
+				value={favorite ? "false" : "true"}
+				aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+			>
+				{favorite ? "★" : "☆"}
+			</button>
+		</form>
+	);
+}
+
+async function Root({ children }: { children: any }) {
+	const contacts = await getContacts();
 	return (
 		<html lang="en">
 			<head>
@@ -37,14 +106,28 @@ function Root({ children }: { children: any }) {
 							</form>
 						</div>
 						<nav>
-							<ul>
-								<li>
-									<a href={`/contacts/1`}>Your Name</a>
-								</li>
-								<li>
-									<a href={`/contacts/2`}>Your Friend</a>
-								</li>
-							</ul>
+							{contacts.length ? (
+								<ul>
+									{contacts.map((contact) => (
+										<li key={contact.id}>
+											<A href={`/contacts/${contact.id}`}>
+												{contact.first || contact.last ? (
+													<>
+														{contact.first} {contact.last}
+													</>
+												) : (
+													<i>No Name</i>
+												)}{" "}
+												{contact.favorite && <span>★</span>}
+											</A>
+										</li>
+									))}
+								</ul>
+							) : (
+								<p>
+									<i>No contacts</i>
+								</p>
+							)}
 						</nav>
 					</div>
 					<div id="detail">{children}</div>
@@ -59,10 +142,10 @@ export default createRouter([
 		path: "",
 		component: Root,
 		children: [
-			{ path: "/", component: SearchPage },
+			{ index: true, component: SearchPage },
 			{
-				path: "/pkg",
-				component: PackageJSON,
+				path: "contacts/:contactId",
+				component: ContactPage,
 			},
 		],
 	},

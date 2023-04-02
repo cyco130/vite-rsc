@@ -1,23 +1,20 @@
 lockfileVersion: '6.0'
 
 dependencies:
-  htmlescape:
-    specifier: ^1.1.1
-    version: 1.1.1
   react:
     specifier: 18.3.0-next-85de6fde5-20230328
     version: 18.3.0-next-85de6fde5-20230328
   react-dom:
     specifier: 18.3.0-next-85de6fde5-20230328
     version: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
-  react-resizable:
-    specifier: ^3.0.5
-    version: 3.0.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
   react-server-dom-webpack:
     specifier: 18.3.0-next-85de6fde5-20230328
     version: 18.3.0-next-85de6fde5-20230328(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
 
 devDependencies:
+  '@faker-js/faker':
+    specifier: ^7.6.0
+    version: 7.6.0
   '@hattip/adapter-node':
     specifier: ^0.0.33
     version: 0.0.33
@@ -51,6 +48,9 @@ devDependencies:
   '@types/react-resizable':
     specifier: ^3.0.4
     version: 3.0.4
+  '@types/sort-by':
+    specifier: ^1.2.0
+    version: 1.2.0
   '@unocss/core':
     specifier: ^0.50.6
     version: 0.50.6
@@ -69,18 +69,30 @@ devDependencies:
   comlink:
     specifier: ^4.4.1
     version: 4.4.1
+  htmlescape:
+    specifier: ^1.1.1
+    version: 1.1.1
   import-meta-resolve:
     specifier: ^2.2.2
     version: 2.2.2
+  match-sorter:
+    specifier: ^6.3.1
+    version: 6.3.1
   prettier:
     specifier: ^2.8.7
     version: 2.8.7
   prettier-plugin-organize-imports:
     specifier: ^3.2.2
     version: 3.2.2(prettier@2.8.7)(typescript@5.0.3)
+  react-resizable:
+    specifier: ^3.0.5
+    version: 3.0.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
   react-router-dom:
     specifier: ^6.10.0
     version: 6.10.0(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
+  sort-by:
+    specifier: ^1.2.0
+    version: 1.2.0
   tailwind-merge:
     specifier: ^1.11.0
     version: 1.11.0
@@ -129,6 +141,13 @@ packages:
 
   /@antfu/utils@0.7.2:
     resolution: {integrity: sha512-vy9fM3pIxZmX07dL+VX1aZe7ynZ+YyB0jY+jE6r3hOK6GNY2t6W8rzpFC4tgpbXUYABkFQwgJq2XYXlxbXAI0g==}
+    dev: true
+
+  /@babel/runtime@7.21.0:
+    resolution: {integrity: sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
     dev: true
 
   /@esbuild/android-arm64@0.17.14:
@@ -328,6 +347,11 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@faker-js/faker@7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: true
 
   /@hattip/adapter-node@0.0.33:
     resolution: {integrity: sha512-tEEYo/V0Vj7kQRuruoBHUzfJnaoKjW5EHALsU9RgyPvOs1hCJUil9UEkyVebneTBdQHUcljx4a4ZgS2pnrWOAA==}
@@ -562,6 +586,10 @@ packages:
 
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
+    dev: true
+
+  /@types/sort-by@1.2.0:
+    resolution: {integrity: sha512-apuh0Itbhv/JUIHVYkeUGPiAwUen0gAFyMHBYaCqpthcq20tsLT8Qs9yMntk9jMG85CoZp3ze2Sv+BhuKhP1gw==}
     dev: true
 
   /@unocss/astro@0.50.6(vite@4.2.1):
@@ -826,6 +854,7 @@ packages:
   /clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
+    dev: true
 
   /colorette@2.0.19:
     resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
@@ -1026,7 +1055,7 @@ packages:
   /htmlescape@1.1.1:
     resolution: {integrity: sha512-eVcrzgbR4tim7c7soKQKtxa/kQM4TzjnlU83rcZ9bHU6t31ehfV7SktN6McWgwPWg+JYMA/O3qpGxBvFq1z2Jg==}
     engines: {node: '>=0.10'}
-    dev: false
+    dev: true
 
   /human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
@@ -1126,6 +1155,13 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /match-sorter@6.3.1:
+    resolution: {integrity: sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==}
+    dependencies:
+      '@babel/runtime': 7.21.0
+      remove-accents: 0.4.2
+    dev: true
+
   /mdn-data@2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
     dev: true
@@ -1190,7 +1226,12 @@ packages:
   /object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
-    dev: false
+    dev: true
+
+  /object-path@0.6.0:
+    resolution: {integrity: sha512-fxrwsCFi3/p+LeLOAwo/wyRMODZxdGBtUlWRzsEpsUVrisZbEfZ21arxLGfaWfcnqb8oHPNihIb4XPE8CQPN5A==}
+    engines: {node: '>=0.8.0'}
+    dev: true
 
   /ofetch@1.0.1:
     resolution: {integrity: sha512-icBz2JYfEpt+wZz1FRoGcrMigjNKjzvufE26m9+yUiacRQRHwnNlGRPiDnW4op7WX/MR6aniwS8xw8jyVelF2g==}
@@ -1290,7 +1331,7 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: false
+    dev: true
 
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -1315,11 +1356,11 @@ packages:
       prop-types: 15.8.1
       react: 18.3.0-next-85de6fde5-20230328
       react-dom: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
-    dev: false
+    dev: true
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-    dev: false
+    dev: true
 
   /react-resizable@3.0.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
     resolution: {integrity: sha512-vKpeHhI5OZvYn82kXOs1bC8aOXktGU5AmKAgaZS4F5JPburCtbmDPqE7Pzp+1kN4+Wb81LlF33VpGwWwtXem+w==}
@@ -1331,7 +1372,7 @@ packages:
       react-draggable: 4.4.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
     transitivePeerDependencies:
       - react-dom
-    dev: false
+    dev: true
 
   /react-router-dom@6.10.0(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
     resolution: {integrity: sha512-E5dfxRPuXKJqzwSe/qGcqdwa18QiWC6f3H3cWXM24qj4N0/beCIf/CWTipop2xm7mR0RCS99NnaqPNjHtrAzCg==}
@@ -1382,6 +1423,10 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
+    dev: true
+
+  /regenerator-runtime@0.13.11:
+    resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
     dev: true
 
   /remove-accents@0.4.2:
@@ -1449,6 +1494,12 @@ packages:
       '@polka/url': 1.0.0-next.21
       mrmime: 1.0.1
       totalist: 3.0.0
+    dev: true
+
+  /sort-by@1.2.0:
+    resolution: {integrity: sha512-aRyW65r3xMnf4nxJRluCg0H/woJpksU1dQxRtXYzau30sNBOmf5HACpDd9MZDhKh7ALQ5FgSOfMPwZEtUmMqcg==}
+    dependencies:
+      object-path: 0.6.0
     dev: true
 
   /source-map-js@1.0.2:
