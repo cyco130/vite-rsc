@@ -1,5 +1,10 @@
 # Vite RSC Experiments
 
+## Discussions
+
+ - Forum: [GitHUb Discussions](https://github.com/cyco130/vite-rsc/discussions).
+ - Chat: [Discord](https://discord.gg/AKqMhV6Mwx).
+
 ## Things to do
 
 - [x] Server side rendering for RSC (pass initial RSC stream to React's streaming server renderer)
