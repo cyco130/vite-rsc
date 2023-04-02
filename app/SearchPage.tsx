@@ -2,12 +2,12 @@ import type { PageProps } from "../modules/router/types";
 import { Suspense } from "react";
 import Search from "./Search";
 
-export async function SearchResults({ search }: { search: string }) {
+async function SearchResults({ search }: { search: string }) {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 	return <div>Search results for {search}</div>;
 }
 
-export function SearchPage({ searchParams }: PageProps) {
+export default function SearchPage({ searchParams }: PageProps) {
 	return (
 		<>
 			<Search search={searchParams.q} />

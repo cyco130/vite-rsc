@@ -1,6 +1,7 @@
 "use client";
 
 import { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
+import { useRouter } from "./useRouter";
 
 export default function A({
 	href,
@@ -9,6 +10,15 @@ export default function A({
 	AnchorHTMLAttributes<HTMLAnchorElement>,
 	HTMLAnchorElement
 >) {
+	const router = useRouter();
+	let className = [
+		props.className,
+		href === router.location.pathname ? "active" : undefined,
+	]
+		.filter(Boolean)
+		.join(" ");
+
+	console.log(className);
 	return (
 		<a
 			href={href}
@@ -19,6 +29,7 @@ export default function A({
 				window.router.push(href);
 			}}
 			{...props}
+			className={className}
 		/>
 	);
 }

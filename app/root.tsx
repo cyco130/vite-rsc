@@ -1,35 +1,41 @@
-import Counter from "./Counter";
-import fs from "node:fs";
-import { createServerContext, useContext, use } from "react";
 import { RouterContext } from "@hattip/router";
-import A from "../modules/router/A";
-import { SearchPage } from "./SearchPage";
+import Nav from "./components/Nav";
+import Footer from "./components/Footer";
+import { Home } from "./Home";
+import { TV } from "./TV";
+import { getMovies } from "./services/tmdbAPI";
+import Hero from "./components/Hero";
 
-async function PackageJSON() {
-	const packageJson = await fs.promises.readFile("package.json", "utf8");
-	await new Promise((resolve) => setTimeout(resolve, 1000));
-	return <pre>{packageJson}</pre>;
+async function Movie() {
+	let movies = await getMovies("popular");
+	return (
+		<main>
+			<Hero item={movies.results[0]} />
+		</main>
+	);
 }
 
 const routes = {
-	"/": SearchPage,
-	"/pkg": PackageJSON,
+	"/": Home,
+	"/tv": TV,
+	"/movie": Movie,
 } as Record<string, any>;
 
 export default function Routes(context: RouterContext) {
-	let Component = routes[context.url.pathname] as any;
+	let RouteComponent = routes[context.url.pathname] as any;
+
+	if (!RouteComponent) {
+		return <div>404</div>;
+	}
+
 	return (
 		<>
-			<div>
-				<A href="/">Home</A>
-				<A href="/pkg">Package</A>
-			</div>
-			{(
-				<Component
-					pathname={context.url.pathname}
-					searchParams={Object.fromEntries(context.url.searchParams.entries())}
-				/>
-			) ?? <div>404</div>}
+			<Nav />
+			<RouteComponent
+				pathname={context.url.pathname}
+				searchParams={Object.fromEntries(context.url.searchParams.entries())}
+			/>
+			<Footer />
 		</>
 	);
 }

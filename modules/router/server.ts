@@ -77,6 +77,14 @@ router.get("/*", async (context) => {
 
 	let response = await createFromReadableStream(rscStream);
 
+	const router = Object.assign(new EventTarget(), {
+		push(url: string) {},
+		replace(url: string) {},
+		location: context.url,
+	});
+
+	(globalThis as typeof window).router = router;
+
 	const stream = await renderToReadableStream(response, {
 		bootstrapModules: [clientScript],
 	});
@@ -86,10 +94,11 @@ router.get("/*", async (context) => {
 			controller.enqueue(
 				encoder.encode(
 					`<!DOCTYPE html>
-						<html>
+						<html lang="en">
 							<head>
 								<title>RSC Playground</title>
-								<link rel="icon" type="image/x-icon" href="/favicon.ico">
+								<meta charset="utf-8" />
+								<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 							</head>
 							<body>`,
 				),

@@ -9,15 +9,22 @@ import {
 	useTransition,
 } from "react";
 
+import "~/components/Nav.module.scss";
+import "~/components/Footer.module.scss";
+import "~/components/Hero.module.scss";
+import "~/assets/css/global.scss";
+import "uno.css";
+
 import "../devtools/devtools.client";
 
 const decoder = new TextDecoder();
 
 declare global {
 	interface Window {
-		router: {
+		router: EventTarget & {
 			push(url: string): void;
 			replace(url: string): void;
+			location: URL;
 		};
 	}
 }
@@ -32,16 +39,22 @@ async function mount() {
 		return url.pathname + url.search + (includeHash ? url.hash : "");
 	}
 
-	const router = {
+	let routerEventTarget = new EventTarget();
+	const router = Object.assign(routerEventTarget, {
 		push(url: string) {
 			window.history.pushState({}, "", url);
 			callbacks.forEach((cb) => cb());
+			router.location = new URL(location.href);
+			routerEventTarget.dispatchEvent(new Event("locationchange"));
 		},
 		replace(url: string) {
 			window.history.replaceState({}, "", url);
 			callbacks.forEach((cb) => cb());
+			router.location = new URL(location.href);
+			routerEventTarget.dispatchEvent(new Event("locationchange"));
 		},
-	};
+		location: new URL(location.href),
+	});
 
 	window.router = router;
 

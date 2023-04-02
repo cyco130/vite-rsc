@@ -10,7 +10,8 @@
     "react": "18.3.0-next-85de6fde5-20230328",
     "react-dom": "18.3.0-next-85de6fde5-20230328",
     "react-resizable": "^3.0.5",
-    "react-server-dom-webpack": "18.3.0-next-85de6fde5-20230328"
+    "react-server-dom-webpack": "18.3.0-next-85de6fde5-20230328",
+    "vite-tsconfig-paths": "^4.0.7"
   },
   "devDependencies": {
     "@hattip/adapter-node": "^0.0.33",
@@ -18,6 +19,8 @@
     "@hattip/router": "^0.0.33",
     "@hattip/vite": "^0.0.33",
     "@iconify/json": "^2.2.43",
+    "@svgr/core": "^7.0.0",
+    "@svgr/plugin-jsx": "^7.0.0",
     "@tanstack/react-query": "^4.28.0",
     "@tanstack/react-query-devtools": "^4.28.0",
     "@types/react": "^18.0.31",
@@ -33,6 +36,7 @@
     "prettier": "^2.8.7",
     "prettier-plugin-organize-imports": "^3.2.2",
     "react-router-dom": "^6.10.0",
+    "sass": "^1.60.0",
     "tailwind-merge": "^1.11.0",
     "typescript": "^5.0.2",
     "unocss": "^0.50.6",
