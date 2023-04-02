@@ -29,6 +29,8 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
 - [x] Client side navigation for search params
 - [ ] Proper route matching with path params
 - [ ] Nested routing
+  - [x] Nested routing on the server (using children prop)
+  - [ ] Nested navigation on the client, i.e, only request RSC for the nested route
 - [ ] Typed router (ala tanstack router)
 - [ ] File system routing
 
