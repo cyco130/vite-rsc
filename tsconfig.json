@@ -15,8 +15,7 @@
 		"jsx": "react-jsx",
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["app/*"],
-			"winter/*": ["modules/*"]
+			"~/*": ["app/*"]
 		}
 	}
 }
