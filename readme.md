@@ -28,7 +28,8 @@ Related:
 
 - [x] Server side rendering for RSC (pass initial RSC stream to React's streaming server renderer)
 - [x] Hydrate server rendered HTML stream with client side RSC stream
-- [ ] Inline Server components stream data to SSRed HTML stream and use that for hydration
+- [x] Inline Server components stream data to SSRed HTML stream and use that for hydration
+- [x] Render full HTML page with React components
 - [x] Client side navigation for path
 - [x] Client side navigation for search params
 - [ ] Proper route matching with path params

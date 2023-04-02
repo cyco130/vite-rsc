@@ -4,7 +4,7 @@ import { hattip } from "@hattip/vite";
 export default function react() {
 	return [
 		hattip({
-			hattipEntry: "./modules/router/server.ts",
+			hattipEntry: "./modules/render/server.ts",
 		}),
 		rsc(),
 	];

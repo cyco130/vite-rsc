@@ -1,11 +1,10 @@
 import { createRouter } from "@hattip/router";
-import { renderToReadableStream as renderRscToReadableStream } from "react-server-dom-webpack/server.edge";
-import { createFromReadableStream } from "react-server-dom-webpack/client.browser";
+import { renderToReadableStream as renderToFlightStream } from "react-server-dom-webpack/server.edge";
 import { createElement } from "react";
 import devServer from "virtual:vite-dev-server";
 import type { Manifest } from "vite";
-import { renderToReadableStream } from "react-dom/server.edge";
 import Root from "../../app/root?rsc";
+import { renderToHTMLStream as renderToHTMLStream } from "./streams";
 
 const router = createRouter();
 
@@ -36,7 +35,7 @@ globalThis.__webpack_require__ = (id: string) => {
  * We use a proxy during dev in order to make the bundler config look like the one that
  * react-server-dom-webpack expects at build time.
  */
-const bundlerConfig = new Proxy(
+export const bundlerConfig = new Proxy(
 	{},
 	{
 		get(_, prop) {
@@ -54,11 +53,11 @@ const bundlerConfig = new Proxy(
  * navigations.
  */
 router.get("/__rsc/*", async (context) => {
-	let url = context.url;
-	let pathname = url.pathname.slice("/__rsc".length);
-	let appUrl = new URL(pathname + url.search, "http://localhost:3000");
+	// get the original url that the user requested
+	let pathname = context.url.pathname.slice("/__rsc".length);
+	let appUrl = new URL(pathname + context.url.search, "http://localhost:3000");
 	return new Response(
-		renderRscToReadableStream(
+		renderToFlightStream(
 			createElement(Root, { ...context, url: appUrl }),
 			bundlerConfig,
 		),
@@ -75,7 +74,7 @@ router.get("/__rsc/*", async (context) => {
  * the RSC tree and then passing that to react-dom/server's streaming renderer.
  */
 router.get("/*", async (context) => {
-	let clientScript = "/modules/router/client.tsx";
+	let clientScript = "/modules/render/client.tsx";
 
 	if (!devServer) {
 		const manifest: { default: Manifest } = await import(
@@ -85,22 +84,14 @@ router.get("/*", async (context) => {
 		clientScript = manifest.default[clientScript.slice(1)].file ?? clientScript;
 	}
 
-	const encoder = new TextEncoder();
-
-	let rscStream = renderRscToReadableStream(
-		createElement(Root, context),
-		bundlerConfig,
+	return new Response(
+		await renderToHTMLStream(createElement(Root, context), {
+			bootstrapModules: [clientScript],
+		}),
+		{
+			headers: { "Content-Type": "text/html" },
+		},
 	);
-
-	let response = await createFromReadableStream(rscStream);
-
-	const stream = await renderToReadableStream(response, {
-		bootstrapModules: [clientScript],
-	});
-
-	return new Response(stream, {
-		headers: { "Content-Type": "text/html" },
-	});
 });
 
 export default router.buildHandler();

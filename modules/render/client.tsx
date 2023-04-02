@@ -19,6 +19,8 @@ declare global {
 			push(url: string): void;
 			replace(url: string): void;
 		};
+		init_rsc: ReadableStream<Uint8Array> | null;
+		rsc_chunk(chunk: string): Promise<void>;
 	}
 }
 
@@ -46,7 +48,14 @@ async function mount() {
 	window.router = router;
 
 	async function fetchFromServer(url: string) {
-		let stream = await fetch(`/__rsc${url}`).then((res) => res.body!);
+		let stream;
+		if (window.init_rsc) {
+			stream = window.init_rsc;
+			self.init_rsc = null;
+		} else {
+			stream = await fetch(`/__rsc${url}`).then((res) => res.body!);
+		}
+
 		let previousChunkTime: number | null = null;
 		let transformStream = new TransformStream({
 			transform(chunk, controller) {
