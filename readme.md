@@ -11,6 +11,19 @@ Implement a Vite plugin for [React Server Components](https://react.dev/blog/202
 
 Ideally hitting the sweet spot between full-fledged yet flexible. Can we design the plugin so that it works with [Wakuwork](https://github.com/dai-shi/wakuwork), [Astro](https://astro.build/), [Rakkas](https://rakkasjs.org/), and [vite-plugin-ssr](https://vite-plugin-ssr.com/)?
 
+## Prior Art
+
+Existing implementations:
+ - https://github.com/facebook/react/pull/22952 (Shopify's Hydrogen implementation)
+ - https://github.com/dai-shi/wakuwork
+ - https://github.com/bholmesdev/simple-rsc (with video of live code stream with Dan Abramov)
+ - https://github.com/cyco130/vite-rsc (this repo)
+ - https://github.com/parcel-bundler/parcel/commits/rsc
+ - Next.js's implementation (PR welcome to add a link to its code)
+
+Related:
+ - https://github.com/Ephem/rollup-plugin-preserve-directives
+
 ## Things to do
 
 - [x] Server side rendering for RSC (pass initial RSC stream to React's streaming server renderer)
