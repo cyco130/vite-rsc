@@ -16,20 +16,28 @@ const routes = {
 	"/pkg": PackageJSON,
 } as Record<string, any>;
 
-export default function Routes(context: RouterContext) {
+export default function Root(context: RouterContext) {
 	let Component = routes[context.url.pathname] as any;
 	return (
-		<>
-			<div>
-				<A href="/">Home</A>
-				<A href="/pkg">Package</A>
-			</div>
-			{(
-				<Component
-					pathname={context.url.pathname}
-					searchParams={Object.fromEntries(context.url.searchParams.entries())}
-				/>
-			) ?? <div>404</div>}
-		</>
+		<html>
+			<head>
+				<title>RSC Playground</title>
+				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+			</head>
+			<body>
+				<div>
+					<A href="/">Home</A>
+					<A href="/pkg">Package</A>
+				</div>
+				{(
+					<Component
+						pathname={context.url.pathname}
+						searchParams={Object.fromEntries(
+							context.url.searchParams.entries(),
+						)}
+					/>
+				) ?? <div>404</div>}
+			</body>
+		</html>
 	);
 }

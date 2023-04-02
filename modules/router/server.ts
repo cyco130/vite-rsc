@@ -15,6 +15,10 @@ declare global {
 	function __webpack_require__(id: string): any;
 }
 
+/**
+ * This is a hack to make vite dev server work with react-server-dom-webpack.
+ * The cache is persisted between HMR updates on the server.
+ */
 globalThis.moduleCache = globalThis.moduleCache ?? new Map<string, any>();
 
 globalThis.__webpack_chunk_load__ = async (chunk: string) => {
@@ -27,6 +31,11 @@ globalThis.__webpack_require__ = (id: string) => {
 	return globalThis.moduleCache.get(id);
 };
 
+/**
+ * This is another hack to make vite dev server work with react-server-dom-webpack.
+ * We use a proxy during dev in order to make the bundler config look like the one that
+ * react-server-dom-webpack expects at build time.
+ */
 const bundlerConfig = new Proxy(
 	{},
 	{
@@ -40,6 +49,10 @@ const bundlerConfig = new Proxy(
 	},
 );
 
+/**
+ * This is the single RSC endpoint. It is used to render the required RSC tree for
+ * navigations.
+ */
 router.get("/__rsc/*", async (context) => {
 	let url = context.url;
 	let pathname = url.pathname.slice("/__rsc".length);
@@ -57,6 +70,10 @@ router.get("/__rsc/*", async (context) => {
 	);
 });
 
+/**
+ * This handles all the routes defined in the app. It renders HTML by first rendering
+ * the RSC tree and then passing that to react-dom/server's streaming renderer.
+ */
 router.get("/*", async (context) => {
 	let clientScript = "/modules/router/client.tsx";
 
@@ -81,29 +98,7 @@ router.get("/*", async (context) => {
 		bootstrapModules: [clientScript],
 	});
 
-	const transform = new TransformStream({
-		start(controller) {
-			controller.enqueue(
-				encoder.encode(
-					`<!DOCTYPE html>
-						<html>
-							<head>
-								<title>RSC Playground</title>
-								<link rel="icon" type="image/x-icon" href="/favicon.ico">
-							</head>
-							<body>`,
-				),
-			);
-		},
-
-		flush(controller) {
-			controller.enqueue(encoder.encode(`</body></html>`));
-		},
-	});
-
-	const output = stream.pipeThrough(transform);
-
-	return new Response(output, {
+	return new Response(stream, {
 		headers: { "Content-Type": "text/html" },
 	});
 });
