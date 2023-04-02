@@ -3,7 +3,7 @@ import react from "./modules/vite/react";
 import inspect from "vite-plugin-inspect";
 import unocss from "unocss/vite";
 import { devtools } from "./modules/devtools/devtools.vite";
-
+import path from "path";
 export default defineConfig({
 	plugins: [
 		devtools(),
@@ -16,6 +16,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			winter: "modules",
+			"~": path.resolve(process.cwd(), "app"),
 		},
 	},
 	ssr: {

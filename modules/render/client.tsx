@@ -12,6 +12,8 @@ import {
 import "../devtools/devtools.client";
 import { createBrowserHistory } from "../router/client/history";
 
+import "~/index.css";
+
 const decoder = new TextDecoder();
 
 declare global {
