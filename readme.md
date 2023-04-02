@@ -5,6 +5,12 @@
  - Forum: [GitHUb Discussions](https://github.com/cyco130/vite-rsc/discussions).
  - Chat: [Discord](https://discord.gg/AKqMhV6Mwx).
 
+## Goal
+
+Implement a Vite plugin for [React Server Components](https://react.dev/blog/2020/12/21/data-fetching-with-react-server-components).
+
+Ideally hitting the sweet spot between full-fledged yet flexible. Can we design the plugin so that it works with [Wakuwork](https://github.com/dai-shi/wakuwork), [Astro](https://astro.build/), [Rakkas](https://rakkasjs.org/), and [vite-plugin-ssr](https://vite-plugin-ssr.com/)?
+
 ## Things to do
 
 - [x] Server side rendering for RSC (pass initial RSC stream to React's streaming server renderer)
