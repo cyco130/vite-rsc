@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "../modules/router/useRouter";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 
 export default function Search({ search: initialSearch }: { search: string }) {
 	const [isPending, startTransition] = useTransition();

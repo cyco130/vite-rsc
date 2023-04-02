@@ -1,3 +1,3 @@
 export function useRouter() {
-	return window.router;
+	return (globalThis as typeof window).router;
 }
