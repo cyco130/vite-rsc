@@ -13,7 +13,7 @@ import React from "react";
 function renderMatches(
 	matches: RouteMatch[],
 	props: {
-		searchParams: Record<string, string>;
+		searchParams: URLSearchParams;
 		params: Record<string, string>;
 	},
 ): React.ReactElement | null {
@@ -50,26 +50,33 @@ export function createRouter(routes: RouteObject[]) {
 		);
 		const matches = matchRoutes(dataRoutes, location, basename);
 
+		let content;
 		if (!matches) {
-			return <div>404</div>;
+			const RootComponent = dataRoutes[0].component;
+			content = (
+				<RootComponent
+					children={<div>404</div>}
+					searchParams={context.url.searchParams}
+				/>
+			);
+		} else {
+			const params = matches.reduce((params, match) => {
+				return { ...params, ...match.params };
+			}, {});
+
+			content = renderMatches(matches, {
+				searchParams: context.url.searchParams,
+				params,
+			});
 		}
-
-		const params = matches.reduce((params, match) => {
-			return { ...params, ...match.params };
-		}, {});
-
-		const renderedRoutes = renderMatches(matches, {
-			params,
-			searchParams: Object.fromEntries(context.url.searchParams.entries()),
-		});
 
 		const isRSCNavigation = context.request.headers.get("x-navigate");
 
 		if (isRSCNavigation) {
-			return renderedRoutes;
+			return content;
 		}
 
-		return <Router initialURL={context.url.pathname}>{renderedRoutes}</Router>;
+		return <Router initialURL={context.url.pathname}>{content}</Router>;
 	}
 
 	return AppRouter;

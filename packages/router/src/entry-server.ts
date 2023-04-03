@@ -1,5 +1,9 @@
 import { createRouter } from "@hattip/router";
-import { renderToReadableStream as renderToFlightStream } from "react-server-dom-webpack/server.edge";
+import {
+	renderToReadableStream as renderToFlightStream,
+	decodeReply,
+	renderToReadableStream,
+} from "react-server-dom-webpack/server.edge";
 import { createElement } from "react";
 import devServer from "virtual:vite-dev-server";
 import type { Manifest } from "vite";
@@ -75,6 +79,27 @@ router.get("/__rsc/*", async (context) => {
 			},
 		},
 	);
+});
+
+/**
+ * This is the single RSF endpoint. It is used to respond to server functions.
+ */
+router.post("/__rsf/*", async (context) => {
+	const actionId = context.request.headers.get("x-action");
+	if (!actionId) {
+		return new Response("Not Found", { status: 404 });
+	}
+
+	const [filePath, name] = actionId.split("#");
+	const serverFunction = (await import(/* @vite-ignore */ filePath))[name];
+	const args = await decodeReply(await context.request.text());
+	const result = await serverFunction(...args);
+
+	return new Response(renderToReadableStream(result, bundlerConfig, {}), {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
 });
 
 /**

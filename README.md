@@ -39,7 +39,7 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
 
 ### Mutations
 
-- [ ] Server functions, ala "use server"
+- [x] Server functions, ala "use server"
 - [ ] Mutations via server functions
 
 ### Head tags

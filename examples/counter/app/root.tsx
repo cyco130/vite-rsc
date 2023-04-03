@@ -1,20 +1,7 @@
 import { SearchPage } from "./SearchPage";
 import { PageProps } from "@vite-rsc/router/server";
 import Counter from "./Counter";
-
-// const InfiniteChildren: any = async ({ level = 0 }) => {
-// 	await new Promise((resolve) => setTimeout(resolve, 1000));
-// 	return (
-// 		<div
-// 			style={{ border: "1px red dashed", margin: "0.1em", padding: "0.1em" }}
-// 		>
-// 			<div>Level {level}</div>
-// 			<Suspense fallback="Loading...">
-// 				<InfiniteChildren level={level + 1} />
-// 			</Suspense>
-// 		</div>
-// 	);
-// };
+import sayHello from "./sayHello";
 
 export default async function Root(props: PageProps) {
 	return (
@@ -26,7 +13,7 @@ export default async function Root(props: PageProps) {
 			</head>
 			<body>
 				<div id="root">
-					<Counter initialCount={42} />
+					<Counter initialCount={42} sayHello={sayHello} />
 					<div>
 						<SearchPage {...props} />
 					</div>

@@ -9,6 +9,8 @@ declare module "react-server-dom-webpack/server.edge" {
 			signal?: AbortSignal;
 		},
 	): ReadableStream;
+
+	function decodeReply<T = any>(reply: string): Promise<T>;
 }
 
 declare module "virtual:vite-dev-server";

@@ -67,7 +67,7 @@ export default function Router({
 				history.push(url, state);
 				startTransition(() => dispatch({ type: "navigate", url }));
 			},
-			replace(url: string) {
+			replace(url: string, state: any) {
 				history.replace(url, state);
 				startTransition(() => dispatch({ type: "navigate", url }));
 			},

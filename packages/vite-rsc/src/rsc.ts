@@ -70,6 +70,21 @@ export function rsc(): Plugin {
 				`;
 			}
 
+			if (code.match(/^\s*[\'\"]use server[\'\"]/)) {
+				const componentId = JSON.stringify(`${id.slice(0, -4)}#default`);
+
+				return (
+					code +
+					`
+					Object.defineProperties(serverFn, {
+						$$typeof: { value: Symbol.for("react.server.reference") },
+						$$id: { value: ${componentId} },
+						$$bound: { value: null },
+					});
+				`
+				);
+			}
+
 			return code;
 		},
 	};

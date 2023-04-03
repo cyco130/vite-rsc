@@ -1,22 +1,23 @@
 import { SearchPage } from "./SearchPage";
-import { PageProps } from "@vite-rsc/router/server";
-import Counter from "./Counter";
+import { createRouter, PageProps } from "@vite-rsc/router/server";
+import { Suspense } from "react";
+import { A } from "@vite-rsc/router";
 
-// const InfiniteChildren: any = async ({ level = 0 }) => {
-// 	await new Promise((resolve) => setTimeout(resolve, 1000));
-// 	return (
-// 		<div
-// 			style={{ border: "1px red dashed", margin: "0.1em", padding: "0.1em" }}
-// 		>
-// 			<div>Level {level}</div>
-// 			<Suspense fallback="Loading...">
-// 				<InfiniteChildren level={level + 1} />
-// 			</Suspense>
-// 		</div>
-// 	);
-// };
+const InfiniteChildren: any = async ({ level = 0 }) => {
+	await new Promise((resolve) => setTimeout(resolve, 1000));
+	return (
+		<div
+			style={{ border: "1px red dashed", margin: "0.1em", padding: "0.1em" }}
+		>
+			<div>Level {level}</div>
+			<Suspense fallback="Loading...">
+				<InfiniteChildren level={level + 1} />
+			</Suspense>
+		</div>
+	);
+};
 
-export default async function Root(props: PageProps) {
+async function Root({ children }: PageProps) {
 	return (
 		<html lang="en">
 			<head>
@@ -25,13 +26,21 @@ export default async function Root(props: PageProps) {
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 			</head>
 			<body>
-				<div id="root">
-					<Counter initialCount={42} />
-					<div>
-						<SearchPage {...props} />
-					</div>
-				</div>
+				<A href="/">Search</A> | <A href="/infinite">Infinite</A> |{" "}
+				<A href="/not-found">Not Found</A>
+				<div id="root">{children}</div>
 			</body>
 		</html>
 	);
 }
+
+export default createRouter([
+	{
+		path: "",
+		component: Root,
+		children: [
+			{ index: true, component: SearchPage },
+			{ path: "/infinite", component: InfiniteChildren },
+		],
+	},
+]);

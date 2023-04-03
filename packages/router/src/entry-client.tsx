@@ -6,6 +6,7 @@ import React, {
 	useState,
 } from "react";
 import {
+	createFromFetch,
 	createFromReadableStream,
 	encodeReply,
 } from "react-server-dom-webpack/client.browser";
@@ -22,17 +23,13 @@ const decoder = new TextDecoder();
 async function callServer(id: string, args: any[]) {
 	const actionId = id;
 
-	const res = await fetch("", {
+	const response = fetch("/__rsf" + createPath(location), {
 		method: "POST",
 		headers: { Accept: "text/x-component", "x-action": actionId },
 		body: await encodeReply(args),
 	});
 
-	if (!res.ok) {
-		throw new Error(await res.text());
-	}
-
-	return (await res.json())[0];
+	return createFromFetch(response);
 }
 
 declare global {
