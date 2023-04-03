@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
+    "dev": "# tsup --watch",
     "prepack": "rm -rf dist && pnpm build",
     "test": "pnpm test:typecheck && pnpm test:lint && pnpm test:unit && pnpm test:package",
     "test:unit": "vitest run",
@@ -77,7 +77,7 @@
     "unocss": "^0.50.6",
     "unplugin-icons": "^0.16.1",
     "vite": "^4.2.1",
-    "vite-react-server": "workspace:^0.0.1",
+    "vite-react-server": "workspace:*",
     "vitest": "^0.29.8"
   },
   "dependencies": {

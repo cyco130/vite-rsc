@@ -7,7 +7,7 @@
     "build": "hattip build"
   },
   "dependencies": {
-    "@vite-rsc/router": "0.0.1",
+    "@vite-rsc/router": "^0.0.1",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403"
@@ -16,12 +16,12 @@
     "@faker-js/faker": "^7.6.0",
     "@hattip/adapter-node": "^0.0.33",
     "@hattip/vite": "^0.0.33",
-    "@types/react": "^18.0.31",
+    "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "match-sorter": "^6.3.1",
     "sort-by": "^1.2.0",
-    "typescript": "^5.0.2",
+    "typescript": "^5.0.3",
     "vite": "^4.2.1",
-    "vite-react-server": "0.0.1"
+    "vite-react-server": "^0.0.1"
   }
 }

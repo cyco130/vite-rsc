@@ -23,12 +23,12 @@ importers:
         specifier: 18.3.0-next-8310854ce-20230331
         version: 18.3.0-next-8310854ce-20230331(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)(webpack@5.77.0)
       vite-rsc:
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: link:../../packages/vite-rsc
     devDependencies:
       '@types/react':
-        specifier: ^18.0.31
-        version: 18.0.31
+        specifier: ^18.0.33
+        version: 18.0.33
       '@types/react-dom':
         specifier: ^18.0.11
         version: 18.0.11
@@ -45,7 +45,7 @@ importers:
   examples/contacts:
     dependencies:
       '@vite-rsc/router':
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: link:../../packages/router
       react:
         specifier: 18.3.0-next-b14f8da15-20230403
@@ -67,8 +67,8 @@ importers:
         specifier: ^0.0.33
         version: 0.0.33(vite@4.2.1)
       '@types/react':
-        specifier: ^18.0.31
-        version: 18.0.31
+        specifier: ^18.0.33
+        version: 18.0.33
       '@types/react-dom':
         specifier: ^18.0.11
         version: 18.0.11
@@ -79,19 +79,19 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       typescript:
-        specifier: ^5.0.2
+        specifier: ^5.0.3
         version: 5.0.3
       vite:
         specifier: ^4.2.1
         version: 4.2.1(@types/node@18.15.11)
       vite-react-server:
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: link:../../packages/vite-react-server
 
   examples/counter:
     dependencies:
       '@vite-rsc/router':
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: link:../../packages/router
       react:
         specifier: 18.3.0-next-b14f8da15-20230403
@@ -113,8 +113,8 @@ importers:
         specifier: ^0.0.33
         version: 0.0.33(vite@4.2.1)
       '@types/react':
-        specifier: ^18.0.31
-        version: 18.0.31
+        specifier: ^18.0.33
+        version: 18.0.33
       '@types/react-dom':
         specifier: ^18.0.11
         version: 18.0.11
@@ -125,19 +125,19 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       typescript:
-        specifier: ^5.0.2
+        specifier: ^5.0.3
         version: 5.0.3
       vite:
         specifier: ^4.2.1
         version: 4.2.1(@types/node@18.15.11)
       vite-react-server:
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: link:../../packages/vite-react-server
 
   examples/playground:
     dependencies:
       '@vite-rsc/router':
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: link:../../packages/router
       react:
         specifier: 18.3.0-next-b14f8da15-20230403
@@ -159,8 +159,8 @@ importers:
         specifier: ^0.0.33
         version: 0.0.33(vite@4.2.1)
       '@types/react':
-        specifier: ^18.0.31
-        version: 18.0.31
+        specifier: ^18.0.33
+        version: 18.0.33
       '@types/react-dom':
         specifier: ^18.0.11
         version: 18.0.11
@@ -171,13 +171,13 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       typescript:
-        specifier: ^5.0.2
+        specifier: ^5.0.3
         version: 5.0.3
       vite:
         specifier: ^4.2.1
         version: 4.2.1(@types/node@18.15.11)
       vite-react-server:
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: link:../../packages/vite-react-server
 
   packages/devtools:
@@ -298,7 +298,7 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1(@types/node@18.15.11)
       vite-react-server:
-        specifier: workspace:^0.0.1
+        specifier: workspace:*
         version: link:../vite-react-server
       vitest:
         specifier: ^0.29.8
@@ -946,12 +946,12 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.37.0
-      '@types/estree': 1.0.0
+      '@types/estree': 0.0.51
 
   /@types/eslint@8.37.0:
     resolution: {integrity: sha512-Piet7dG2JBuDIfohBngQ3rCt7MgO9xCO4xIMKxBThCq5PNRB91IjlJ10eJVwfoNtvTErmxLzwBZ7rHZtbOMmFQ==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 0.0.51
       '@types/json-schema': 7.0.11
 
   /@types/estree@0.0.51:
@@ -959,6 +959,7 @@ packages:
 
   /@types/estree@1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
+    dev: true
 
   /@types/htmlescape@1.1.1:
     resolution: {integrity: sha512-7OYBSTtF0T/QlEDEiOKs5SWChii5EJggBxF97cYc0u3UPoszmB0rGLWKchAJadLZO/ggsudNfhK/qwFg7ThfOw==}
@@ -992,6 +993,14 @@ packages:
 
   /@types/react@18.0.31:
     resolution: {integrity: sha512-EEG67of7DsvRDU6BLLI0p+k1GojDLz9+lZsnCpCRTa/lOokvyPBvp8S5x+A24hME3yyQuIipcP70KJ6H7Qupww==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
+    dev: true
+
+  /@types/react@18.0.33:
+    resolution: {integrity: sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
