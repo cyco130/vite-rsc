@@ -1,13 +1,7 @@
-import fs from "node:fs";
-import { SearchPage } from "./SearchPage";
-import { createRouter } from "../modules/router/server/createRouter";
-import A from "../modules/router/client/A";
+import { createRouter, PageProps } from "@vite-rsc/router/server";
+import { A, redirect } from "@vite-rsc/router";
 import { getContacts, getContact, Contact } from "./contacts";
-import { PageProps } from "../modules/router/types";
 import { Suspense } from "react";
-import Div from "./Div";
-import Counter from "./Counter";
-import { redirect } from "../modules/router/client/redirect";
 
 async function ContactPage({ params }: PageProps) {
 	const contact = await getContact(params.contactId);
@@ -93,7 +87,6 @@ async function Root({ children }: { children: any }) {
 			<body>
 				<div id="root">
 					<div id="sidebar">
-						<Div />
 						<A href="/redirect">Home</A>
 						<div>
 							<form id="search-form" role="search">
@@ -143,55 +136,15 @@ async function Root({ children }: { children: any }) {
 	);
 }
 
-const InfiniteChildren: any = async ({ level = 0 }) => {
-	await new Promise((resolve) => setTimeout(resolve, 1000));
-	return (
-		<div
-			style={{ border: "1px red dashed", margin: "0.1em", padding: "0.1em" }}
-		>
-			<div>Level {level}</div>
-			<Suspense fallback="Loading...">
-				<InfiniteChildren level={level + 1} />
-			</Suspense>
-		</div>
-	);
-};
-
 export default createRouter([
 	{
 		path: "",
 		component: Root,
 		children: [
-			{ index: true, component: SearchPage },
 			{
 				path: "contacts/:contactId",
 				component: ContactPage,
 			},
-			{
-				path: "infinite",
-				component: InfiniteChildren,
-			},
-			{
-				path: "redirect",
-				component: () => {
-					redirect("/");
-				},
-			},
 		],
 	},
 ]);
-
-// export default function Router() {
-// 	return (
-// 		<html lang="en">
-// 			<head>
-// 				<title>RSC Playground</title>
-// 				<meta charSet="utf-8" />
-// 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-// 			</head>
-// 			<body>
-// 				<Counter initialCount={10} />
-// 			</body>
-// 		</html>
-// 	);
-// }

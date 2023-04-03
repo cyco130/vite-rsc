@@ -1,5 +1,5 @@
 {
-  "name": "vite-react-server",
+  "name": "vite-devtools",
   "version": "0.0.1",
   "type": "module",
   "files": [
@@ -41,16 +41,48 @@
   ],
   "devDependencies": {
     "@cyco130/eslint-config": "^3.0.2",
+    "@faker-js/faker": "^7.6.0",
+    "@hattip/adapter-node": "^0.0.33",
+    "@hattip/response": "^0.0.33",
+    "@hattip/router": "^0.0.33",
+    "@hattip/vite": "^0.0.33",
+    "@iconify/json": "^2.2.43",
+    "@tanstack/react-query": "^4.28.0",
+    "@tanstack/react-query-devtools": "^4.28.0",
+    "@types/htmlescape": "^1.1.1",
     "@types/node": "^18.15.11",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
+    "@types/react-resizable": "^3.0.4",
+    "@types/sort-by": "^1.2.0",
+    "@unocss/core": "^0.50.6",
+    "@unocss/preset-mini": "^0.50.6",
+    "@unocss/preset-uno": "^0.50.6",
+    "@unocss/reset": "^0.50.6",
+    "clsx": "^1.2.1",
+    "comlink": "^4.4.1",
     "eslint": "^8.37.0",
+    "htmlescape": "^1.1.1",
+    "import-meta-resolve": "^2.2.2",
+    "match-sorter": "^6.3.1",
+    "prettier": "^2.8.7",
+    "prettier-plugin-organize-imports": "^3.2.2",
     "publint": "^0.1.11",
+    "react-resizable": "^3.0.5",
+    "react-router-dom": "^6.10.0",
+    "sort-by": "^1.2.0",
+    "tailwind-merge": "^1.11.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
+    "unocss": "^0.50.6",
+    "unplugin-icons": "^0.16.1",
     "vite": "^4.2.1",
+    "vite-react-server": "workspace:^0.0.1",
     "vitest": "^0.29.8"
   },
   "dependencies": {
     "@hattip/vite": "^0.0.33",
-    "import-meta-resolve": "^2.2.2"
+    "import-meta-resolve": "^2.2.2",
+    "zustand": "^4.3.7"
   }
 }

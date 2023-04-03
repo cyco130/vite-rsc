@@ -1,21 +1,27 @@
 {
-  "name": "vite-react-server",
-  "version": "0.0.1",
+  "name": "@vite-rsc/router",
+  "version": "0.0.0",
   "type": "module",
   "files": [
     "dist",
     "*.d.ts"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    "./entry-server": "./src/entry-server.ts",
+    "./server": "./src/server/index.ts",
+    ".": "./src/client/index.ts"
   },
+  "types": "./src/client/index.ts",
   "typesVersions": {
     "*": {
-      "*": [
-        "dist/*.d.ts"
+      ".": [
+        "./src/client/index.ts"
+      ],
+      "server": [
+        "./src/server/index.ts"
+      ],
+      "entry-server": [
+        "./src/entry-server.ts"
       ]
     }
   },
@@ -42,15 +48,20 @@
   "devDependencies": {
     "@cyco130/eslint-config": "^3.0.2",
     "@types/node": "^18.15.11",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
     "eslint": "^8.37.0",
     "publint": "^0.1.11",
+    "react": "18.3.0-next-b14f8da15-20230403",
+    "react-dom": "18.3.0-next-b14f8da15-20230403",
+    "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
     "vite": "^4.2.1",
     "vitest": "^0.29.8"
   },
   "dependencies": {
-    "@hattip/vite": "^0.0.33",
-    "import-meta-resolve": "^2.2.2"
+    "@hattip/router": "^0.0.33",
+    "history": "^5.3.0"
   }
 }
