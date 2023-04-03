@@ -133,6 +133,13 @@ importers:
         version: 4.3.7(react@18.3.0-next-8310854ce-20230331)
 
   packages/vite-rsc:
+    dependencies:
+      acorn-loose:
+        specifier: ^8.3.0
+        version: 8.3.0
+      import-meta-resolve:
+        specifier: ^2.2.2
+        version: 2.2.2
     devDependencies:
       '@cyco130/eslint-config':
         specifier: ^3.0.2
@@ -152,6 +159,9 @@ importers:
       typescript:
         specifier: ^5.0.3
         version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1(@types/node@18.15.11)
       vitest:
         specifier: ^0.29.8
         version: 0.29.8
@@ -2464,7 +2474,6 @@ packages:
 
   /import-meta-resolve@2.2.2:
     resolution: {integrity: sha512-f8KcQ1D80V7RnqVm+/lirO9zkOxjGxhaTC1IPrBGd3MEfNgmNG67tSUO9gTi2F3Blr2Az6g1vocaxzkVnWl9MA==}
-    dev: true
 
   /imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
