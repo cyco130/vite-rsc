@@ -53,6 +53,6 @@
   },
   "dependencies": {
     "@hattip/vite": "^0.0.33",
-    "@vite-rsc/plugin": "workspace:^0.0.1"
+    "vite-rsc": "workspace:^0.0.1"
   }
 }
