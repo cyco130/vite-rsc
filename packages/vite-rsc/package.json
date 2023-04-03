@@ -39,6 +39,9 @@
     "rsc",
     "react-server-components"
   ],
+  "peerDependencies": {
+    "vite": "4"
+  },
   "devDependencies": {
     "@cyco130/eslint-config": "^3.0.2",
     "@types/node": "^18.15.11",
@@ -50,6 +53,7 @@
     "vitest": "^0.29.8"
   },
   "dependencies": {
+    "acorn-loose": "^8.3.0",
     "import-meta-resolve": "^2.2.2"
   }
 }
