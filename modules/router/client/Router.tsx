@@ -5,6 +5,7 @@ import { createBrowserHistory, createMemoryHistory, History } from "history";
 
 import { startTransition, use, useMemo, useReducer } from "react";
 import { RouterContext } from "./useRouter";
+import { RedirectBoundary, RedirectErrorBoundary } from "./RedirectBoundary";
 
 type RouterState = {
 	url: string;
@@ -77,11 +78,18 @@ export default function Router({
 
 	let content = state.cache.get(state.url);
 
-	let resolvedContext = content?.then ? use(content) : content ?? (null as any);
-
 	return (
 		<RouterContext.Provider value={router}>
-			{resolvedContext}
+			<RedirectBoundary>
+				<LayoutRouter childNode={content} />
+			</RedirectBoundary>
 		</RouterContext.Provider>
 	);
+}
+
+function LayoutRouter({ childNode }: { childNode: any }) {
+	let resolvedContext = childNode?.then
+		? use(childNode)
+		: childNode ?? (null as any);
+	return resolvedContext;
 }

@@ -4,6 +4,10 @@ import { createRouter } from "../modules/router/server/createRouter";
 import A from "../modules/router/client/A";
 import { getContacts, getContact, Contact } from "./contacts";
 import { PageProps } from "../modules/router/types";
+import { Suspense } from "react";
+import Div from "./Div";
+import Counter from "./Counter";
+import { redirect } from "../modules/router/client/redirect";
 
 async function ContactPage({ params }: PageProps) {
 	const contact = await getContact(params.contactId);
@@ -90,6 +94,7 @@ async function Root({ children }: { children: any }) {
 				<div id="root">
 					<div id="sidebar">
 						<Div />
+						<A href="/redirect">Home</A>
 						<div>
 							<form id="search-form" role="search">
 								<input
@@ -138,10 +143,6 @@ async function Root({ children }: { children: any }) {
 	);
 }
 
-import { Suspense } from "react";
-import Div from "./Div";
-import Counter from "./Counter";
-
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 	return (
@@ -169,6 +170,12 @@ export default createRouter([
 			{
 				path: "infinite",
 				component: InfiniteChildren,
+			},
+			{
+				path: "redirect",
+				component: () => {
+					redirect("/");
+				},
 			},
 		],
 	},

@@ -8,6 +8,7 @@ import {
 } from "./utils";
 import { createLocation, createPath } from "../path";
 import Router from "../client/Router";
+import { RedirectErrorBoundary } from "../client/RedirectBoundary";
 
 function renderMatches(
 	matches: RouteMatch[],
