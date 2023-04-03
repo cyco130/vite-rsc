@@ -118,6 +118,7 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+.vscode
 
 # yarn v2
 .yarn/cache
@@ -129,9 +130,5 @@ dist
 # Local files
 *.local.*
 
-.vercel
-vercel-build
-
-# Local Netlify folder
-.netlify
-testbed/*/netlify
+# Packed packages
+*.tgz

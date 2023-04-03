@@ -1,5 +1,5 @@
 {
-  "name": "vite-rsc",
+  "name": "@vite-rsc/example-contacts",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

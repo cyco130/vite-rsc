@@ -1,0 +1,51 @@
+{
+  "name": "vite-rsc",
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "*.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepack": "rm -rf dist && pnpm build",
+    "test": "pnpm test:typecheck && pnpm test:lint && pnpm test:unit && pnpm test:package",
+    "test:unit": "vitest run",
+    "test:typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:lint": "eslint . --max-warnings 0 --ignore-pattern dist",
+    "test:package": "publint"
+  },
+  "description": "React Server Components for Vite",
+  "license": "MIT",
+  "repository": "https://github.com/cyco130/vite-rsc",
+  "keywords": [
+    "react",
+    "vite",
+    "server-components",
+    "rsc",
+    "react-server-components"
+  ],
+  "devDependencies": {
+    "@cyco130/eslint-config": "^3.0.2",
+    "@types/node": "^18.15.11",
+    "eslint": "^8.37.0",
+    "publint": "^0.1.11",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3",
+    "vitest": "^0.29.8"
+  }
+}
