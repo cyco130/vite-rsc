@@ -7,6 +7,7 @@ import {
 	RouteMatch,
 } from "./utils";
 import { createLocation, createPath } from "../path";
+import Router from "../client/Router";
 
 function renderMatches(
 	matches: RouteMatch[],
@@ -19,9 +20,6 @@ function renderMatches(
 
 	return renderedMatches.reduceRight((outlet, match, index) => {
 		let getChildren = () => {
-			// let children: React.ReactNode = outlet;
-			// if (error) {
-			// children = errorElement;
 			if (match.route.component) {
 				return <match.route.component children={outlet} {...props} />;
 			}
@@ -41,11 +39,10 @@ export function createRouter(routes: RouteObject[]) {
 		manifest,
 	);
 
-	function Router(context: RouterContext) {
+	function AppRouter(context: RouterContext) {
 		let basename = "/";
 		let location = createLocation("", createPath(context.url), null, "default");
 		let matches = matchRoutes(dataRoutes, location, basename);
-		console.log(matches);
 
 		if (!matches) {
 			return <div>404</div>;
@@ -60,8 +57,14 @@ export function createRouter(routes: RouteObject[]) {
 			searchParams: Object.fromEntries(context.url.searchParams.entries()),
 		});
 
-		return renderedRoutes;
+		let isRSCNavigation = context.request.headers.get("x-navigate");
+
+		if (isRSCNavigation) {
+			return renderedRoutes;
+		}
+
+		return <Router initialURL={context.url.pathname}>{renderedRoutes}</Router>;
 	}
 
-	return Router;
+	return AppRouter;
 }

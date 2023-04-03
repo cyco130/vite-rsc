@@ -58,7 +58,7 @@ router.get("/__rsc/*", async (context) => {
 	let appUrl = new URL(pathname + context.url.search, "http://localhost:3000");
 	return new Response(
 		renderToFlightStream(
-			createElement(Root, { ...context, url: appUrl }),
+			createElement(Root, { ...context, url: appUrl, rsc: true }),
 			bundlerConfig,
 		),
 		{

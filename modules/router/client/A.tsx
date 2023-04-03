@@ -1,6 +1,7 @@
 "use client";
 
-import { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
+import { AnchorHTMLAttributes, DetailedHTMLProps, useEffect } from "react";
+import { useRouter } from "./useRouter";
 
 export default function A({
 	href,
@@ -9,14 +10,14 @@ export default function A({
 	AnchorHTMLAttributes<HTMLAnchorElement>,
 	HTMLAnchorElement
 >) {
+	const router = useRouter();
 	return (
 		<a
 			href={href}
 			onClick={(e) => {
 				if (e.defaultPrevented) return;
 				e.preventDefault();
-
-				window.router.push(href);
+				router.push(href);
 			}}
 			{...props}
 		/>

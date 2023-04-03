@@ -1,15 +1,18 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  history:
+    specifier: ^5.3.0
+    version: 5.3.0
   react:
-    specifier: 18.3.0-next-85de6fde5-20230328
-    version: 18.3.0-next-85de6fde5-20230328
+    specifier: 18.3.0-next-8310854ce-20230331
+    version: 18.3.0-next-8310854ce-20230331
   react-dom:
-    specifier: 18.3.0-next-85de6fde5-20230328
-    version: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
+    specifier: 18.3.0-next-8310854ce-20230331
+    version: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
   react-server-dom-webpack:
-    specifier: 18.3.0-next-85de6fde5-20230328
-    version: 18.3.0-next-85de6fde5-20230328(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
+    specifier: 18.3.0-next-8310854ce-20230331
+    version: 18.3.0-next-8310854ce-20230331(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)
 
 devDependencies:
   '@faker-js/faker':
@@ -32,10 +35,10 @@ devDependencies:
     version: 2.2.43
   '@tanstack/react-query':
     specifier: ^4.28.0
-    version: 4.28.0(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
+    version: 4.28.0(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)
   '@tanstack/react-query-devtools':
     specifier: ^4.28.0
-    version: 4.28.0(@tanstack/react-query@4.28.0)(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
+    version: 4.28.0(@tanstack/react-query@4.28.0)(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)
   '@types/htmlescape':
     specifier: ^1.1.1
     version: 1.1.1
@@ -86,10 +89,10 @@ devDependencies:
     version: 3.2.2(prettier@2.8.7)(typescript@5.0.3)
   react-resizable:
     specifier: ^3.0.5
-    version: 3.0.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
+    version: 3.0.5(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)
   react-router-dom:
     specifier: ^6.10.0
-    version: 6.10.0(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
+    version: 6.10.0(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)
   sort-by:
     specifier: ^1.2.0
     version: 1.2.0
@@ -116,7 +119,7 @@ devDependencies:
     version: 0.7.18(vite@4.2.1)
   zustand:
     specifier: ^4.3.7
-    version: 4.3.7(react@18.3.0-next-85de6fde5-20230328)
+    version: 4.3.7(react@18.3.0-next-8310854ce-20230331)
 
 packages:
 
@@ -148,7 +151,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
-    dev: true
 
   /@esbuild/android-arm64@0.17.14:
     resolution: {integrity: sha512-eLOpPO1RvtsP71afiFTvS7tVFShJBCT0txiv/xjFBo5a7R7Gjw7X0IgIaFoLKhqXYAXhahoXm7qAmRXhY4guJg==}
@@ -515,7 +517,7 @@ packages:
     resolution: {integrity: sha512-sm+QncWaPmM73IPwFlmWSKPqjdTXZeFf/7aEmWh00z7yl2FjqophPt0dE1EHW9P1giMC5rMviv7OUbSDmWzXXA==}
     dev: true
 
-  /@tanstack/react-query-devtools@4.28.0(@tanstack/react-query@4.28.0)(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
+  /@tanstack/react-query-devtools@4.28.0(@tanstack/react-query@4.28.0)(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-1SnoMw1CWn8FdPEIHvlAzmMBX3heXJo11fyBtt+FzYAHj5yFC8P67Kpgi0HpLkY7SLnd6QK/7qFkpeH4AQbgZg==}
     peerDependencies:
       '@tanstack/react-query': 4.28.0
@@ -523,14 +525,14 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@tanstack/match-sorter-utils': 8.8.4
-      '@tanstack/react-query': 4.28.0(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
-      react: 18.3.0-next-85de6fde5-20230328
-      react-dom: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
+      '@tanstack/react-query': 4.28.0(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)
+      react: 18.3.0-next-8310854ce-20230331
+      react-dom: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
       superjson: 1.12.2
-      use-sync-external-store: 1.2.0(react@18.3.0-next-85de6fde5-20230328)
+      use-sync-external-store: 1.2.0(react@18.3.0-next-8310854ce-20230331)
     dev: true
 
-  /@tanstack/react-query@4.28.0(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
+  /@tanstack/react-query@4.28.0(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-8cGBV5300RHlvYdS4ea+G1JcZIt5CIuprXYFnsWggkmGoC0b5JaqG0fIX3qwDL9PTNkKvG76NGThIWbpXivMrQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -543,9 +545,9 @@ packages:
         optional: true
     dependencies:
       '@tanstack/query-core': 4.27.0
-      react: 18.3.0-next-85de6fde5-20230328
-      react-dom: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
-      use-sync-external-store: 1.2.0(react@18.3.0-next-85de6fde5-20230328)
+      react: 18.3.0-next-8310854ce-20230331
+      react-dom: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
+      use-sync-external-store: 1.2.0(react@18.3.0-next-8310854ce-20230331)
     dev: true
 
   /@types/estree@1.0.0:
@@ -795,17 +797,17 @@ packages:
       vite: 4.2.1
     dev: true
 
-  /acorn@6.4.2:
-    resolution: {integrity: sha512-XtGIhXwF8YM8bJhGxG5kXgjkEuNGLTkoYqVE+KMR+aspr4KGYmKYg7yUe3KghyQ9yheNwLnjmzh/7+gfDBmHCQ==}
+  /acorn-loose@8.3.0:
+    resolution: {integrity: sha512-75lAs9H19ldmW+fAbyqHdjgdCrz0pWGXKmnqFoh8PyVd1L2RIb4RzYrSjmopeqv3E1G3/Pimu6GgLlrGbrkF7w==}
     engines: {node: '>=0.4.0'}
-    hasBin: true
+    dependencies:
+      acorn: 8.8.2
     dev: false
 
   /acorn@8.8.2:
     resolution: {integrity: sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-    dev: true
 
   /anymatch@3.1.3:
     resolution: {integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==}
@@ -1051,6 +1053,12 @@ packages:
     dependencies:
       function-bind: 1.1.1
     dev: true
+
+  /history@5.3.0:
+    resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
+    dependencies:
+      '@babel/runtime': 7.21.0
+    dev: false
 
   /htmlescape@1.1.1:
     resolution: {integrity: sha512-eVcrzgbR4tim7c7soKQKtxa/kQM4TzjnlU83rcZ9bHU6t31ehfV7SktN6McWgwPWg+JYMA/O3qpGxBvFq1z2Jg==}
@@ -1337,16 +1345,16 @@ packages:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
 
-  /react-dom@18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328):
-    resolution: {integrity: sha512-j4iue3oK1wZuyQKiURbhOvffnyts9QNVhRpsgqHNb/QJhy7FXrIf3mruW9I49GpsOowuIkQartT2bhgJuzs7hw==}
+  /react-dom@18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331):
+    resolution: {integrity: sha512-G1k2UtiAvmxsyYtGoWDLp7Pxf3s6B99b+bfA0gzzpoqt/L8+c3aM+A8h3gbpCcg5t+o1lMVf9EKDcFHgefbzmg==}
     peerDependencies:
-      react: 18.3.0-next-85de6fde5-20230328
+      react: 18.3.0-next-8310854ce-20230331
     dependencies:
       loose-envify: 1.4.0
-      react: 18.3.0-next-85de6fde5-20230328
-      scheduler: 0.24.0-next-85de6fde5-20230328
+      react: 18.3.0-next-8310854ce-20230331
+      scheduler: 0.24.0-next-8310854ce-20230331
 
-  /react-draggable@4.4.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
+  /react-draggable@4.4.5(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==}
     peerDependencies:
       react: '>= 16.3.0'
@@ -1354,27 +1362,27 @@ packages:
     dependencies:
       clsx: 1.2.1
       prop-types: 15.8.1
-      react: 18.3.0-next-85de6fde5-20230328
-      react-dom: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
+      react: 18.3.0-next-8310854ce-20230331
+      react-dom: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
     dev: true
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
 
-  /react-resizable@3.0.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
+  /react-resizable@3.0.5(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-vKpeHhI5OZvYn82kXOs1bC8aOXktGU5AmKAgaZS4F5JPburCtbmDPqE7Pzp+1kN4+Wb81LlF33VpGwWwtXem+w==}
     peerDependencies:
       react: '>= 16.3'
     dependencies:
       prop-types: 15.8.1
-      react: 18.3.0-next-85de6fde5-20230328
-      react-draggable: 4.4.5(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328)
+      react: 18.3.0-next-8310854ce-20230331
+      react-draggable: 4.4.5(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)
     transitivePeerDependencies:
       - react-dom
     dev: true
 
-  /react-router-dom@6.10.0(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
+  /react-router-dom@6.10.0(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-E5dfxRPuXKJqzwSe/qGcqdwa18QiWC6f3H3cWXM24qj4N0/beCIf/CWTipop2xm7mR0RCS99NnaqPNjHtrAzCg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -1382,38 +1390,38 @@ packages:
       react-dom: '>=16.8'
     dependencies:
       '@remix-run/router': 1.5.0
-      react: 18.3.0-next-85de6fde5-20230328
-      react-dom: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
-      react-router: 6.10.0(react@18.3.0-next-85de6fde5-20230328)
+      react: 18.3.0-next-8310854ce-20230331
+      react-dom: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
+      react-router: 6.10.0(react@18.3.0-next-8310854ce-20230331)
     dev: true
 
-  /react-router@6.10.0(react@18.3.0-next-85de6fde5-20230328):
+  /react-router@6.10.0(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-Nrg0BWpQqrC3ZFFkyewrflCud9dio9ME3ojHCF/WLsprJVzkq3q3UeEhMCAW1dobjeGbWgjNn/PVF6m46ANxXQ==}
     engines: {node: '>=14'}
     peerDependencies:
       react: '>=16.8'
     dependencies:
       '@remix-run/router': 1.5.0
-      react: 18.3.0-next-85de6fde5-20230328
+      react: 18.3.0-next-8310854ce-20230331
     dev: true
 
-  /react-server-dom-webpack@18.3.0-next-85de6fde5-20230328(react-dom@18.3.0-next-85de6fde5-20230328)(react@18.3.0-next-85de6fde5-20230328):
-    resolution: {integrity: sha512-XuYQY+YGcpnr/+bZ7NXINP34LQSRhu5XxUmpzFjGtMAAHY0U5OWVS65xc4jJMk79cHdauaOSLvcKKTgsNHKEsA==}
+  /react-server-dom-webpack@18.3.0-next-8310854ce-20230331(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331):
+    resolution: {integrity: sha512-pYtaAgr/1QnhLSygtksJByTyyXPoiXb3i6f4c78pt2L7shx3AtJ7h+k7LhLeaSUsplnhpvFPOdrXkryyMoipPw==}
     engines: {node: '>=0.10.0'}
     peerDependencies:
-      react: 18.3.0-next-85de6fde5-20230328
-      react-dom: 18.3.0-next-85de6fde5-20230328
+      react: 18.3.0-next-8310854ce-20230331
+      react-dom: 18.3.0-next-8310854ce-20230331
       webpack: ^5.59.0
     dependencies:
-      acorn: 6.4.2
+      acorn-loose: 8.3.0
       loose-envify: 1.4.0
       neo-async: 2.6.2
-      react: 18.3.0-next-85de6fde5-20230328
-      react-dom: 18.3.0-next-85de6fde5-20230328(react@18.3.0-next-85de6fde5-20230328)
+      react: 18.3.0-next-8310854ce-20230331
+      react-dom: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
     dev: false
 
-  /react@18.3.0-next-85de6fde5-20230328:
-    resolution: {integrity: sha512-jgX/67Wbt57go6J0tfJDXhd381pNFiYeY7bdfkBbpZQB11KOxdqE3flPVMqubCv3Ip6UNXEAoI8kS9qFaz1Jrw==}
+  /react@18.3.0-next-8310854ce-20230331:
+    resolution: {integrity: sha512-KX3Ikd9inA/78dga+kyXKK3/LtRKup0sAjwGPh37DppGzZcy9sztFzJh90QQX5wjzk4N0VOeHs/y/hTwNxGXoA==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -1427,7 +1435,6 @@ packages:
 
   /regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
-    dev: true
 
   /remove-accents@0.4.2:
     resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
@@ -1466,8 +1473,8 @@ packages:
       queue-microtask: 1.2.3
     dev: true
 
-  /scheduler@0.24.0-next-85de6fde5-20230328:
-    resolution: {integrity: sha512-sn0wt8FhhTEMREU94IbJM/0LddXs4B4b15p6PnL1zhv+x3zpGC/nLN2A+duu34Qf0hz2pQrrLQKAbTfxK3zUdA==}
+  /scheduler@0.24.0-next-8310854ce-20230331:
+    resolution: {integrity: sha512-wrKUQAolDIWDRGi+rObT1w5zvXXOxizpeiHWX4ozQ+NetPIONWeJkCiwuWycrvbjsiOuXe9GqsZMPdBiY1Po0A==}
     dependencies:
       loose-envify: 1.4.0
 
@@ -1633,12 +1640,12 @@ packages:
       webpack-virtual-modules: 0.5.0
     dev: true
 
-  /use-sync-external-store@1.2.0(react@18.3.0-next-85de6fde5-20230328):
+  /use-sync-external-store@1.2.0(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      react: 18.3.0-next-85de6fde5-20230328
+      react: 18.3.0-next-8310854ce-20230331
     dev: true
 
   /vite-dev-rpc@0.1.1(vite@4.2.1):
@@ -1733,7 +1740,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zustand@4.3.7(react@18.3.0-next-85de6fde5-20230328):
+  /zustand@4.3.7(react@18.3.0-next-8310854ce-20230331):
     resolution: {integrity: sha512-dY8ERwB9Nd21ellgkBZFhudER8KVlelZm8388B5nDAXhO/+FZDhYMuRnqDgu5SYyRgz/iaf8RKnbUs/cHfOGlQ==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -1745,6 +1752,6 @@ packages:
       react:
         optional: true
     dependencies:
-      react: 18.3.0-next-85de6fde5-20230328
-      use-sync-external-store: 1.2.0(react@18.3.0-next-85de6fde5-20230328)
+      react: 18.3.0-next-8310854ce-20230331
+      use-sync-external-store: 1.2.0(react@18.3.0-next-8310854ce-20230331)
     dev: true

@@ -17,7 +17,14 @@ declare module "react-server-dom-webpack/client.browser" {
 		config?: {
 			callServer: (...args: any[]) => void;
 		},
-	): Promise<import("react").ReactNode>;
+	): React.Thenable<JSX.Element>;
+	function createFromFetch(
+		fetchResponse: Promise<Response>,
+		config?: {
+			callServer: (...args: any[]) => void;
+		},
+	): React.Thenable<JSX.Element>;
+	function encodeReply(body: any): Promise<ReadableStream>;
 }
 
 declare module "react-dom/server.edge" {

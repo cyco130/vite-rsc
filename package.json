@@ -7,9 +7,10 @@
     "build": "hattip build -C ./modules/render/client.tsx"
   },
   "dependencies": {
-    "react": "18.3.0-next-85de6fde5-20230328",
-    "react-dom": "18.3.0-next-85de6fde5-20230328",
-    "react-server-dom-webpack": "18.3.0-next-85de6fde5-20230328"
+    "history": "^5.3.0",
+    "react": "18.3.0-next-8310854ce-20230331",
+    "react-dom": "18.3.0-next-8310854ce-20230331",
+    "react-server-dom-webpack": "18.3.0-next-8310854ce-20230331"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
