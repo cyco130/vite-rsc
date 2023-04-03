@@ -1,5 +1,5 @@
 {
-  "name": "@vite-rsc/plugin",
+  "name": "vite-react-server",
   "version": "0.0.1",
   "type": "module",
   "files": [
@@ -29,11 +29,13 @@
     "test:lint": "eslint . --max-warnings 0 --ignore-pattern dist",
     "test:package": "publint"
   },
-  "description": "React Server Components for Vite",
+  "description": "React Server for Vite",
   "license": "MIT",
   "repository": "https://github.com/cyco130/vite-rsc",
   "keywords": [
     "react",
+    "react-server",
+    "react-architecture",
     "vite",
     "server-components",
     "rsc",
@@ -50,6 +52,7 @@
     "vitest": "^0.29.8"
   },
   "dependencies": {
-    "import-meta-resolve": "^2.2.2"
+    "@hattip/vite": "^0.0.33",
+    "@vite-rsc/plugin": "workspace:^0.0.1"
   }
 }

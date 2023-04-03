@@ -55,7 +55,7 @@ importers:
         version: 4.2.1
       vite-react-server:
         specifier: workspace:^0.0.1
-        version: link:../../packages/vite-rsc
+        version: link:../../packages/vite-react-server
 
   examples/counter:
     dependencies:
@@ -101,7 +101,7 @@ importers:
         version: 4.2.1
       vite-react-server:
         specifier: workspace:^0.0.1
-        version: link:../../packages/vite-rsc
+        version: link:../../packages/vite-react-server
 
   examples/playground:
     dependencies:
@@ -147,7 +147,7 @@ importers:
         version: 4.2.1
       vite-react-server:
         specifier: workspace:^0.0.1
-        version: link:../../packages/vite-rsc
+        version: link:../../packages/vite-react-server
 
   packages/devtools:
     dependencies:
@@ -268,7 +268,7 @@ importers:
         version: 4.2.1(@types/node@18.15.11)
       vite-react-server:
         specifier: workspace:^0.0.1
-        version: link:../vite-rsc
+        version: link:../vite-react-server
       vitest:
         specifier: ^0.29.8
         version: 0.29.8
@@ -322,11 +322,42 @@ importers:
         specifier: ^0.29.8
         version: 0.29.8
 
-  packages/vite-rsc:
+  packages/vite-react-server:
     dependencies:
       '@hattip/vite':
         specifier: ^0.0.33
         version: 0.0.33(vite@4.2.1)
+      '@vite-rsc/plugin':
+        specifier: workspace:^0.0.1
+        version: link:../vite-rsc
+    devDependencies:
+      '@cyco130/eslint-config':
+        specifier: ^3.0.2
+        version: 3.0.2(eslint@8.37.0)(typescript@5.0.3)
+      '@types/node':
+        specifier: ^18.15.11
+        version: 18.15.11
+      eslint:
+        specifier: ^8.37.0
+        version: 8.37.0
+      publint:
+        specifier: ^0.1.11
+        version: 0.1.11
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(typescript@5.0.3)
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1(@types/node@18.15.11)
+      vitest:
+        specifier: ^0.29.8
+        version: 0.29.8
+
+  packages/vite-rsc:
+    dependencies:
       import-meta-resolve:
         specifier: ^2.2.2
         version: 2.2.2
