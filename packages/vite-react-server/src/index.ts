@@ -1,4 +1,5 @@
-import { rsc } from "vite-rsc";
+// import { rsc } from "vite-rsc";
+import { rsc } from "./rsc";
 import { hattip } from "@hattip/vite";
 import type { Plugin } from "vite";
 import path from "node:path";

@@ -327,6 +327,9 @@ importers:
       '@hattip/vite':
         specifier: ^0.0.33
         version: 0.0.33(vite@4.2.1)
+      import-meta-resolve:
+        specifier: ^2.2.2
+        version: 2.2.2
       vite-rsc:
         specifier: workspace:^0.0.1
         version: link:../vite-rsc
