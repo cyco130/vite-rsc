@@ -1,9 +1,9 @@
-import acorn from "acorn-loose";
+import { parse } from "acorn-loose";
 import type { Plugin } from "vite";
 import { moduleResolve } from "import-meta-resolve";
 import { fileURLToPath } from "node:url";
 
-export function ReactServerComponents(): Plugin {
+export function reactServerComponents(): Plugin {
 	let root: string;
 
 	return {
@@ -62,7 +62,7 @@ export function ReactServerComponents(): Plugin {
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this;
 
-			return transformModuleIfNeeded(code, id);
+			return transformModuleIfNeeded(code, id.slice(0, -4));
 
 			async function transformModuleIfNeeded(
 				code: string,
@@ -77,7 +77,7 @@ export function ReactServerComponents(): Plugin {
 					return code;
 				}
 
-				const body = acorn.parse(code, {
+				const body = parse(code, {
 					ecmaVersion: "2024",
 					sourceType: "module",
 				}).body;
@@ -246,7 +246,7 @@ export function ReactServerComponents(): Plugin {
 								);
 								const { code } = await self.load({ id: url });
 
-								const childBody = acorn.parse(code ?? "", {
+								const childBody = parse(code ?? "", {
 									ecmaVersion: "2024",
 									sourceType: "module",
 								}).body;

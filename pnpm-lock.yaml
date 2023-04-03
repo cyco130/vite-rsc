@@ -11,6 +11,37 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3
 
+  examples/basic:
+    dependencies:
+      react:
+        specifier: 18.3.0-next-8310854ce-20230331
+        version: 18.3.0-next-8310854ce-20230331
+      react-dom:
+        specifier: 18.3.0-next-8310854ce-20230331
+        version: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-8310854ce-20230331
+        version: 18.3.0-next-8310854ce-20230331(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)(webpack@5.77.0)
+      vite-rsc:
+        specifier: 0.0.0
+        version: link:../../packages/vite-rsc
+    devDependencies:
+      '@types/react':
+        specifier: ^18.0.31
+        version: 18.0.31
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1(@types/node@18.15.11)
+      vite-plugin-inspect:
+        specifier: ^0.7.18
+        version: 0.7.18(vite@4.2.1)
+
   examples/contacts:
     dependencies:
       history:
