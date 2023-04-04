@@ -149,6 +149,9 @@ importers:
         specifier: 18.3.0-next-b14f8da15-20230403
         version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
     devDependencies:
+      '@cyco130/vite-plugin-mdx':
+        specifier: ^0.0.3
+        version: 0.0.3(vite@4.2.1)
       '@faker-js/faker':
         specifier: ^7.6.0
         version: 7.6.0
@@ -576,6 +579,9 @@ importers:
       import-meta-resolve:
         specifier: ^2.2.2
         version: 2.2.2
+      vite-plugin-inspect:
+        specifier: ^0.7.18
+        version: 0.7.18(vite@4.2.1)
       vite-rsc:
         specifier: workspace:^0.0.1
         version: link:../vite-rsc
@@ -662,7 +668,6 @@ packages:
 
   /@antfu/utils@0.7.2:
     resolution: {integrity: sha512-vy9fM3pIxZmX07dL+VX1aZe7ynZ+YyB0jY+jE6r3hOK6GNY2t6W8rzpFC4tgpbXUYABkFQwgJq2XYXlxbXAI0g==}
-    dev: true
 
   /@babel/code-frame@7.21.4:
     resolution: {integrity: sha512-LYvhNKfwWSPpocw8GI7gpK2nq3HSDuEPC/uSYaALSJu9xjsalaaYFOq0Pwt5KmVqwEbZlDu81aLXwBOmD/Fv9g==}
@@ -914,6 +919,21 @@ packages:
       typescript: 5.0.3
     transitivePeerDependencies:
       - eslint-import-resolver-webpack
+      - supports-color
+    dev: true
+
+  /@cyco130/vite-plugin-mdx@0.0.3(vite@4.2.1):
+    resolution: {integrity: sha512-DIPCn9tyFjI1eDYUumURDje9gMJxqQMkV/UCyhYES4qlyfQJ+QWg/O3Gdg5BlcogFKO88m+RI0h2jZ0vlGFQmQ==}
+    peerDependencies:
+      vite: 3 || 4
+    dependencies:
+      '@mdx-js/mdx': 2.3.0
+      '@rollup/pluginutils': 5.0.2
+      source-map: 0.7.4
+      vfile: 5.3.7
+      vite: 4.2.1
+    transitivePeerDependencies:
+      - rollup
       - supports-color
     dev: true
 
@@ -1205,7 +1225,7 @@ packages:
       import-meta-resolve: 2.2.2
       picocolors: 1.0.0
       resolve.exports: 2.0.2
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@humanwhocodes/config-array@0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
@@ -1361,7 +1381,6 @@ packages:
 
   /@polka/url@1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
-    dev: true
 
   /@radix-ui/number@1.0.0:
     resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
@@ -2232,7 +2251,6 @@ packages:
       '@types/estree': 1.0.0
       estree-walker: 2.0.2
       picomatch: 2.3.1
-    dev: true
 
   /@rushstack/eslint-patch@1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
@@ -2308,7 +2326,6 @@ packages:
 
   /@types/estree@1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
-    dev: true
 
   /@types/hast@2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
@@ -2700,7 +2717,7 @@ packages:
       vite: '>=2.8.1'
     dependencies:
       '@types/node': 18.15.11
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@vavite/multibuild@1.7.0(vite@4.2.1):
     resolution: {integrity: sha512-81D5TPMVdjLWu0vf76FHwJ40s5J04iIes1DXxJieJ6zfFyTFrEkQ3h5fGb0mN5vJcaLy98Ucsd950l4ggMmibQ==}
@@ -2710,7 +2727,7 @@ packages:
       '@types/node': 18.15.11
       cac: 6.7.14
       picocolors: 1.0.0
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@vavite/node-loader@1.7.0(vite@4.2.1):
     resolution: {integrity: sha512-JjCZPWCKy7ZUserHozYokw2pTxIKNvETAW9B15fcTNiVWIHnKz0euBZFHxPSZLUykMw/8Fp4AqtFvGTcZlWqQA==}
@@ -2718,7 +2735,7 @@ packages:
     peerDependencies:
       vite: '>=2.8.1'
     dependencies:
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@vitejs/plugin-react@3.1.0(vite@4.2.1):
     resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
@@ -3223,7 +3240,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-    dev: true
 
   /decode-named-character-reference@1.0.2:
     resolution: {integrity: sha512-O8x12RzrUF8xyVcY0KJowWsmaJxQbmy0/EtnNtHRpsOcT7dFk5W598coHqBVpmWo1oQQfsCqfCmkZN5DJrZVdg==}
@@ -3752,7 +3768,6 @@ packages:
 
   /estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
-    dev: true
 
   /estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
@@ -3864,7 +3879,6 @@ packages:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
 
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -4046,7 +4060,6 @@ packages:
 
   /graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
-    dev: true
 
   /grapheme-splitter@1.0.4:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
@@ -4455,7 +4468,6 @@ packages:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.11
-    dev: true
 
   /jsx-ast-utils@3.3.3:
     resolution: {integrity: sha512-fYQHZTZ8jSfmWZ0iyzfwiU4WDX4HpHbMCZ3gPlWYiCl3BoeOTsqKBqnTVfH2rYT7eP5c3sVbeSPHnnJOaTrWiw==}
@@ -4472,7 +4484,6 @@ packages:
 
   /kolorist@1.7.0:
     resolution: {integrity: sha512-ymToLHqL02udwVdbkowNpzjFd6UzozMtshPQKVi5k1EjKRqKqBrOnE9QbLEb0/pV76SAiIT13hdL8R6suc+f3g==}
-    dev: true
 
   /levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -5023,11 +5034,9 @@ packages:
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
     engines: {node: '>=10'}
-    dev: true
 
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
-    dev: true
 
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -5304,7 +5313,6 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
-    dev: true
 
   /pify@2.3.0:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
@@ -5836,7 +5844,6 @@ packages:
       '@polka/url': 1.0.0-next.21
       mrmime: 1.0.1
       totalist: 3.0.0
-    dev: true
 
   /slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
@@ -6140,7 +6147,6 @@ packages:
   /totalist@3.0.0:
     resolution: {integrity: sha512-eM+pCBxXO/njtF7vdFsHuqb+ElbxqtI4r5EAvk6grfAFyJ6IvWlSkfZ5T9ozC6xWw3Fj1fGoSmrl0gUs46JVIw==}
     engines: {node: '>=6'}
-    dev: true
 
   /tr46@1.0.1:
     resolution: {integrity: sha512-dTpowEjclQ7Kgx5SdBkqRzVhERQXov8/l9Ft9dVM9fmg0W0KQSVaXX9T4i6twCPNtYiZM53lpSSUAwJbFPOHxA==}
@@ -6272,7 +6278,6 @@ packages:
 
   /ufo@1.1.1:
     resolution: {integrity: sha512-MvlCc4GHrmZdAllBc0iUDowff36Q9Ndw/UzqmEKyrfSzokTd9ZCy1i+IIk5hrYKkjoYVQyNbrw7/F8XJ2rEwTg==}
-    dev: true
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -6356,7 +6361,6 @@ packages:
   /universalify@2.0.0:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
-    dev: true
 
   /unocss@0.50.6(vite@4.2.1):
     resolution: {integrity: sha512-7cKiIB/ssAPvCDUcFMs0jm0FzIyQKfgIjUzBYZ5dVFthOvN5dcFh7bCZE9dIM862n7oW8FjbkTxwdTbRqqJQVQ==}
@@ -6566,11 +6570,10 @@ packages:
       kolorist: 1.7.0
       sirv: 2.0.2
       ufo: 1.1.1
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
     transitivePeerDependencies:
       - rollup
       - supports-color
-    dev: true
 
   /vite-tsconfig-paths@4.0.8(typescript@5.0.3)(vite@4.2.1):
     resolution: {integrity: sha512-p04zH+Ey+NT78571x0pdX7nVRIJSlmKVvYryFglSWOK3Hc72eDL0+JJfbyQiugaIBApJkaEqbBQvqpsFZOSVGg==}
@@ -6620,6 +6623,7 @@ packages:
       rollup: 3.20.2
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /vite@4.2.1(@types/node@18.15.11):
     resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}
@@ -6653,7 +6657,6 @@ packages:
       rollup: 3.20.2
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vitest@0.29.8:
     resolution: {integrity: sha512-JIAVi2GK5cvA6awGpH0HvH/gEG9PZ0a/WoxdiV3PmqK+3CjQMf8c+J/Vhv4mdZ2nRyXFw66sAg6qz7VNkaHfDQ==}

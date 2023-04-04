@@ -1,6 +1,7 @@
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
 import { InlineStyles } from "@vite-rsc/router/server";
+import Hello from "./hello.mdx";
 
 export default function Root() {
 	return (
@@ -15,6 +16,7 @@ export default function Root() {
 			<body>
 				<div id="root">
 					<Counter initialCount={42} sayHello={sayHello} />
+					<Hello />
 				</div>
 			</body>
 		</html>
