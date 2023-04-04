@@ -47,7 +47,7 @@ export function MainNav({ items }: MainNavProps) {
 					)}
 				</nav>
 			) : null}
-			<DropdownMenu>
+			{/* <DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
 						variant="ghost"
@@ -77,7 +77,7 @@ export function MainNav({ items }: MainNavProps) {
 							),
 					)}
 				</DropdownMenuContent>
-			</DropdownMenu>
+			</DropdownMenu> */}
 		</div>
 	);
 }

@@ -2,6 +2,7 @@ import { siteConfig } from "@/config/site";
 import { Layout } from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
 import { A } from "@vite-rsc/router";
+import { AppleMusicDemo } from "./apple-music-demo";
 
 export default function IndexPage() {
 	return (
@@ -36,6 +37,7 @@ export default function IndexPage() {
 					</A>
 				</div>
 			</section>
+			<AppleMusicDemo />
 		</Layout>
 	);
 }
