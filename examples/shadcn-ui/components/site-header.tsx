@@ -36,7 +36,7 @@ export function SiteHeader() {
 								<span className="sr-only">Twitter</span>
 							</div>
 						</A>
-						{/* <ThemeToggle /> */}
+						<ThemeToggle />
 					</nav>
 				</div>
 			</div>

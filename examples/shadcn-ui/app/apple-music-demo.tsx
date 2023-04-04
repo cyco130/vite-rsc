@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -459,7 +458,7 @@ export function AppleMusicDemo() {
 										<div className="ml-auto mr-4">
 											<h3 className="text-sm font-semibold">Welcome back</h3>
 										</div>
-										{/* <DropdownMenu>
+										<DropdownMenu>
 											<DropdownMenuTrigger asChild>
 												<Button
 													variant="ghost"
@@ -541,7 +540,7 @@ export function AppleMusicDemo() {
 													<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
 												</DropdownMenuItem>
 											</DropdownMenuContent>
-										</DropdownMenu> */}
+										</DropdownMenu>
 									</div>
 									<TabsContent value="music" className="border-none p-0">
 										<div className="flex items-center justify-between">
@@ -568,9 +567,9 @@ export function AppleMusicDemo() {
 											</div>
 										</div>
 										<div className="mt-6 space-y-1">
-											{/* <h2 className="text-2xl font-semibold tracking-tight">
+											<h2 className="text-2xl font-semibold tracking-tight">
 												Made for You
-											</h2> */}
+											</h2>
 											<p className="text-sm text-slate-500 dark:text-slate-400">
 												Your personal playlists. Updated daily.
 											</p>
@@ -672,17 +671,20 @@ function AlbumArtwork({
 }: AlbumArtworkProps) {
 	return (
 		<div className={cn("space-y-3", className)} {...props}>
-			{/* <ContextMenu>
-				<ContextMenuTrigger>*/}
-			<AspectRatio ratio={aspectRatio} className="overflow-hidden rounded-md">
-				<img
-					src={album.cover}
-					alt={album.name}
-					// fill
-					className="object-cover transition-all hover:scale-105"
-				/>
-			</AspectRatio>
-			{/* </ContextMenuTrigger>
+			<ContextMenu>
+				<ContextMenuTrigger>
+					<AspectRatio
+						ratio={aspectRatio}
+						className="overflow-hidden rounded-md"
+					>
+						<img
+							src={album.cover}
+							alt={album.name}
+							// fill
+							className="object-cover transition-all hover:scale-105"
+						/>
+					</AspectRatio>
+				</ContextMenuTrigger>
 				<ContextMenuContent className="w-40">
 					<ContextMenuItem>Add to Library</ContextMenuItem>
 					<ContextMenuSub>
@@ -708,7 +710,7 @@ function AlbumArtwork({
 					<ContextMenuItem>Like</ContextMenuItem>
 					<ContextMenuItem>Share</ContextMenuItem>
 				</ContextMenuContent>
-			</ContextMenu> */}
+			</ContextMenu>
 			<div className="space-y-1 text-sm">
 				<h3 className="font-medium leading-none">{album.name}</h3>
 				<p className="text-xs text-slate-500 dark:text-slate-400">

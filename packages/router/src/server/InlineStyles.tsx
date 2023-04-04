@@ -109,7 +109,7 @@ export const InlineStyles = component(async function InlineStyles() {
 	return (
 		<>
 			{Object.entries(styles ?? {}).map(([url, css]) => (
-				<style dangerouslySetInnerHTML={{ __html: css }} />
+				<style key={url} dangerouslySetInnerHTML={{ __html: css }} />
 			))}
 		</>
 	);
