@@ -13,7 +13,7 @@ export const SearchResults = component(async function SearchResults({
 });
 
 export function SearchPage({ searchParams }: PageProps) {
-	let search = searchParams.get("q") ?? "";
+	let search = searchParams["q"] ?? "";
 	return (
 		<>
 			<Search initialSearch={search} />

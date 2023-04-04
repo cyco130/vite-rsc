@@ -9,13 +9,11 @@ import {
 import { createLocation, createPath } from "../path";
 import Router from "../client/Router";
 import React from "react";
+import { PageProps } from "../types";
 
 function renderMatches(
 	matches: RouteMatch[],
-	props: {
-		searchParams: URLSearchParams;
-		params: Record<string, string>;
-	},
+	props: PageProps,
 ): React.ReactElement | null {
 	const renderedMatches = matches;
 
@@ -40,24 +38,17 @@ export function createRouter(routes: RouteObject[]) {
 		manifest,
 	);
 
-	function AppRouter(context: RouterContext) {
+	function AppRouter(props: PageProps) {
 		const basename = "/";
-		const location = createLocation(
-			"",
-			createPath(context.url),
-			null,
-			"default",
-		);
+		const url = new URL(props.url);
+		const location = createLocation("", createPath(url), null, "default");
 		const matches = matchRoutes(dataRoutes, location, basename);
 
 		let content;
 		if (!matches) {
 			const RootComponent = dataRoutes[0].component;
 			content = (
-				<RootComponent
-					children={<div>404</div>}
-					searchParams={context.url.searchParams}
-				/>
+				<RootComponent {...props} params={{}} children={<div>404</div>} />
 			);
 		} else {
 			const params = matches.reduce((params, match) => {
@@ -65,18 +56,18 @@ export function createRouter(routes: RouteObject[]) {
 			}, {});
 
 			content = renderMatches(matches, {
-				searchParams: context.url.searchParams,
+				...props,
 				params,
 			});
 		}
 
-		const isRSCNavigation = context.request.headers.get("x-navigate");
+		const isClientNavigation = props.headers["x-navigate"];
 
-		if (isRSCNavigation) {
+		if (isClientNavigation) {
 			return content;
 		}
 
-		return <Router initialURL={context.url.pathname}>{content}</Router>;
+		return <Router initialURL={location.pathname}>{content}</Router>;
 	}
 
 	return AppRouter;

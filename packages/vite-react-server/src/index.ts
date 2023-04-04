@@ -1,5 +1,4 @@
-// import { rsc } from "vite-rsc";
-import { rsc } from "./rsc";
+import { reactServerComponents } from "vite-rsc";
 import { hattip } from "@hattip/vite";
 import type { Plugin } from "vite";
 import path from "node:path";
@@ -32,7 +31,7 @@ export function react() {
 			clientConfig: {},
 			hattipEntry: "@vite-rsc/router/entry-server",
 		}),
-		rsc(),
+		reactServerComponents(),
 	];
 }
 

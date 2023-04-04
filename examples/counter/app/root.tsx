@@ -1,9 +1,7 @@
-import { SearchPage } from "./SearchPage";
-import { PageProps } from "@vite-rsc/router/server";
 import Counter from "./Counter";
-import sayHello from "./sayHello";
+import { sayHello } from "./sayHello";
 
-export default async function Root(props: PageProps) {
+export default function Root() {
 	return (
 		<html lang="en">
 			<head>
@@ -14,9 +12,6 @@ export default async function Root(props: PageProps) {
 			<body>
 				<div id="root">
 					<Counter initialCount={42} sayHello={sayHello} />
-					<div>
-						<SearchPage {...props} />
-					</div>
 				</div>
 			</body>
 		</html>

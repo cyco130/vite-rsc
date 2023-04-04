@@ -7,7 +7,7 @@ import {
 import { createElement } from "react";
 import devServer from "virtual:vite-dev-server";
 import type { Manifest } from "vite";
-import Root from "app/root?rsc";
+import Root from "~/root?rsc";
 import { renderToHTMLStream as renderToHTMLStream } from "./streams";
 import path from "node:path";
 
@@ -44,10 +44,11 @@ export const bundlerConfig = new Proxy(
 	{},
 	{
 		get(_, prop) {
+			const [id, name] = String(prop).split("#", 2);
 			return {
-				id: prop,
-				chunks: [prop],
-				name: "default",
+				id,
+				chunks: [id],
+				name,
 			};
 		},
 	},
@@ -67,9 +68,9 @@ router.get("/__rsc/*", async (context) => {
 	return new Response(
 		renderToFlightStream(
 			createElement(Root, {
-				...context,
-				url: appUrl,
-				searchParams: appUrl.searchParams,
+				url: appUrl.href,
+				searchParams: Object.fromEntries(appUrl.searchParams.entries()),
+				headers: Object.fromEntries(context.request.headers.entries()),
 			}),
 			bundlerConfig,
 		),
@@ -124,8 +125,9 @@ router.get("/*", async (context) => {
 	return new Response(
 		await renderToHTMLStream(
 			createElement(Root, {
-				...context,
-				searchParams: context.url.searchParams,
+				url: context.request.url,
+				searchParams: Object.fromEntries(context.url.searchParams.entries()),
+				headers: Object.fromEntries(context.request.headers.entries()),
 			}),
 			{
 				bootstrapModules: [clientScript],
