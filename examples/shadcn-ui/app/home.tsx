@@ -3,6 +3,9 @@ import { Layout } from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
 import { A } from "@vite-rsc/router";
 import { AppleMusicDemo } from "./apple-music-demo";
+import Hello from "./hello.mdx";
+
+console.log(Hello);
 
 export default function IndexPage() {
 	return (

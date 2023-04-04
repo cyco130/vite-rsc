@@ -1,24 +1,8 @@
-import { SearchPage } from "./SearchPage";
 import { createRouter, PageProps } from "@vite-rsc/router/server";
 import { Suspense } from "react";
-import { A } from "@vite-rsc/router";
-import Counter from "./Counter";
-import { sayHello } from "./sayHello";
-import { buttonVariants } from "@/components/ui/button";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuTrigger,
-} from "@/components/ui/context-menu";
 import "cal-sans";
 import "./root.css";
-import Page from "./page";
+import HomePage from "./home";
 import { InlineStyles } from "@vite-rsc/router/server";
 import { AppleMusicDemo } from "./apple-music-demo";
 
@@ -65,42 +49,12 @@ window.__vite_plugin_react_preamble_installed__ = true
 	);
 }
 
-function Playground() {
-	return (
-		<>
-			<A
-				href="/"
-				className={buttonVariants({
-					variant: "destructive",
-				})}
-			>
-				Search
-			</A>{" "}
-			| <A href="/infinite">Infinite</A> | <A href="/not-found">Not Found</A>
-			<Counter initialCount={42} sayHello={sayHello} />
-			<Popover>
-				<PopoverTrigger>Open</PopoverTrigger>
-				<PopoverContent>Place content for the popover here.</PopoverContent>
-			</Popover>
-			<ContextMenu>
-				<ContextMenuTrigger>Right click</ContextMenuTrigger>
-				<ContextMenuContent>
-					<ContextMenuItem>Profile</ContextMenuItem>
-					<ContextMenuItem>Billing</ContextMenuItem>
-					<ContextMenuItem>Team</ContextMenuItem>
-					<ContextMenuItem>Subscription</ContextMenuItem>
-				</ContextMenuContent>
-			</ContextMenu>
-		</>
-	);
-}
-
 export default createRouter([
 	{
 		path: "",
 		component: Root,
 		children: [
-			{ index: true, component: Page },
+			{ index: true, component: HomePage },
 			{ path: "/demo", component: AppleMusicDemo },
 			{ path: "/infinite", component: InfiniteChildren },
 		],

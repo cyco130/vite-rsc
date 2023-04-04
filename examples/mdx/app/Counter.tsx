@@ -1,8 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Check } from "lucide-react";
 
 export default function Counter({
 	initialCount = 0,
@@ -16,11 +14,6 @@ export default function Counter({
 	return (
 		<div>
 			<p>Count: {count}</p>
-			<Button>
-				<Check />
-				Increment
-			</Button>
-
 			<button
 				onClick={() => {
 					setCount(count + 1);
