@@ -16,6 +16,8 @@ import {
 	ContextMenuItem,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import "./root.css";
+import { InlineStyles } from "@vite-rsc/router/server";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -39,8 +41,9 @@ async function Root({ children }: PageProps) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+				<InlineStyles />
 			</head>
-			<body>
+			<body className="min-h-screen bg-white font-sans text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50">
 				<A
 					href="/"
 					className={buttonVariants({

@@ -2,6 +2,7 @@ import { SearchPage } from "./SearchPage";
 import { createRouter, PageProps } from "@vite-rsc/router/server";
 import { Suspense } from "react";
 import { A } from "@vite-rsc/router";
+import { InlineStyles } from "@vite-rsc/router/server";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -23,7 +24,9 @@ async function Root({ children }: PageProps) {
 			<head>
 				<title>RSC Playground</title>
 				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+				<InlineStyles />
 			</head>
 			<body>
 				<A href="/">Search</A> | <A href="/infinite">Infinite</A> |{" "}

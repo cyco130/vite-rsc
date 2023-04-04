@@ -39,6 +39,12 @@ export function warning(cond: any, message: string) {
 	}
 }
 
+export function component<T extends (...args: any[]) => any>(fn: T) {
+	return fn as unknown as React.FC<
+		Parameters<T>[0] extends undefined ? {} : Parameters<T>[0]
+	>;
+}
+
 /**
  * Map of routeId -> data returned from a loader/action/error
  */
@@ -93,12 +99,12 @@ interface DataFunctionArgs {
 /**
  * Arguments passed to loader functions
  */
-export interface LoaderFunctionArgs extends DataFunctionArgs {}
+export type LoaderFunctionArgs = DataFunctionArgs;
 
 /**
  * Arguments passed to action functions
  */
-export interface ActionFunctionArgs extends DataFunctionArgs {}
+export type ActionFunctionArgs = DataFunctionArgs;
 
 /**
  * Route loader function signature
@@ -277,8 +283,10 @@ export interface RouteMatch<
 	route: RouteObjectType;
 }
 
-export interface AgnosticDataRouteMatch
-	extends RouteMatch<string, AgnosticDataRouteObject> {}
+export type AgnosticDataRouteMatch = RouteMatch<
+	string,
+	AgnosticDataRouteObject
+>;
 
 function isIndexRoute(route: RouteObject): route is IndexRouteObject {
 	return route.index === true;
@@ -293,8 +301,8 @@ export function convertRoutesToDataRoutes(
 	manifest: RouteManifest = {},
 ): AgnosticDataRouteObject[] {
 	return routes.map((route, index) => {
-		let treePath = [...parentPath, index];
-		let id = typeof route.id === "string" ? route.id : treePath.join("-");
+		const treePath = [...parentPath, index];
+		const id = typeof route.id === "string" ? route.id : treePath.join("-");
 		invariant(
 			route.index !== true || !route.children,
 			`Cannot specify children on an index route`,
@@ -306,7 +314,7 @@ export function convertRoutesToDataRoutes(
 		);
 
 		if (isIndexRoute(route)) {
-			let indexRoute: AgnosticDataIndexRouteObject = {
+			const indexRoute: AgnosticDataIndexRouteObject = {
 				...route,
 				hasErrorBoundary: detectErrorBoundary(route),
 				id,
@@ -314,7 +322,7 @@ export function convertRoutesToDataRoutes(
 			manifest[id] = indexRoute;
 			return indexRoute;
 		} else {
-			let pathOrLayoutRoute: AgnosticDataNonIndexRouteObject = {
+			const pathOrLayoutRoute: AgnosticDataNonIndexRouteObject = {
 				...route,
 				id,
 				hasErrorBoundary: detectErrorBoundary(route),
@@ -346,16 +354,16 @@ export function matchRoutes<RouteObjectType extends RouteObject = RouteObject>(
 	locationArg: Partial<Location> | string,
 	basename = "/",
 ): RouteMatch<string, RouteObjectType>[] | null {
-	let location =
+	const location =
 		typeof locationArg === "string" ? parsePath(locationArg) : locationArg;
 
-	let pathname = stripBasename(location.pathname || "/", basename);
+	const pathname = stripBasename(location.pathname || "/", basename);
 
 	if (pathname == null) {
 		return null;
 	}
 
-	let branches = flattenRoutes(routes);
+	const branches = flattenRoutes(routes);
 	rankRouteBranches(branches);
 
 	let matches = null;
@@ -394,12 +402,12 @@ function flattenRoutes<RouteObjectType extends RouteObject = RouteObject>(
 	parentsMeta: RouteMeta<RouteObjectType>[] = [],
 	parentPath = "",
 ): RouteBranch<RouteObjectType>[] {
-	let flattenRoute = (
+	const flattenRoute = (
 		route: RouteObjectType,
 		index: number,
 		relativePath?: string,
 	) => {
-		let meta: RouteMeta<RouteObjectType> = {
+		const meta: RouteMeta<RouteObjectType> = {
 			relativePath:
 				relativePath === undefined ? route.path || "" : relativePath,
 			caseSensitive: route.caseSensitive === true,
@@ -418,8 +426,8 @@ function flattenRoutes<RouteObjectType extends RouteObject = RouteObject>(
 			meta.relativePath = meta.relativePath.slice(parentPath.length);
 		}
 
-		let path = joinPaths([parentPath, meta.relativePath]);
-		let routesMeta = parentsMeta.concat(meta);
+		const path = joinPaths([parentPath, meta.relativePath]);
+		const routesMeta = parentsMeta.concat(meta);
 
 		// Add the children before adding this route to the array so we traverse the
 		// route tree depth-first and child routes appear before their parents in
@@ -453,7 +461,7 @@ function flattenRoutes<RouteObjectType extends RouteObject = RouteObject>(
 		if (route.path === "" || !route.path?.includes("?")) {
 			flattenRoute(route, index);
 		} else {
-			for (let exploded of explodeOptionalSegments(route.path)) {
+			for (const exploded of explodeOptionalSegments(route.path)) {
 				flattenRoute(route, index, exploded);
 			}
 		}
@@ -477,15 +485,15 @@ function flattenRoutes<RouteObjectType extends RouteObject = RouteObject>(
  * - `/one/:two/three/:four/:five`
  */
 function explodeOptionalSegments(path: string): string[] {
-	let segments = path.split("/");
+	const segments = path.split("/");
 	if (segments.length === 0) return [];
 
-	let [first, ...rest] = segments;
+	const [first, ...rest] = segments;
 
 	// Optional path segments are denoted by a trailing `?`
-	let isOptional = first.endsWith("?");
+	const isOptional = first.endsWith("?");
 	// Compute the corresponding required segment: `foo?` -> `foo`
-	let required = first.replace(/\?$/, "");
+	const required = first.replace(/\?$/, "");
 
 	if (rest.length === 0) {
 		// Intepret empty string as omitting an optional segment
@@ -493,9 +501,9 @@ function explodeOptionalSegments(path: string): string[] {
 		return isOptional ? [required, ""] : [required];
 	}
 
-	let restExploded = explodeOptionalSegments(rest.join("/"));
+	const restExploded = explodeOptionalSegments(rest.join("/"));
 
-	let result: string[] = [];
+	const result: string[] = [];
 
 	// All child paths with the prefix.  Do this for all children before the
 	// optional version for all children so we get consistent ordering where the
@@ -541,7 +549,7 @@ const splatPenalty = -2;
 const isSplat = (s: string) => s === "*";
 
 function computeScore(path: string, index: boolean | undefined): number {
-	let segments = path.split("/");
+	const segments = path.split("/");
 	let initialScore = segments.length;
 	if (segments.some(isSplat)) {
 		initialScore += splatPenalty;
@@ -566,7 +574,7 @@ function computeScore(path: string, index: boolean | undefined): number {
 }
 
 function compareIndexes(a: number[], b: number[]): number {
-	let siblings =
+	const siblings =
 		a.length === b.length && a.slice(0, -1).every((n, i) => n === b[i]);
 
 	return siblings
@@ -587,19 +595,19 @@ function matchRouteBranch<
 	branch: RouteBranch<RouteObjectType>,
 	pathname: string,
 ): RouteMatch<ParamKey, RouteObjectType>[] | null {
-	let { routesMeta } = branch;
+	const { routesMeta } = branch;
 
-	let matchedParams = {};
+	const matchedParams = {};
 	let matchedPathname = "/";
-	let matches: RouteMatch<ParamKey, RouteObjectType>[] = [];
+	const matches: RouteMatch<ParamKey, RouteObjectType>[] = [];
 	for (let i = 0; i < routesMeta.length; ++i) {
-		let meta = routesMeta[i];
-		let end = i === routesMeta.length - 1;
-		let remainingPathname =
+		const meta = routesMeta[i];
+		const end = i === routesMeta.length - 1;
+		const remainingPathname =
 			matchedPathname === "/"
 				? pathname
 				: pathname.slice(matchedPathname.length) || "/";
-		let match = matchPath(
+		const match = matchPath(
 			{ path: meta.relativePath, caseSensitive: meta.caseSensitive, end },
 			remainingPathname,
 		);
@@ -608,7 +616,7 @@ function matchRouteBranch<
 
 		Object.assign(matchedParams, match.params);
 
-		let route = meta.route;
+		const route = meta.route;
 
 		matches.push({
 			// TODO: Can this as be avoided?
@@ -671,7 +679,7 @@ export function generatePath<Path extends string>(
 			const keyMatch = segment.match(/^:(\w+)(\??)$/);
 			if (keyMatch) {
 				const [, key, optional] = keyMatch;
-				let param = params[key as PathParam<Path>];
+				const param = params[key as PathParam<Path>];
 
 				if (optional === "?") {
 					return param == null ? "" : param;
@@ -757,24 +765,24 @@ export function matchPath<
 		pattern = { path: pattern, caseSensitive: false, end: true };
 	}
 
-	let [matcher, paramNames] = compilePath(
+	const [matcher, paramNames] = compilePath(
 		pattern.path,
 		pattern.caseSensitive,
 		pattern.end,
 	);
 
-	let match = pathname.match(matcher);
+	const match = pathname.match(matcher);
 	if (!match) return null;
 
-	let matchedPathname = match[0];
+	const matchedPathname = match[0];
 	let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
-	let captureGroups = match.slice(1);
-	let params: Params = paramNames.reduce<Mutable<Params>>(
+	const captureGroups = match.slice(1);
+	const params: Params = paramNames.reduce<Mutable<Params>>(
 		(memo, paramName, index) => {
 			// We need to compute the pathnameBase here using the raw splat value
 			// instead of using params["*"] later because it will be decoded then
 			if (paramName === "*") {
-				let splatValue = captureGroups[index] || "";
+				const splatValue = captureGroups[index] || "";
 				pathnameBase = matchedPathname
 					.slice(0, matchedPathname.length - splatValue.length)
 					.replace(/(.)\/+$/, "$1");
@@ -810,7 +818,7 @@ function compilePath(
 			`please change the route path to "${path.replace(/\*$/, "/*")}".`,
 	);
 
-	let paramNames: string[] = [];
+	const paramNames: string[] = [];
 	let regexpSource =
 		"^" +
 		path
@@ -844,7 +852,7 @@ function compilePath(
 		// Nothing to match for "" or "/"
 	}
 
-	let matcher = new RegExp(regexpSource, caseSensitive ? undefined : "i");
+	const matcher = new RegExp(regexpSource, caseSensitive ? undefined : "i");
 
 	return [matcher, paramNames];
 }
@@ -894,10 +902,10 @@ export function stripBasename(
 
 	// We want to leave trailing slash behavior in the user's control, so if they
 	// specify a basename with a trailing slash, we should support it
-	let startIndex = basename.endsWith("/")
+	const startIndex = basename.endsWith("/")
 		? basename.length - 1
 		: basename.length;
-	let nextChar = pathname.charAt(startIndex);
+	const nextChar = pathname.charAt(startIndex);
 	if (nextChar && nextChar !== "/") {
 		// pathname does not start with basename/
 		return null;
@@ -912,13 +920,13 @@ export function stripBasename(
  * @see https://reactrouter.com/utils/resolve-path
  */
 export function resolvePath(to: To, fromPathname = "/"): Path {
-	let {
+	const {
 		pathname: toPathname,
 		search = "",
 		hash = "",
 	} = typeof to === "string" ? parsePath(to) : to;
 
-	let pathname = toPathname
+	const pathname = toPathname
 		? toPathname.startsWith("/")
 			? toPathname
 			: resolvePathname(toPathname, fromPathname)
@@ -932,8 +940,8 @@ export function resolvePath(to: To, fromPathname = "/"): Path {
 }
 
 function resolvePathname(relativePath: string, fromPathname: string): string {
-	let segments = fromPathname.replace(/\/+$/, "").split("/");
-	let relativeSegments = relativePath.split("/");
+	const segments = fromPathname.replace(/\/+$/, "").split("/");
+	const relativeSegments = relativePath.split("/");
 
 	relativeSegments.forEach((segment) => {
 		if (segment === "..") {
@@ -1024,8 +1032,8 @@ export function resolveTo(
 		);
 	}
 
-	let isEmptyPath = toArg === "" || to.pathname === "";
-	let toPathname = isEmptyPath ? "/" : to.pathname;
+	const isEmptyPath = toArg === "" || to.pathname === "";
+	const toPathname = isEmptyPath ? "/" : to.pathname;
 
 	let from: string;
 
@@ -1044,7 +1052,7 @@ export function resolveTo(
 		let routePathnameIndex = routePathnames.length - 1;
 
 		if (toPathname.startsWith("..")) {
-			let toSegments = toPathname.split("/");
+			const toSegments = toPathname.split("/");
 
 			// Each leading .. segment means "go up one route" instead of "go up one
 			// URL segment".  This is a key difference from how <a href> works and a
@@ -1062,13 +1070,13 @@ export function resolveTo(
 		from = routePathnameIndex >= 0 ? routePathnames[routePathnameIndex] : "/";
 	}
 
-	let path = resolvePath(to, from);
+	const path = resolvePath(to, from);
 
 	// Ensure the pathname has a trailing slash if the original "to" had one
-	let hasExplicitTrailingSlash =
+	const hasExplicitTrailingSlash =
 		toPathname && toPathname !== "/" && toPathname.endsWith("/");
 	// Or if this was a link to the current path which has a trailing slash
-	let hasCurrentTrailingSlash =
+	const hasCurrentTrailingSlash =
 		(isEmptyPath || toPathname === ".") && locationPathname.endsWith("/");
 	if (
 		!path.pathname.endsWith("/") &&

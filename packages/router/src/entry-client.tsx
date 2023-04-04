@@ -15,7 +15,6 @@ import { createBrowserHistory, createPath } from "history";
 
 import "./client/Router";
 
-import "~/root.css";
 import { RouterAPI, RouterContext } from "./client";
 
 const decoder = new TextDecoder();

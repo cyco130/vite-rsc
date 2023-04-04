@@ -1,7 +1,7 @@
-import { createRouter, PageProps } from "@vite-rsc/router/server";
+import { createRouter, InlineStyles, PageProps } from "@vite-rsc/router/server";
 import { A, redirect } from "@vite-rsc/router";
 import { getContacts, getContact, Contact } from "./contacts";
-import { Suspense } from "react";
+import "./root.css";
 
 async function ContactPage({ params }: PageProps) {
 	const contact = await getContact(params.contactId);
@@ -82,12 +82,13 @@ async function Root({ children }: { children: any }) {
 			<head>
 				<title>RSC Playground</title>
 				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+				<InlineStyles />
 			</head>
 			<body>
 				<div id="root">
 					<div id="sidebar">
-						<A href="/redirect">Home</A>
 						<div>
 							<form id="search-form" role="search">
 								<input
