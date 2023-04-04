@@ -16,7 +16,9 @@ import {
 	ContextMenuItem,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import "cal-sans";
 import "./root.css";
+import Page from "./page";
 import { InlineStyles } from "@vite-rsc/router/server";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
@@ -44,32 +46,39 @@ async function Root({ children }: PageProps) {
 				<InlineStyles />
 			</head>
 			<body className="min-h-screen bg-white font-sans text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50">
-				<A
-					href="/"
-					className={buttonVariants({
-						variant: "destructive",
-					})}
-				>
-					Search
-				</A>{" "}
-				| <A href="/infinite">Infinite</A> | <A href="/not-found">Not Found</A>
-				<div id="root">{children}</div>
-				<Counter initialCount={42} sayHello={sayHello} />
-				<Popover>
-					<PopoverTrigger>Open</PopoverTrigger>
-					<PopoverContent>Place content for the popover here.</PopoverContent>
-				</Popover>
-				<ContextMenu>
-					<ContextMenuTrigger>Right click</ContextMenuTrigger>
-					<ContextMenuContent>
-						<ContextMenuItem>Profile</ContextMenuItem>
-						<ContextMenuItem>Billing</ContextMenuItem>
-						<ContextMenuItem>Team</ContextMenuItem>
-						<ContextMenuItem>Subscription</ContextMenuItem>
-					</ContextMenuContent>
-				</ContextMenu>
+				{children}
 			</body>
 		</html>
+	);
+}
+
+function Playground() {
+	return (
+		<>
+			<A
+				href="/"
+				className={buttonVariants({
+					variant: "destructive",
+				})}
+			>
+				Search
+			</A>{" "}
+			| <A href="/infinite">Infinite</A> | <A href="/not-found">Not Found</A>
+			<Counter initialCount={42} sayHello={sayHello} />
+			<Popover>
+				<PopoverTrigger>Open</PopoverTrigger>
+				<PopoverContent>Place content for the popover here.</PopoverContent>
+			</Popover>
+			<ContextMenu>
+				<ContextMenuTrigger>Right click</ContextMenuTrigger>
+				<ContextMenuContent>
+					<ContextMenuItem>Profile</ContextMenuItem>
+					<ContextMenuItem>Billing</ContextMenuItem>
+					<ContextMenuItem>Team</ContextMenuItem>
+					<ContextMenuItem>Subscription</ContextMenuItem>
+				</ContextMenuContent>
+			</ContextMenu>
+		</>
 	);
 }
 
@@ -78,7 +87,7 @@ export default createRouter([
 		path: "",
 		component: Root,
 		children: [
-			{ index: true, component: SearchPage },
+			{ index: true, component: Page },
 			{ path: "/infinite", component: InfiniteChildren },
 		],
 	},

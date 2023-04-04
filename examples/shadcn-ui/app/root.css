@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: 'Inter', sans-serif;
+  --font-sans: 'Cal Sans', sans-serif;
 }
 
 html {
