@@ -20,6 +20,7 @@ import "cal-sans";
 import "./root.css";
 import Page from "./page";
 import { InlineStyles } from "@vite-rsc/router/server";
+import { AppleMusicDemo } from "./apple-music-demo";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -100,6 +101,7 @@ export default createRouter([
 		component: Root,
 		children: [
 			{ index: true, component: Page },
+			{ path: "/demo", component: AppleMusicDemo },
 			{ path: "/infinite", component: InfiniteChildren },
 		],
 	},

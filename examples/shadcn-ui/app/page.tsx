@@ -37,7 +37,6 @@ export default function IndexPage() {
 					</A>
 				</div>
 			</section>
-			<AppleMusicDemo />
 		</Layout>
 	);
 }
