@@ -146,12 +146,6 @@ const madeForYouAlbums: Album[] = [
 			"https://images.unsplash.com/photo-1606542758304-820b04394ac2?w=300&dpr=2&q=80",
 	},
 	{
-		name: "Stateful Symphony",
-		artist: "Beth Binary",
-		cover:
-			"https://images.unsplash.com/photo-1598062548091-a6fb6a052562?w=300&dpr=2&q=80",
-	},
-	{
 		name: "The Art of Reusability",
 		artist: "Lena Logic",
 		cover:
@@ -438,6 +432,7 @@ export function AppleMusicDemo() {
 													variant="ghost"
 													size="sm"
 													className="w-full justify-start font-normal"
+													key={playlist}
 												>
 													<ListMusic className="mr-2 h-4 w-4" />
 													{playlist}
