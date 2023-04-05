@@ -16,7 +16,7 @@ export function reactServerComponents(): Plugin {
 		},
 
 		async resolveId(id, importer, options) {
-			if (!importer?.endsWith("?rsc")) return;
+			if (!importer || !hasRscQuery(importer)) return;
 
 			const resolved = await this.resolve(id, importer, {
 				...options,
@@ -30,10 +30,10 @@ export function reactServerComponents(): Plugin {
 				!resolved.external &&
 				!resolved.id.includes("/node_modules/")
 			) {
-				return resolved.id + "?rsc";
+				return addRscQuery(resolved.id);
 			}
 
-			if (!resolved.external) return resolved.id + "?rsc";
+			if (!resolved.external) return addRscQuery(resolved.id);
 
 			if (resolved.id.startsWith("node:")) return resolved;
 
@@ -51,18 +51,18 @@ export function reactServerComponents(): Plugin {
 			const resolvedId = fileURLToPath(resolvedUrl);
 
 			return {
-				id: resolvedId + "?rsc",
+				id: addRscQuery(resolvedId),
 				external: true,
 			};
 		},
 
 		transform(code, id, options) {
-			if (!id.endsWith("?rsc") || !options?.ssr) return;
+			if (!options?.ssr || !hasRscQuery(id)) return;
 
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this;
 
-			return transformModuleIfNeeded(code, id.slice(0, -4));
+			return transformModuleIfNeeded(code, removeRscQuery(id));
 
 			async function transformModuleIfNeeded(
 				code: string,
@@ -244,10 +244,7 @@ export function reactServerComponents(): Plugin {
 									node.source.value,
 									parentURL,
 								);
-								const moduleInfo = await self.load({ id: url });
-
-								console.log(moduleInfo);
-								debugger;
+								const { code } = await self.load({ id: url });
 
 								const childBody = parse(code ?? "", {
 									ecmaVersion: "2024",
@@ -360,4 +357,37 @@ export function reactServerComponents(): Plugin {
 			}
 		},
 	};
+}
+
+function hasRscQuery(id: string) {
+	const query = splitQuery(id)[1];
+	return query.match(/(^|&)rsc($|&|=)/);
+}
+
+function addRscQuery(id: string) {
+	if (id.includes("?")) {
+		return id + "&rsc";
+	} else {
+		return id + "?rsc";
+	}
+}
+
+function removeRscQuery(id: string) {
+	const [base, query] = splitQuery(id);
+	if (!query) return id;
+
+	const newQuery = query
+		.split("&")
+		.filter((part) => !part.match(/rsc($|=)/))
+		.join("&");
+
+	if (newQuery) return base;
+
+	return base + "?" + newQuery;
+}
+
+function splitQuery(id: string) {
+	const index = id.indexOf("?");
+	if (index === -1) return [id, ""];
+	return [id.slice(0, index), id.slice(index + 1)];
 }
