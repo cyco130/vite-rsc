@@ -1,4 +1,3 @@
-import { RouterContext } from "@hattip/router";
 import {
 	RouteObject,
 	convertRoutesToDataRoutes,
@@ -6,10 +5,10 @@ import {
 	RouteManifest,
 	RouteMatch,
 } from "./utils";
-import { createLocation, createPath } from "../path";
-import Router from "../client/Router";
+import { createLocation, createPath } from "../../path";
+import Router from "./Router";
 import React from "react";
-import { PageProps } from "../types";
+import { PageProps } from "../../types";
 
 function renderMatches(
 	matches: RouteMatch[],

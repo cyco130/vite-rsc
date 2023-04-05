@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "@vite-rsc/router";
+import { useRouter } from "rsc-router";
 import { useTransition } from "react";
 
 export default function Search({ initialSearch }: { initialSearch: string }) {

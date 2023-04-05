@@ -1,5 +1,5 @@
-import { createRouter, InlineStyles, PageProps } from "@vite-rsc/router/server";
-import { A, redirect } from "@vite-rsc/router";
+import { createRouter, InlineStyles, PageProps } from "rsc-router/server";
+import { A, redirect } from "rsc-router";
 import { getContacts, getContact, Contact } from "./contacts";
 import "./root.css";
 

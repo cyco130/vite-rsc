@@ -1,5 +1,5 @@
 {
-  "name": "@vite-rsc/router",
+  "name": "rsc-router",
   "version": "0.0.1",
   "type": "module",
   "files": [
@@ -8,6 +8,7 @@
   ],
   "exports": {
     "./entry-server": "./src/entry-server.ts",
+    "./entry-client": "./src/entry-client.ts",
     "./server": "./src/server/index.ts",
     ".": "./src/client/index.ts"
   },
@@ -35,7 +36,7 @@
     "test:lint": "eslint . --max-warnings 0 --ignore-pattern dist",
     "test:package": "publint"
   },
-  "description": "React Server Components for Vite",
+  "description": "React Server Components Router",
   "license": "MIT",
   "repository": "https://github.com/cyco130/vite-rsc",
   "keywords": [

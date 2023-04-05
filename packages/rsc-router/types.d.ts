@@ -1,7 +1,10 @@
+type ModuleSpec = {};
+type ModuleMap = { [key: string]: ModuleSpec };
+
 declare module "react-server-dom-webpack/server.edge" {
 	function renderToReadableStream(
 		element: React.ReactElement,
-		bundlerConfig: {},
+		clientModuleMap: ModuleMap,
 		options?: {
 			onError?: (error: Error) => void;
 			context?: any;
@@ -14,6 +17,22 @@ declare module "react-server-dom-webpack/server.edge" {
 }
 
 declare module "react-server-dom-webpack/client.browser" {
+	function createFromReadableStream(
+		stream: ReadableStream,
+		config?: {
+			callServer: (...args: any[]) => void;
+		},
+	): React.Thenable<JSX.Element>;
+	function createFromFetch(
+		fetchResponse: Promise<Response>,
+		config?: {
+			callServer: (...args: any[]) => void;
+		},
+	): React.Thenable<JSX.Element>;
+	function encodeReply(body: any): Promise<ReadableStream>;
+}
+
+declare module "react-server-dom-webpack/client.edge" {
 	function createFromReadableStream(
 		stream: ReadableStream,
 		config?: {

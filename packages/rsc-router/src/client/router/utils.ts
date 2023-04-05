@@ -5,8 +5,8 @@
  * Copyright (c) Remix Software 2020-2022
  */
 
-import type { Location, Path, To } from "../path";
-import { parsePath } from "../path";
+import type { Location, Path, To } from "../../path";
+import { parsePath } from "../../path";
 
 /**
  * @private

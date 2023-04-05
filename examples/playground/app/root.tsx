@@ -1,8 +1,7 @@
 import { SearchPage } from "./SearchPage";
-import { createRouter, PageProps } from "@vite-rsc/router/server";
 import { Suspense } from "react";
-import { A } from "@vite-rsc/router";
-import { InlineStyles } from "@vite-rsc/router/server";
+import { A, createRouter, PageProps } from "rsc-router";
+import { InlineStyles } from "rsc-router/server";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));

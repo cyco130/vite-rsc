@@ -18,7 +18,7 @@ function config() {
 				},
 				ssr: {
 					external: ["react-server-dom-webpack"],
-					noExternal: ["@vite-rsc/router"],
+					noExternal: ["rsc-router"],
 				},
 			};
 		},
@@ -31,7 +31,7 @@ export function react() {
 		inspect(),
 		hattip({
 			clientConfig: {},
-			hattipEntry: "@vite-rsc/router/entry-server",
+			hattipEntry: "rsc-router/entry-server",
 		}),
 		reactServerComponents(),
 	];

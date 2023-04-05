@@ -1,9 +1,9 @@
-import { createRouter, PageProps } from "@vite-rsc/router/server";
+import { createRouter, PageProps } from "rsc-router/src/server-router";
 import { Suspense } from "react";
 import "cal-sans";
 import "./root.css";
 import HomePage from "./home";
-import { InlineStyles } from "@vite-rsc/router/server";
+import { InlineStyles } from "rsc-router/src/server-router";
 import { AppleMusicDemo } from "./apple-music-demo";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {

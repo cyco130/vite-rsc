@@ -1,4 +1,4 @@
-import { component } from "./utils";
+import { component } from "../../client/router/utils";
 import devServer from "virtual:vite-dev-server";
 import path from "node:path";
 import { ModuleNode } from "vite";

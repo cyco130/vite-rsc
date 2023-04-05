@@ -1,10 +1,10 @@
 "use client";
 
-import { createFromFetch } from "react-server-dom-webpack/client.browser";
 import { createBrowserHistory, createMemoryHistory } from "history";
 import React, { startTransition, use, useMemo, useReducer } from "react";
 import { RouterContext } from "./useRouter";
 import { RedirectBoundary } from "./RedirectBoundary";
+import { createElementFromRSCFetch } from "../streams";
 
 type RouterState = {
 	url: string;
@@ -17,17 +17,7 @@ function reducer(state: RouterState, action: RouterAction) {
 	switch (action.type) {
 		case "navigate":
 			if (!state.cache.has(action.url)) {
-				state.cache.set(
-					action.url,
-					createFromFetch(
-						fetch(`/__rsc${action.url}`, {
-							headers: {
-								Accept: "text/x-component",
-								"x-navigate": action.url,
-							},
-						}),
-					),
-				);
+				state.cache.set(action.url, createElementFromRSCFetch(action.url));
 			}
 			return { ...state, url: action.url };
 		default:

@@ -1,12 +1,21 @@
-import { renderToReadableStream as renderToFlightStream } from "react-server-dom-webpack/server.edge";
-import { createFromReadableStream } from "react-server-dom-webpack/client.browser";
-import { ReactElement } from "react";
 import {
-	renderToReadableStream as renderToHTMLReadableStream,
+	renderToReadableStream as renderToRSCStream,
+	decodeReply as decodeActionArgs,
+	renderToReadableStream as renderToResultStream,
+} from "react-server-dom-webpack/server.edge";
+import { createFromReadableStream as createElementFromRSCStream } from "react-server-dom-webpack/client.edge";
+import {
+	renderToReadableStream as _renderToHTMLStream,
 	RenderToReadableStreamOptions,
 } from "react-dom/server.edge";
+import { ReactElement } from "react";
 import { sanitize } from "./htmlescape";
-import { bundlerConfig } from "./entry-server";
+
+export {
+	renderToReadableStream as renderToRSCStream,
+	renderToReadableStream as renderToResultStream,
+	decodeReply as decodeServerFunctionArgs,
+} from "react-server-dom-webpack/server.edge";
 
 async function nextMacroTask(): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, 0));
@@ -32,7 +41,7 @@ const closingBodyHtmlText = `</body></html>`;
  * @param rscStream
  * @returns TransformStream
  */
-function createInlineRSCTransformStream(
+function inlineRSCTransformStream(
 	rscStream: ReadableStream<Uint8Array>,
 ): ReadableWritablePair<Uint8Array, Uint8Array> {
 	let removedClosingBodyHtmlText = false;
@@ -111,7 +120,7 @@ function createInlineRSCTransformStream(
  * flushes it all at once at the end of the stream.
  * @returns TransformStream
  */
-function createBufferedTransformStream(): ReadableWritablePair<
+function bufferedTransformStream(): ReadableWritablePair<
 	Uint8Array,
 	Uint8Array
 > {
@@ -150,23 +159,74 @@ function createBufferedTransformStream(): ReadableWritablePair<
  * components which were skipped during the RSC render.
  *
  * @param element React element to render, should be server component
- * @param options
+ * @param renderOptions
  * @returns ReadableStream of HTML
  */
 export async function renderToHTMLStream(
 	element: ReactElement,
-	options?: RenderToReadableStreamOptions | undefined,
+	renderOptions: RenderToReadableStreamOptions & {
+		clientModuleMap: ModuleMap;
+	},
 ) {
-	const rscStream = renderToFlightStream(element, bundlerConfig);
-
+	const rscStream = renderToRSCStream(element, renderOptions.clientModuleMap);
 	const [rscStream1, rscStream2] = rscStream.tee();
-
-	const htmlStream = await renderToHTMLReadableStream(
-		await createFromReadableStream(rscStream1),
-		options,
-	);
-
+	const rscElement = await createElementFromRSCStream(rscStream1);
+	const htmlStream = await _renderToHTMLStream(rscElement, renderOptions);
 	return htmlStream
-		.pipeThrough(createBufferedTransformStream())
-		.pipeThrough(createInlineRSCTransformStream(rscStream2));
+		.pipeThrough(bufferedTransformStream())
+		.pipeThrough(inlineRSCTransformStream(rscStream2));
+}
+
+export async function createHTMLStreamResponse(
+	element: JSX.Element,
+	renderOptions: RenderToReadableStreamOptions & {
+		clientModuleMap: ModuleMap;
+	},
+	responseInit: ResponseInit = {},
+) {
+	return new Response(await renderToHTMLStream(element, renderOptions), {
+		...responseInit,
+		headers: { "Content-Type": "text/html", ...(responseInit.headers ?? {}) },
+	});
+}
+
+export async function createRSCStreamResponse(
+	element: JSX.Element,
+	renderOptions: RenderToReadableStreamOptions & {
+		clientModuleMap: ModuleMap;
+	},
+	responseInit: ResponseInit = {},
+) {
+	return new Response(
+		renderToRSCStream(element, renderOptions.clientModuleMap),
+		{
+			...responseInit,
+			headers: {
+				"Content-Type": "text/x-component",
+				...(responseInit.headers ?? {}),
+			},
+		},
+	);
+}
+
+export async function createActionStreamResponse(
+	action: any,
+	encodedArgs: any,
+	renderOptions: RenderToReadableStreamOptions & {
+		clientModuleMap: ModuleMap;
+	},
+	responseInit: ResponseInit = {},
+) {
+	const args = await decodeActionArgs(encodedArgs);
+	const result = await action(...args);
+	return new Response(
+		renderToResultStream(result, renderOptions.clientModuleMap, {}),
+		{
+			...responseInit,
+			headers: {
+				"Content-Type": "application/json",
+				...(responseInit.headers ?? {}),
+			},
+		},
+	);
 }

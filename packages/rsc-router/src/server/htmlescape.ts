@@ -22,17 +22,17 @@
 
 /***/
 
-const TERMINATORS_LOOKUP = {
+const TERMINATORS_LOOKUP: Record<string, string> = {
 	"\u2028": "\\u2028",
 	"\u2029": "\\u2029",
 };
 
 const TERMINATORS_REGEX = /[\u2028\u2029]/g;
 
-function sanitizer(match) {
+function sanitizer(match: string | number) {
 	return TERMINATORS_LOOKUP[match];
 }
 
-export function sanitize(str) {
+export function sanitize(str: string) {
 	return str.replace(TERMINATORS_REGEX, sanitizer);
 }
