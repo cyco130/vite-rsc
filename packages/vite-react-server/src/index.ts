@@ -2,6 +2,7 @@ import { reactServerComponents } from "vite-rsc";
 import { hattip } from "@hattip/vite";
 import type { Plugin } from "vite";
 import path from "node:path";
+import inspect from "vite-plugin-inspect";
 
 function config() {
 	return {
@@ -17,7 +18,7 @@ function config() {
 				},
 				ssr: {
 					external: ["react-server-dom-webpack"],
-					noExternal: ["@vite-rsc/router"],
+					noExternal: ["rsc-router"],
 				},
 			};
 		},
@@ -27,9 +28,10 @@ function config() {
 export function react() {
 	return [
 		config(),
+		inspect(),
 		hattip({
 			clientConfig: {},
-			hattipEntry: "@vite-rsc/router/entry-server",
+			hattipEntry: "rsc-router/entry-server",
 		}),
 		reactServerComponents(),
 	];

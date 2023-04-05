@@ -1,5 +1,5 @@
-import type { PageProps } from "@vite-rsc/router";
-import { component } from "@vite-rsc/router/server";
+import type { PageProps } from "rsc-router";
+import { component } from "rsc-router/server";
 import { Suspense } from "react";
 import Search from "./Search";
 

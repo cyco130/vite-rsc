@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@impalajs/core": "^0.0.6",
-    "@vite-rsc/router": "workspace:^0.0.1"
+    "rsc-router": "workspace:^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^18.15.7",

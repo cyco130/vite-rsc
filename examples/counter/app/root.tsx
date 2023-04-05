@@ -1,6 +1,6 @@
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
-import { InlineStyles } from "@vite-rsc/router/server";
+import { InlineStyles } from "rsc-router/server";
 
 export default function Root() {
 	return (

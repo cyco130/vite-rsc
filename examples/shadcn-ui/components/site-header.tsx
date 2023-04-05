@@ -3,7 +3,7 @@ import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
-import { A } from "@vite-rsc/router";
+import { A } from "rsc-router/src/router";
 
 export function SiteHeader() {
 	return (
@@ -36,7 +36,7 @@ export function SiteHeader() {
 								<span className="sr-only">Twitter</span>
 							</div>
 						</A>
-						{/* <ThemeToggle /> */}
+						<ThemeToggle />
 					</nav>
 				</div>
 			</div>
