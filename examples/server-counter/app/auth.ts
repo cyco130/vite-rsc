@@ -1,4 +1,3 @@
-"use server";
 import db from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import Github, { GitHubProfile } from "@auth/core/providers/github";

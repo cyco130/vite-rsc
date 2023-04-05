@@ -5,11 +5,6 @@ import { request } from "rsc-router/server";
 import { authOptions } from "./auth";
 import db from "./db";
 
-export async function sayHello(hello: string, name: string) {
-	console.log(name, ":", hello);
-	return `Hello ${name}!`;
-}
-
 export async function increment() {
 	let user = await getSession(request(), authOptions);
 	if (!user) {
