@@ -1,7 +1,7 @@
 import { createModuleMapProxy, setupWebpackEnv } from "./webpack";
 import { createHandler } from "./handler";
 import Root from "~/root?rsc";
-
+import path from "node:path";
 export function createReactServerHandler() {
 	setupWebpackEnv();
 
@@ -9,6 +9,6 @@ export function createReactServerHandler() {
 
 	return createHandler(Root, {
 		clientModuleMap,
-		clientEntry: "/node_modules/rsc-router/src/entry-client.ts",
+		clientEntry: "/app/entry-client",
 	});
 }

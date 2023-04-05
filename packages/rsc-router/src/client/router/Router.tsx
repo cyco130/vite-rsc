@@ -1,7 +1,13 @@
 "use client";
 
-import { createBrowserHistory, createMemoryHistory } from "history";
-import React, { startTransition, use, useMemo, useReducer } from "react";
+import { createBrowserHistory, createMemoryHistory, createPath } from "history";
+import React, {
+	startTransition,
+	use,
+	useEffect,
+	useMemo,
+	useReducer,
+} from "react";
 import { RouterContext } from "./useRouter";
 import { RedirectBoundary } from "./RedirectBoundary";
 import { createElementFromRSCFetch } from "../streams";
@@ -64,6 +70,17 @@ export default function Router({
 			history,
 		};
 	}, [dispatch]);
+
+	useEffect(() => {
+		return router.history.listen((update) => {
+			console.log(location, update);
+			if (update.action === "POP") {
+				startTransition(() => {
+					dispatch({ type: "navigate", url: createPath(update.location) });
+				});
+			}
+		});
+	}, [router]);
 
 	const content = state.cache.get(state.url);
 

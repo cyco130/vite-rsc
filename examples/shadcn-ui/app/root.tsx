@@ -1,10 +1,11 @@
-import { createRouter, PageProps } from "rsc-router/src/server-router";
+import { PageProps } from "rsc-router";
+import { createRouter, InlineStyles } from "rsc-router/server";
 import { Suspense } from "react";
+import HomePage from "./home";
+import { AppleMusicDemo } from "./apple-music-demo";
+
 import "cal-sans";
 import "./root.css";
-import HomePage from "./home";
-import { InlineStyles } from "rsc-router/src/server-router";
-import { AppleMusicDemo } from "./apple-music-demo";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));

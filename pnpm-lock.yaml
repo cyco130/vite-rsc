@@ -723,6 +723,9 @@ importers:
       vite-rsc:
         specifier: workspace:^0.0.1
         version: link:../vite-rsc
+      vite-tsconfig-paths:
+        specifier: ^4.0.8
+        version: 4.0.8(typescript@5.0.3)(vite@4.2.1)
     devDependencies:
       '@cyco130/eslint-config':
         specifier: ^3.0.2
@@ -1363,7 +1366,7 @@ packages:
       import-meta-resolve: 2.2.2
       picocolors: 1.0.0
       resolve.exports: 2.0.2
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@humanwhocodes/config-array@0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
@@ -2855,7 +2858,7 @@ packages:
       vite: '>=2.8.1'
     dependencies:
       '@types/node': 18.15.11
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@vavite/multibuild@1.7.0(vite@4.2.1):
     resolution: {integrity: sha512-81D5TPMVdjLWu0vf76FHwJ40s5J04iIes1DXxJieJ6zfFyTFrEkQ3h5fGb0mN5vJcaLy98Ucsd950l4ggMmibQ==}
@@ -2865,7 +2868,7 @@ packages:
       '@types/node': 18.15.11
       cac: 6.7.14
       picocolors: 1.0.0
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@vavite/node-loader@1.7.0(vite@4.2.1):
     resolution: {integrity: sha512-JjCZPWCKy7ZUserHozYokw2pTxIKNvETAW9B15fcTNiVWIHnKz0euBZFHxPSZLUykMw/8Fp4AqtFvGTcZlWqQA==}
@@ -2873,7 +2876,7 @@ packages:
     peerDependencies:
       vite: '>=2.8.1'
     dependencies:
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
 
   /@vitejs/plugin-react@3.1.0(vite@4.2.1):
     resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
@@ -4180,7 +4183,6 @@ packages:
 
   /globrex@0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
-    dev: true
 
   /gonzales-pe@4.3.0:
     resolution: {integrity: sha512-otgSPpUmdWJ43VXyiNgEYE4luzHCL2pz4wQ0OnDluC6Eg4Ko3Vexy/SrSynglw/eR+OhkzmqFCZa/OFa/RgAOQ==}
@@ -6320,7 +6322,6 @@ packages:
         optional: true
     dependencies:
       typescript: 5.0.3
-    dev: true
 
   /tsconfig-paths@3.14.2:
     resolution: {integrity: sha512-o/9iXgCYc5L/JxCHPe3Hvh8Q/2xm5Z+p18PESBU6Ff33695QnCHBEjcytY2q19ua7Mbl/DavtBOLq+oG0RCL+g==}
@@ -6708,7 +6709,7 @@ packages:
       kolorist: 1.7.0
       sirv: 2.0.2
       ufo: 1.1.1
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -6724,11 +6725,10 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 2.1.1(typescript@5.0.3)
-      vite: 4.2.1
+      vite: 4.2.1(@types/node@18.15.11)
     transitivePeerDependencies:
       - supports-color
       - typescript
-    dev: true
 
   /vite@4.2.1:
     resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}
@@ -6761,6 +6761,7 @@ packages:
       rollup: 3.20.2
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /vite@4.2.1(@types/node@18.15.11):
     resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}
@@ -6794,7 +6795,6 @@ packages:
       rollup: 3.20.2
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vitest@0.29.8:
     resolution: {integrity: sha512-JIAVi2GK5cvA6awGpH0HvH/gEG9PZ0a/WoxdiV3PmqK+3CjQMf8c+J/Vhv4mdZ2nRyXFw66sAg6qz7VNkaHfDQ==}

@@ -1,11 +1,7 @@
 import { siteConfig } from "@/config/site";
 import { Layout } from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
-import { A } from "rsc-router/src/router";
-import { AppleMusicDemo } from "./apple-music-demo";
-import Hello from "./hello.mdx";
-
-console.log(Hello);
+import { A } from "rsc-router";
 
 export default function IndexPage() {
 	return (

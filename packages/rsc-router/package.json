@@ -9,7 +9,8 @@
   "exports": {
     "./entry-server": "./src/entry-server.ts",
     "./entry-client": "./src/entry-client.ts",
-    "./server": "./src/server/index.ts",
+    "./server": "./src/server/server.ts",
+    "./client/entry": "./src/client/entry.tsx",
     ".": "./src/client/index.ts"
   },
   "types": "./src/client/index.ts",
@@ -19,7 +20,10 @@
         "./src/client/index.ts"
       ],
       "server": [
-        "./src/server/index.ts"
+        "./src/server/server.ts"
+      ],
+      "client/entry": [
+        "./src/client/entry.tsx"
       ],
       "entry-server": [
         "./src/entry-server.ts"
@@ -28,11 +32,11 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "# tsup --watch",
+    "dev": "tsup --watch",
     "prepack": "rm -rf dist && pnpm build",
     "test": "pnpm test:typecheck && pnpm test:lint && pnpm test:unit && pnpm test:package",
     "test:unit": "vitest run",
-    "test:typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:typecheck": "tsc -p tsconfig.json",
     "test:lint": "eslint . --max-warnings 0 --ignore-pattern dist",
     "test:package": "publint"
   },

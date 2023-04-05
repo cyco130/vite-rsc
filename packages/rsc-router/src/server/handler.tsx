@@ -68,13 +68,15 @@ export async function handleRSCRequest(
 	);
 }
 
+type Handler = (context: { request: Request }) => Response | Promise<Response>;
+
 export function createHandler(
 	Root: any,
 	{
 		clientModuleMap,
 		clientEntry,
 	}: { clientModuleMap: any; clientEntry: string },
-) {
+): Handler {
 	const router = createRouter();
 
 	/**
@@ -103,5 +105,5 @@ export function createHandler(
 		});
 	});
 
-	return router.buildHandler();
+	return router.buildHandler() as Handler;
 }

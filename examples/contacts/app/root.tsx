@@ -1,5 +1,5 @@
-import { createRouter, InlineStyles, PageProps } from "rsc-router/server";
-import { A, redirect } from "rsc-router";
+import { InlineStyles, createRouter } from "rsc-router/server";
+import { A, PageProps } from "rsc-router";
 import { getContacts, getContact, Contact } from "./contacts";
 import "./root.css";
 

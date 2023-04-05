@@ -244,7 +244,10 @@ export function reactServerComponents(): Plugin {
 									node.source.value,
 									parentURL,
 								);
-								const { code } = await self.load({ id: url });
+								const moduleInfo = await self.load({ id: url });
+
+								console.log(moduleInfo);
+								debugger;
 
 								const childBody = parse(code ?? "", {
 									ecmaVersion: "2024",
