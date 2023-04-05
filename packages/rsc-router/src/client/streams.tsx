@@ -24,10 +24,11 @@ export function removeMutationListener(callback: (any: any) => void) {
 		mutationCallbacks.splice(index, 1);
 	}
 }
-export function mutate(fn: () => void) {
+export function mutate(fn: () => Promise<void>) {
 	++mutationMode;
-	fn();
+	const result = fn();
 	--mutationMode;
+	return result;
 }
 
 declare global {
@@ -42,7 +43,7 @@ export async function callServer(id: string, args: any[]) {
 
 	const isMutating = !!mutationMode;
 
-	const response = fetch("", {
+	const response = await fetch("", {
 		method: "POST",
 		headers: {
 			Accept: "text/x-component",
@@ -52,7 +53,11 @@ export async function callServer(id: string, args: any[]) {
 		body: await encodeActionArgs(args),
 	});
 
-	const data = createFromFetch(response, { callServer });
+	if (!response.ok) {
+		throw new Error("Server error");
+	}
+
+	const data = createFromReadableStream(response.body!, { callServer });
 
 	if (isMutating) {
 		mutationCallbacks.forEach((callback) => callback(data));

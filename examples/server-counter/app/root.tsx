@@ -1,6 +1,23 @@
 import Counter from "./Counter";
 import { increment, getCount } from "./api";
-import { InlineStyles } from "rsc-router/server";
+import { component, InlineStyles, request } from "rsc-router/server";
+import { getSession } from "rsc-auth";
+import { SignInButton, SignOutButton } from "rsc-auth/components";
+import { authOptions } from "./auth";
+import { ErrorBoundary, ResetButton } from "rsc-router";
+
+const Profile = component(async function Profile() {
+	const user = await getSession(request(), authOptions);
+	return user ? (
+		<>
+			<img src={user.user?.image ?? ""} />
+			{user.user?.name}
+			<SignOutButton>Sign Out</SignOutButton>
+		</>
+	) : (
+		<SignInButton>Sign In</SignInButton>
+	);
+});
 
 export default async function Root() {
 	return (
@@ -14,7 +31,16 @@ export default async function Root() {
 			</head>
 			<body>
 				<div id="root">
-					<Counter count={await getCount()} increment={increment} />
+					<Profile />
+					<ErrorBoundary
+						fallback={
+							<div>
+								Error<ResetButton>Reset</ResetButton>
+							</div>
+						}
+					>
+						<Counter count={await getCount()} increment={increment} />
+					</ErrorBoundary>
 				</div>
 			</body>
 		</html>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "rsc-router";
-import { signIn } from "./auth/client";
+import { useMutation } from "rsc-router";
 
 export default function Counter({
 	count = 0,
@@ -10,13 +10,14 @@ export default function Counter({
 	count: number;
 	increment: () => Promise<number>;
 }) {
+	const mutate = useMutation();
 	const router = useRouter();
 	return (
 		<div>
 			<p>Count: {count}</p>
 			<button
 				onClick={() => {
-					router.mutate(() => increment());
+					mutate(() => increment());
 				}}
 			>
 				Increment
@@ -28,7 +29,6 @@ export default function Counter({
 			>
 				Refresh
 			</button>
-			<button onClick={() => signIn("github")}>Sign In</button>
 		</div>
 	);
 }

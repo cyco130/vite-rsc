@@ -60,17 +60,21 @@ export async function handlePageRequest(
 ) {
 	const url = new URL(request.url);
 
-	return createHTMLStreamResponse(
-		<RootComponent
-			url={request.url}
-			searchParams={Object.fromEntries(url.searchParams.entries())}
-			headers={Object.fromEntries(request.headers.entries())}
-			params={{}}
-		/>,
-		{
-			clientModuleMap,
-			bootstrapModules: [clientEntry],
-		},
+	return asyncLocalStorage.run(
+		{ request },
+		async () =>
+			await createHTMLStreamResponse(
+				<RootComponent
+					url={request.url}
+					searchParams={Object.fromEntries(url.searchParams.entries())}
+					headers={Object.fromEntries(request.headers.entries())}
+					params={{}}
+				/>,
+				{
+					clientModuleMap,
+					bootstrapModules: [clientEntry],
+				},
+			),
 	);
 }
 
@@ -80,14 +84,16 @@ export async function handleRSCRequest(
 	{ clientModuleMap }: { clientModuleMap: any },
 ) {
 	const url = new URL(request.headers.get("x-navigate") ?? "/", request.url);
-	return createRSCStreamResponse(
-		<Root
-			url={url.href}
-			searchParams={Object.fromEntries(url.searchParams.entries())}
-			headers={Object.fromEntries(request.headers.entries())}
-			params={{}}
-		/>,
-		{ clientModuleMap },
+	return asyncLocalStorage.run({ request }, () =>
+		createRSCStreamResponse(
+			<Root
+				url={url.href}
+				searchParams={Object.fromEntries(url.searchParams.entries())}
+				headers={Object.fromEntries(request.headers.entries())}
+				params={{}}
+			/>,
+			{ clientModuleMap },
+		),
 	);
 }
 

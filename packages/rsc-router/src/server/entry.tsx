@@ -7,7 +7,7 @@ export function createReactServerHandler({
 	apiRoutes,
 }: {
 	apiRoutes?: (router: Router) => void;
-}) {
+} = {}) {
 	setupWebpackEnv();
 
 	const clientModuleMap = createModuleMapProxy();

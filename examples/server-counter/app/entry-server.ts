@@ -1,15 +1,14 @@
 import { createReactServerHandler } from "rsc-router/server";
 import { authOptions } from "./auth";
-import { AuthHandler } from "./auth/handler";
+import { handleAuthRequest } from "rsc-auth";
 
-let authHandler = AuthHandler("/api/auth", authOptions);
 export default createReactServerHandler({
 	apiRoutes: (router) => {
 		router.get("/api/auth*", (context) => {
-			return authHandler(context.request);
+			return handleAuthRequest(context.request, "/api/auth", authOptions);
 		});
 		router.post("/api/auth*", (context) => {
-			return authHandler(context.request);
+			return handleAuthRequest(context.request, "/api/auth", authOptions);
 		});
 	},
 });

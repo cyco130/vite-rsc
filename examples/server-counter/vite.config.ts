@@ -7,4 +7,7 @@ export default defineConfig({
 			serverEntry: "./app/entry-server.ts",
 		}),
 	],
+	ssr: {
+		noExternal: ["rsc-auth"],
+	},
 });
