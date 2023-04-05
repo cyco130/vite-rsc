@@ -1,10 +1,11 @@
 {
-  "name": "example-counter",
+  "name": "example-server-counter",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "hattip serve",
-    "build": "hattip build"
+    "build": "hattip build",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^4.12.0",
