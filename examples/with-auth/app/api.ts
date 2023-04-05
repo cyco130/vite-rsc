@@ -1,8 +1,15 @@
 "use server";
 
+import { getSession } from "rsc-auth";
+import { request } from "rsc-router/server";
+import { authOptions } from "./auth";
 import db from "./db";
 
 export async function increment() {
+	let user = await getSession(request(), authOptions);
+	if (!user) {
+		throw new Error("You must be logged in to increment the counter.");
+	}
 	let count = await getCount();
 	await db.counter.update({
 		where: { id: 1 },

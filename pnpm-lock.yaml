@@ -492,18 +492,9 @@ importers:
 
   examples/server-counter:
     dependencies:
-      '@auth/core':
-        specifier: ^0.5.1
-        version: 0.5.1
-      '@next-auth/prisma-adapter':
-        specifier: ^1.0.5
-        version: 1.0.5(@prisma/client@4.12.0)(next-auth@4.21.1)
       '@prisma/client':
         specifier: ^4.12.0
         version: 4.12.0(prisma@4.12.0)
-      next-auth:
-        specifier: ^4.21.1
-        version: 4.21.1(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
       react:
         specifier: 18.3.0-next-b14f8da15-20230403
         version: 18.3.0-next-b14f8da15-20230403
@@ -516,16 +507,10 @@ importers:
       react-server-dom-webpack:
         specifier: 18.3.0-next-b14f8da15-20230403
         version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
-      rsc-auth:
-        specifier: workspace:^0.0.1
-        version: link:../../packages/rsc-auth
       rsc-router:
         specifier: ^0.0.1
         version: link:../../packages/rsc-router
     devDependencies:
-      '@faker-js/faker':
-        specifier: ^7.6.0
-        version: 7.6.0
       '@hattip/adapter-node':
         specifier: ^0.0.33
         version: 0.0.33
@@ -538,15 +523,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.0.11
         version: 18.0.11
-      match-sorter:
-        specifier: ^6.3.1
-        version: 6.3.1
       prisma:
         specifier: ^4.12.0
         version: 4.12.0
-      sort-by:
-        specifier: ^1.2.0
-        version: 1.2.0
       typescript:
         specifier: ^5.0.3
         version: 5.0.3
@@ -722,6 +701,61 @@ importers:
       vite-tsconfig-paths:
         specifier: ^4.0.8
         version: 4.0.8(typescript@5.0.3)(vite@4.2.1)
+
+  examples/with-auth:
+    dependencies:
+      '@auth/core':
+        specifier: ^0.5.1
+        version: 0.5.1
+      '@next-auth/prisma-adapter':
+        specifier: ^1.0.5
+        version: 1.0.5(@prisma/client@4.12.0)
+      '@prisma/client':
+        specifier: ^4.12.0
+        version: 4.12.0(prisma@4.12.0)
+      react:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
+      react-dom:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      react-error-boundary:
+        specifier: ^4.0.3
+        version: 4.0.3(react@18.3.0-next-b14f8da15-20230403)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
+      rsc-auth:
+        specifier: workspace:^0.0.1
+        version: link:../../packages/rsc-auth
+      rsc-router:
+        specifier: ^0.0.1
+        version: link:../../packages/rsc-router
+    devDependencies:
+      '@hattip/adapter-node':
+        specifier: ^0.0.33
+        version: 0.0.33
+      '@hattip/vite':
+        specifier: ^0.0.33
+        version: 0.0.33(vite@4.2.1)
+      '@types/react':
+        specifier: ^18.0.33
+        version: 18.0.33
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11
+      prisma:
+        specifier: ^4.12.0
+        version: 4.12.0
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1
+      vite-react-server:
+        specifier: ^0.0.1
+        version: link:../../packages/vite-react-server
 
   examples/with-router:
     dependencies:
@@ -1791,14 +1825,13 @@ packages:
       - supports-color
     dev: true
 
-  /@next-auth/prisma-adapter@1.0.5(@prisma/client@4.12.0)(next-auth@4.21.1):
+  /@next-auth/prisma-adapter@1.0.5(@prisma/client@4.12.0):
     resolution: {integrity: sha512-VqMS11IxPXrPGXw6Oul6jcyS/n8GLOWzRMrPr3EMdtD6eOalM6zz05j08PcNiis8QzkfuYnCv49OvufTuaEwYQ==}
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3'
       next-auth: ^4
     dependencies:
       '@prisma/client': 4.12.0(prisma@4.12.0)
-      next-auth: 4.21.1(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
