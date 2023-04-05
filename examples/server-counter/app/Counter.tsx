@@ -1,18 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
 import { useRouter } from "rsc-router";
-
-// let mutationMode = 0
-
-// function useAction<T extends (...args: any[]) => Promise<any>>(fn: T) {
-// 	return useCallback(
-// 		(...args: Parameters<T>) => {
-// 			return fn(...args);
-// 		},
-// 		[fn],
-// 	);
-// }
 
 export default function Counter({
 	count = 0,
@@ -31,6 +19,13 @@ export default function Counter({
 				}}
 			>
 				Increment
+			</button>
+			<button
+				onClick={() => {
+					router.refresh();
+				}}
+			>
+				Refresh
 			</button>
 		</div>
 	);

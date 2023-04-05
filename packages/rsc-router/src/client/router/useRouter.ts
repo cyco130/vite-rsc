@@ -6,6 +6,7 @@ export interface RouterAPI {
 	replace: (path: string, state?: any) => void;
 	history: History;
 	mutate: (fn: any) => void;
+	refresh: () => void;
 	url: string;
 }
 

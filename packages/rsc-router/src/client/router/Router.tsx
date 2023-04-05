@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { RouterContext } from "./useRouter";
 import { RedirectBoundary } from "./RedirectBoundary";
-import { createElementFromRSCFetch, mutate } from "../streams";
+import { createElementFromRSCFetch, mutate, refreshRSC } from "../streams";
 
 type RouterState = {
 	url: string;
@@ -67,16 +67,14 @@ export default function Router({
 				history.replace(url, state);
 				startTransition(() => dispatch({ type: "navigate", url }));
 			},
-			mutate(fn: any) {
-				mutate(fn);
-			},
+			mutate: mutate,
+			refresh: refreshRSC,
 			history,
 		};
 	}, [dispatch]);
 
 	useEffect(() => {
 		return router.history.listen((update) => {
-			console.log(location, update);
 			if (update.action === "POP") {
 				startTransition(() => {
 					dispatch({ type: "navigate", url: createPath(update.location) });

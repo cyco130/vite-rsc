@@ -61,11 +61,17 @@ export async function callServer(id: string, args: any[]) {
 	return data;
 }
 
-export function createElementFromRSCFetch(url: string) {
+export function refreshRSC() {
+	const element = createElementFromRSCFetch();
+	mutationCallbacks.forEach((callback) => callback(element));
+}
+
+export function createElementFromRSCFetch(url = "") {
 	return createFromFetch(
-		fetch(`/__rsc${url}`, {
+		fetch(url, {
 			headers: {
 				Accept: "text/x-component",
+				"x-rsc": "1",
 				"x-navigate": url,
 			},
 		}),
@@ -165,9 +171,8 @@ export function useRSCClientRouter() {
 					setURL(url);
 				});
 			},
-			mutate: (fn: any) => {
-				mutate(fn);
-			},
+			mutate: mutate,
+			refresh: refreshRSC,
 			history,
 		} satisfies Omit<RouterAPI, "url">;
 	}, [setURL]);

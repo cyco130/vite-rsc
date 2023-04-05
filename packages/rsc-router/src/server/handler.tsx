@@ -102,9 +102,9 @@ export function createHandler(
 	 * This is the single RSC endpoint. It is used to render the required RSC tree for
 	 * navigations.
 	 */
-	router.get("/__rsc/*", async (context) => {
-		return handleRSCRequest(context.request, Root, { clientModuleMap });
-	});
+	// router.get("/__rsc/*", async (context) => {
+	// 	return handleRSCRequest(context.request, Root, { clientModuleMap });
+	// });
 
 	/**
 	 * This is the single RSF endpoint. It is used to respond to server functions.
@@ -118,6 +118,10 @@ export function createHandler(
 	 * the RSC tree and then passing that to react-dom/server's streaming renderer.
 	 */
 	router.get("/*", async (context) => {
+		if (context.request.headers.get("accept") === "text/x-component") {
+			return handleRSCRequest(context.request, Root, { clientModuleMap });
+		}
+
 		return await handlePageRequest(context.request, Root, {
 			clientEntry,
 			clientModuleMap,
