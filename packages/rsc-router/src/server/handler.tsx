@@ -1,5 +1,6 @@
-import { createRouter } from "@hattip/router";
+import { createRouter, Router } from "@hattip/router";
 import React from "react";
+import { asyncLocalStorage } from "./async-storage";
 import {
 	createHTMLStreamResponse,
 	createRSCStreamResponse,
@@ -24,18 +25,21 @@ export async function handleActionRequest(
 
 	if (isMutating) {
 		const url = new URL(request.url);
+		const encodedArgs = await request.text();
 
-		return createMutationStreamResponse(
-			action,
-			await request.text(),
-			<Root
-				url={url.href}
-				searchParams={Object.fromEntries(url.searchParams.entries())}
-				headers={Object.fromEntries(request.headers.entries())}
-				params={{}}
-			/>,
-			{ clientModuleMap },
-		);
+		return asyncLocalStorage.run({ request }, async () => {
+			return createMutationStreamResponse(
+				action,
+				encodedArgs,
+				<Root
+					url={url.href}
+					searchParams={Object.fromEntries(url.searchParams.entries())}
+					headers={Object.fromEntries(request.headers.entries())}
+					params={{}}
+				/>,
+				{ clientModuleMap },
+			);
+		});
 	}
 
 	return createActionStreamResponse(action, await request.text(), {
@@ -89,22 +93,21 @@ export async function handleRSCRequest(
 
 type Handler = (context: { request: Request }) => Response | Promise<Response>;
 
-export function createHandler(
+export function createServerRouter(
 	Root: any,
 	{
 		clientModuleMap,
 		clientEntry,
-	}: { clientModuleMap: any; clientEntry: string },
-): Handler {
+		apiRoutes,
+	}: {
+		clientModuleMap: any;
+		clientEntry: string;
+		apiRoutes: (router: any) => void;
+	},
+): Router {
 	const router = createRouter();
 
-	/**
-	 * This is the single RSC endpoint. It is used to render the required RSC tree for
-	 * navigations.
-	 */
-	// router.get("/__rsc/*", async (context) => {
-	// 	return handleRSCRequest(context.request, Root, { clientModuleMap });
-	// });
+	apiRoutes(router);
 
 	/**
 	 * This is the single RSF endpoint. It is used to respond to server functions.
@@ -128,5 +131,5 @@ export function createHandler(
 		});
 	});
 
-	return router.buildHandler() as Handler;
+	return router;
 }

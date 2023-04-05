@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "rsc-router";
+import { signIn } from "./auth/client";
 
 export default function Counter({
 	count = 0,
@@ -27,6 +28,7 @@ export default function Counter({
 			>
 				Refresh
 			</button>
+			<button onClick={() => signIn("github")}>Sign In</button>
 		</div>
 	);
 }

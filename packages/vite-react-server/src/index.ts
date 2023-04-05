@@ -25,7 +25,7 @@ function config() {
 	} satisfies Plugin;
 }
 
-export function react() {
+export function react({ serverEntry = "rsc-router/entry-server" } = {}) {
 	return [
 		{
 			name: "rsc-router",
@@ -48,7 +48,7 @@ export function react() {
 		inspect(),
 		hattip({
 			clientConfig: {},
-			hattipEntry: "rsc-router/entry-server",
+			hattipEntry: serverEntry,
 		}),
 		reactServerComponents(),
 	];

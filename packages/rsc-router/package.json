@@ -31,8 +31,8 @@
     }
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "# tsup",
+    "dev": "# tsup --watch",
     "prepack": "rm -rf dist && pnpm build",
     "test": "pnpm test:typecheck && pnpm test:lint && pnpm test:unit && pnpm test:package",
     "test:unit": "vitest run",
