@@ -14,7 +14,6 @@ export const Link = (
 ) => {
 	const router = useRouter();
 	const isActive = props.href === router.url;
-	console.log(props.href, router.url);
 	return (
 		<A
 			{...props}

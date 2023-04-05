@@ -67,7 +67,7 @@ export async function callServer(id: string, args: any[]) {
 	const data = createFromReadableStream(response.body!, { callServer });
 
 	if (isMutating) {
-		mutationCallbacks.forEach((callback) => callback(data));
+		mutationCallbacks[0](data);
 	}
 
 	return data;
@@ -90,7 +90,7 @@ export async function submitForm(formData: FormData) {
 
 	const data = createFromReadableStream(response.body!, { callServer });
 
-	mutationCallbacks.forEach((callback) => callback(data));
+	mutationCallbacks[0](data);
 
 	return data;
 }
@@ -113,13 +113,16 @@ export function useSubmitForm() {
 				throw new Error("Server error");
 			}
 
-			if (response.headers.get("x-redirect")) {
-				router.history.push(response.headers.get("x-redirect")!);
-			}
-
 			const data = createFromReadableStream(response.body!, { callServer });
 
-			mutationCallbacks.forEach((callback) => callback(data));
+			const redirectURL = response.headers.get("x-redirect");
+			if (redirectURL) {
+				router.cache.set(redirectURL, data);
+				router.push(redirectURL);
+			} else {
+				mutationCallbacks[0](data);
+			}
+
 			return data;
 		},
 		[router],
@@ -211,11 +214,11 @@ export function useRSCStream(url: string) {
 	return rscCache.get(url)!;
 }
 
-function useRerender() {
+export function useRerender() {
 	const [_, rerender] = useState(() => 0);
-	return () => {
+	return useCallback(() => {
 		rerender((n) => n + 1);
-	};
+	}, [rerender]);
 }
 
 export function useRSCClientRouter() {
@@ -239,6 +242,7 @@ export function useRSCClientRouter() {
 			mutate: mutate,
 			refresh: refreshRSC,
 			history,
+			cache: rscCache,
 		} satisfies Omit<RouterAPI, "url">;
 	}, [setURL]);
 
@@ -253,6 +257,7 @@ export function useRSCClientRouter() {
 	}, [router]);
 
 	useEffect(() => {
+		// this should only be triggered if no other mutation listeners have been added below it
 		return addMutationListener((val) => {
 			startTransition(() => {
 				rscCache.set(url, val);

@@ -3,12 +3,7 @@
 import { useSubmitForm } from "../streams";
 import React from "react";
 
-export function ClientForm({
-	action,
-	...props
-}: Omit<React.ComponentProps<"form">, "action"> & {
-	action: (formData: FormData) => void;
-}) {
+export function ClientForm({ ...props }: React.ComponentProps<"form">) {
 	const submitForm = useSubmitForm();
 	return (
 		<form

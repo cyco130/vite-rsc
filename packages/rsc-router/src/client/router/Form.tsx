@@ -1,17 +1,26 @@
 import { ClientForm } from "./Form.client";
 import React from "react";
 
+export function ActionIDInput({
+	action,
+}: {
+	action: ((formData: FormData) => void) & { $$id?: string };
+}) {
+	return <input name="$$id" hidden={true} value={action.$$id} />;
+}
+
 export function Form({
 	action,
 	...props
 }: Omit<React.ComponentProps<"form">, "action"> & {
 	action: (formData: FormData) => void;
 }) {
-	console.log(action);
 	return (
-		<ClientForm action={action} {...props}>
-			<input name="$$id" hidden={true} value={action.$$id} />
+		<ClientForm {...props}>
+			<ActionIDInput action={action} />
 			{props.children}
 		</ClientForm>
 	);
 }
+
+Form.ActionId = ActionIDInput;

@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getCount, increment } from "./actions";
 import { Form } from "rsc-router";
+import FormDemo from "./form";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -62,6 +63,9 @@ async function Browse() {
 				<div>{await getCount()}</div>
 				<Button>Increment</Button>
 			</Form>
+			<FormDemo>
+				<Form.ActionId action={increment} />
+			</FormDemo>
 		</div>
 	);
 }

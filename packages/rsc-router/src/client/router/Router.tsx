@@ -7,10 +7,17 @@ import React, {
 	useEffect,
 	useMemo,
 	useReducer,
+	useState,
 } from "react";
 import { RouterContext } from "./useRouter";
 import { RedirectBoundary } from "./RedirectBoundary";
-import { createElementFromRSCFetch, mutate, refreshRSC } from "../streams";
+import {
+	addMutationListener,
+	createElementFromRSCFetch,
+	mutate,
+	refreshRSC,
+	useRerender,
+} from "../streams";
 
 type RouterState = {
 	url: string;
@@ -42,14 +49,16 @@ export default function Router({
 	children: React.ReactNode;
 	initialURL: string;
 }) {
+	const [cache] = useState(() => new Map<string, Promise<JSX.Element>>());
 	const initialState = useMemo(() => {
-		const cache = new Map();
-		cache.set(initialURL, children);
+		cache.set(initialURL, children as any);
 		return {
 			url: initialURL,
 			cache: cache,
 		};
-	}, [initialURL, children]);
+	}, [initialURL, cache, children]);
+
+	const renrender = useRerender();
 
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const router = useMemo(() => {
@@ -70,8 +79,9 @@ export default function Router({
 			mutate: mutate,
 			refresh: refreshRSC,
 			history,
+			cache,
 		};
-	}, [dispatch]);
+	}, [dispatch, cache]);
 
 	useEffect(() => {
 		return router.history.listen((update) => {
@@ -82,6 +92,16 @@ export default function Router({
 			}
 		});
 	}, [router]);
+
+	useEffect(() => {
+		return addMutationListener((val) => {
+			startTransition(() => {
+				console.log("rerendering");
+				initialState.cache.set(initialState.url, val);
+				renrender();
+			});
+		});
+	}, [initialState.url, router, renrender]);
 
 	const content = state.cache.get(state.url);
 
