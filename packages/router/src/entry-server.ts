@@ -8,7 +8,8 @@ import { createElement } from "react";
 import devServer from "virtual:vite-dev-server";
 import type { Manifest } from "vite";
 import Root from "~/root?rsc";
-import { renderToHTMLStream as renderToHTMLStream } from "./streams";
+import { BundleMap, renderToHTMLStream } from "./streams";
+
 import path from "node:path";
 
 const router = createRouter();
@@ -40,7 +41,7 @@ globalThis.__webpack_require__ = (id: string) => {
  * We use a proxy during dev in order to make the bundler config look like the one that
  * react-server-dom-webpack expects at build time.
  */
-export const bundlerConfig = new Proxy(
+export const bundlerConfig: BundleMap = new Proxy(
 	{},
 	{
 		get(_, prop) {
@@ -129,6 +130,7 @@ router.get("/*", async (context) => {
 				searchParams: Object.fromEntries(context.url.searchParams.entries()),
 				headers: Object.fromEntries(context.request.headers.entries()),
 			}),
+			bundlerConfig,
 			{
 				bootstrapModules: [clientScript],
 			},

@@ -8,6 +8,7 @@
   ],
   "exports": {
     "./entry-server": "./src/entry-server.ts",
+    "./streams": "./src/streams.ts",
     "./server": "./src/server/index.ts",
     ".": "./src/client/index.ts"
   },
@@ -20,13 +21,16 @@
       "server": [
         "./src/server/index.ts"
       ],
+      "streams": [
+        "./src/streams.ts"
+      ],
       "entry-server": [
         "./src/entry-server.ts"
       ]
     }
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup ",
     "dev": "# tsup --watch",
     "prepack": "rm -rf dist && pnpm build",
     "test": "pnpm test:typecheck && pnpm test:lint && pnpm test:unit && pnpm test:package",
