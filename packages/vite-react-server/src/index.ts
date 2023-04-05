@@ -3,7 +3,7 @@ import { hattip } from "@hattip/vite";
 import type { Plugin } from "vite";
 import path from "node:path";
 import inspect from "vite-plugin-inspect";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { tsconfigPaths } from "vite-rsc/tsconfig-paths";
 function config() {
 	return {
 		name: "vite-react-server-config",
