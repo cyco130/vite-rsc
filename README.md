@@ -51,6 +51,11 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
     }
     ```
 - [x] Throw error to nearest ErrorBoundary
+- [x] Forms
+  - [x] Form submission
+  - [x] Form redirects
+  - [ ] Form validation
+  - [ ] Form submission error handling 
 
 
 
