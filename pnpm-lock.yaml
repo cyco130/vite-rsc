@@ -229,8 +229,8 @@ importers:
   examples/impala:
     dependencies:
       '@impalajs/core':
-        specifier: ^0.0.6
-        version: 0.0.6(vite@4.2.1)
+        specifier: ^0.0.7
+        version: 0.0.7(vite@4.2.1)
       rsc-router:
         specifier: workspace:^0.0.1
         version: link:../../packages/rsc-router
@@ -1449,8 +1449,8 @@ packages:
       - supports-color
     dev: true
 
-  /@impalajs/core@0.0.6(vite@4.2.1):
-    resolution: {integrity: sha512-78LX24EvxUemBZdyxkfnBis2HDvgIXpStZF0O4wCuKpIJ08o4NCzXnUB3Fyn7v3iuU3v2pZFU2jqNXSunZ1ozQ==}
+  /@impalajs/core@0.0.7(vite@4.2.1):
+    resolution: {integrity: sha512-EBmY2QGP5fyjAw5cfKj60PifDeb1QKW8BaJPAPEA9vn653WjdQxrCC8c+tYFWRcelhy0xcq1Bp3NwUUMgdX6Og==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:

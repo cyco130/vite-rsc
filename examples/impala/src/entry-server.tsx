@@ -4,6 +4,7 @@ import { BundleMap, renderToHTMLStream } from "rsc-router/streams";
 import consumers from "node:stream/consumers";
 import { join, relative } from "node:path";
 import type { Manifest } from "vite";
+import { promises as fs, existsSync } from "node:fs";
 
 declare global {
 	function __webpack_require__(id: string): any;
@@ -32,6 +33,7 @@ export const bundlerConfig: BundleMap = new Proxy(
 				id,
 				chunks: [id],
 				name,
+				async: true,
 			};
 		},
 	},
@@ -50,27 +52,27 @@ export async function render(
 		"../dist/static/manifest.json"
 	);
 
-	const serverManifest: { default: Manifest } = await import(
-		"../dist/server/manifest.json"
+	const serverManifestPath = join(serverDist, "manifest.json");
+
+	if (!existsSync(serverManifestPath)) {
+		throw new Error("Server manifest not found. Did you do an SSR build?");
+	}
+
+	const serverManifest = JSON.parse(
+		await fs.readFile(serverManifestPath, "utf-8"),
 	);
 
 	globalThis.__webpack_chunk_load__ = async (chunk: string) => {
-		console.log("Loading chunk", chunk, serverManifest.default[chunk]?.file);
+		console.log("Loading chunk", chunk, serverManifest[chunk]?.file);
 		return import(
-			/* @vite-ignore */ join(
-				serverDist,
-				serverManifest.default[chunk]?.file ?? chunk,
-			)
+			/* @vite-ignore */ join(serverDist, serverManifest[chunk]?.file ?? chunk)
 		);
 	};
 
 	globalThis.__webpack_require__ = async (chunk: string) => {
 		console.log("Requiring chunk", chunk);
-		return await import(
-			/* @vite-ignore */ join(
-				serverDist,
-				serverManifest.default[chunk]?.file ?? chunk,
-			)
+		return import(
+			/* @vite-ignore */ join(serverDist, serverManifest[chunk]?.file ?? chunk)
 		);
 	};
 
@@ -96,5 +98,5 @@ export async function render(
 
 	const body = await consumers.text(htmlStream);
 
-	return { body, head: {} };
+	return { body, head: "" };
 }

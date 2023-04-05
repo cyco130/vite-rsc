@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@impalajs/core": "^0.0.6",
+    "@impalajs/core": "^0.0.7",
     "rsc-router": "workspace:^0.0.1"
   },
   "devDependencies": {
