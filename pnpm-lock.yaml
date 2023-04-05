@@ -13,6 +13,15 @@ importers:
 
   examples/apple-music:
     dependencies:
+      '@auth/core':
+        specifier: ^0.5.1
+        version: 0.5.1
+      '@next-auth/prisma-adapter':
+        specifier: ^1.0.5
+        version: 1.0.5(@prisma/client@4.12.0)
+      '@prisma/client':
+        specifier: ^4.12.0
+        version: 4.12.0(prisma@4.12.0)
       '@radix-ui/react-accessible-icon':
         specifier: ^1.0.1
         version: 1.0.2(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
@@ -109,6 +118,9 @@ importers:
       lucide-react:
         specifier: ^0.130.0
         version: 0.130.0(react@18.3.0-next-b14f8da15-20230403)
+      prisma:
+        specifier: ^4.12.0
+        version: 4.12.0
       react:
         specifier: 18.3.0-next-b14f8da15-20230403
         version: 18.3.0-next-b14f8da15-20230403
@@ -118,6 +130,9 @@ importers:
       react-server-dom-webpack:
         specifier: 18.3.0-next-b14f8da15-20230403
         version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
+      rsc-auth:
+        specifier: workspace:^0.0.1
+        version: link:../../packages/rsc-auth
       rsc-router:
         specifier: ^0.0.1
         version: link:../../packages/rsc-router
@@ -536,6 +551,52 @@ importers:
         specifier: ^0.0.1
         version: link:../../packages/vite-react-server
 
+  examples/server-counter-form:
+    dependencies:
+      '@prisma/client':
+        specifier: ^4.12.0
+        version: 4.12.0(prisma@4.12.0)
+      react:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
+      react-dom:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      react-error-boundary:
+        specifier: ^4.0.3
+        version: 4.0.3(react@18.3.0-next-b14f8da15-20230403)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
+      rsc-router:
+        specifier: ^0.0.1
+        version: link:../../packages/rsc-router
+    devDependencies:
+      '@hattip/adapter-node':
+        specifier: ^0.0.33
+        version: 0.0.33
+      '@hattip/vite':
+        specifier: ^0.0.33
+        version: 0.0.33(vite@4.2.1)
+      '@types/react':
+        specifier: ^18.0.33
+        version: 18.0.33
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11
+      prisma:
+        specifier: ^4.12.0
+        version: 4.12.0
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1
+      vite-react-server:
+        specifier: ^0.0.1
+        version: link:../../packages/vite-react-server
+
   examples/shadcn-ui:
     dependencies:
       '@radix-ui/react-accessible-icon':
@@ -702,7 +763,7 @@ importers:
         specifier: ^4.0.8
         version: 4.0.8(typescript@5.0.3)(vite@4.2.1)
 
-  examples/with-auth:
+  examples/with-prisma-auth:
     dependencies:
       '@auth/core':
         specifier: ^0.5.1

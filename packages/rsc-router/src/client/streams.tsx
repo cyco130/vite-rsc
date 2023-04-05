@@ -1,11 +1,18 @@
 import { createPath, createBrowserHistory } from "history";
-import { useState, useMemo, startTransition, useEffect, use } from "react";
+import {
+	useState,
+	useMemo,
+	startTransition,
+	useEffect,
+	use,
+	useCallback,
+} from "react";
 import {
 	createFromFetch,
 	encodeReply as encodeActionArgs,
 	createFromReadableStream,
 } from "react-server-dom-webpack/client.browser";
-import { RouterAPI } from "./router/useRouter";
+import { RouterAPI, useRouter } from "./router/useRouter";
 
 const decoder = new TextDecoder();
 
@@ -64,6 +71,59 @@ export async function callServer(id: string, args: any[]) {
 	}
 
 	return data;
+}
+
+export async function submitForm(formData: FormData) {
+	const response = await fetch("", {
+		method: "POST",
+		headers: {
+			Accept: "text/x-component",
+			"x-action": formData.get("$$id") as string,
+			"x-mutation": "1",
+		},
+		body: formData,
+	});
+
+	if (!response.ok) {
+		throw new Error("Server error");
+	}
+
+	const data = createFromReadableStream(response.body!, { callServer });
+
+	mutationCallbacks.forEach((callback) => callback(data));
+
+	return data;
+}
+
+export function useSubmitForm() {
+	const router = useRouter();
+	return useCallback(
+		async (formData: FormData) => {
+			const response = await fetch("", {
+				method: "POST",
+				headers: {
+					Accept: "text/x-component",
+					"x-action": formData.get("$$id") as string,
+					"x-mutation": "1",
+				},
+				body: formData,
+			});
+
+			if (!response.ok) {
+				throw new Error("Server error");
+			}
+
+			if (response.headers.get("x-redirect")) {
+				router.history.push(response.headers.get("x-redirect")!);
+			}
+
+			const data = createFromReadableStream(response.body!, { callServer });
+
+			mutationCallbacks.forEach((callback) => callback(data));
+			return data;
+		},
+		[router],
+	);
 }
 
 export function refreshRSC() {

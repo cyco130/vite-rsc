@@ -60,7 +60,8 @@ export function createRouter(routes: RouteObject[]) {
 			});
 		}
 
-		const isClientNavigation = props.headers["x-navigate"];
+		const isClientNavigation =
+			props.headers["x-navigate"] || props.headers["x-mutation"];
 
 		if (isClientNavigation) {
 			return content;
