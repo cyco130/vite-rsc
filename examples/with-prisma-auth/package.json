@@ -1,0 +1,31 @@
+{
+  "name": "example-server-counter",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "hattip serve",
+    "build": "hattip build",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@auth/core": "^0.5.1",
+    "@next-auth/prisma-adapter": "^1.0.5",
+    "@prisma/client": "^4.12.0",
+    "react": "18.3.0-next-b14f8da15-20230403",
+    "react-dom": "18.3.0-next-b14f8da15-20230403",
+    "react-error-boundary": "^4.0.3",
+    "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
+    "rsc-auth": "workspace:^0.0.1",
+    "rsc-router": "^0.0.1"
+  },
+  "devDependencies": {
+    "@hattip/adapter-node": "^0.0.33",
+    "@hattip/vite": "^0.0.33",
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "prisma": "^4.12.0",
+    "typescript": "^5.0.3",
+    "vite": "^4.2.1",
+    "vite-react-server": "^0.0.1"
+  }
+}

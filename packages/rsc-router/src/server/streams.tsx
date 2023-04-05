@@ -10,6 +10,7 @@ import {
 } from "react-dom/server.edge";
 import { ReactElement } from "react";
 import { sanitize } from "./htmlescape";
+import { asyncLocalStorage } from "./async-storage";
 
 export {
 	renderToReadableStream as renderToRSCStream,
@@ -179,6 +180,7 @@ export async function renderToHTMLStream(
 ) {
 	const rscStream = renderToRSCStream(element, renderOptions.clientModuleMap);
 	const [rscStream1, rscStream2] = rscStream.tee();
+
 	const rscElement = await createElementFromRSCStream(rscStream1);
 	const htmlStream = await _renderToHTMLStream(rscElement, renderOptions);
 	return htmlStream
@@ -218,6 +220,12 @@ export async function createRSCStreamResponse(
 	);
 }
 
+async function executeAction(action: any, encodedArgs: any) {
+	const args = await decodeActionArgs(encodedArgs);
+	const result = await action(...args);
+	return result;
+}
+
 export async function createActionStreamResponse(
 	action: any,
 	encodedArgs: any,
@@ -226,10 +234,12 @@ export async function createActionStreamResponse(
 	},
 	responseInit: ResponseInit = {},
 ) {
-	const args = await decodeActionArgs(encodedArgs);
-	const result = await action(...args);
 	return new Response(
-		renderToResultStream(result, renderOptions.clientModuleMap, {}),
+		renderToResultStream(
+			await executeAction(action, encodedArgs),
+			renderOptions.clientModuleMap,
+			{},
+		),
 		{
 			...responseInit,
 			headers: {
@@ -238,4 +248,39 @@ export async function createActionStreamResponse(
 			},
 		},
 	);
+}
+
+export async function createMutationStreamResponse(
+	action: any,
+	encodedArgs: any,
+	element: JSX.Element,
+	renderOptions: RenderToReadableStreamOptions & {
+		clientModuleMap: ModuleMap;
+	},
+	responseInit: ResponseInit = {},
+) {
+	try {
+		const result = await executeAction(action, encodedArgs);
+
+		return new Response(
+			renderToRSCStream(element, renderOptions.clientModuleMap, {}),
+			{
+				...responseInit,
+				headers: {
+					"Content-Type": "text/x-component",
+					...(responseInit.headers ?? {}),
+				},
+			},
+		);
+	} catch (e: any) {
+		console.log("error", e);
+		return new Response(e.message, {
+			...responseInit,
+			status: 500,
+			headers: {
+				"Content-Type": "text/plain",
+				...(responseInit.headers ?? {}),
+			},
+		});
+	}
 }

@@ -5,12 +5,20 @@ import { useRouter } from "./useRouter";
 
 export default function A({
 	href,
+	activeProps = {},
 	...props
-}: { href: string } & DetailedHTMLProps<
+}: {
+	href: string;
+	activeProps?: DetailedHTMLProps<
+		AnchorHTMLAttributes<HTMLAnchorElement>,
+		HTMLAnchorElement
+	>;
+} & DetailedHTMLProps<
 	AnchorHTMLAttributes<HTMLAnchorElement>,
 	HTMLAnchorElement
 >) {
 	const router = useRouter();
+	const isActive = router.url === href;
 	return (
 		<a
 			href={href}
@@ -20,6 +28,7 @@ export default function A({
 				router.push(href);
 			}}
 			{...props}
+			{...(isActive ? activeProps : {})}
 		/>
 	);
 }

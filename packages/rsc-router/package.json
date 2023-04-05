@@ -10,7 +10,8 @@
     "./entry-server": "./src/entry-server.ts",
     "./streams": "./src/server/streams.tsx",
     "./entry-client": "./src/entry-client.ts",
-    "./server": "./src/server/index.ts",
+    "./server": "./src/server/server.ts",
+    "./client/entry": "./src/client/entry.tsx",
     ".": "./src/client/index.ts"
   },
   "types": "./src/client/index.ts",
@@ -20,7 +21,10 @@
         "./src/client/index.ts"
       ],
       "server": [
-        "./src/server/index.ts"
+        "./src/server/server.ts"
+      ],
+      "client/entry": [
+        "./src/client/entry.tsx"
       ],
       "streams": [
         "./src/server/streams.tsx"
@@ -31,12 +35,12 @@
     }
   },
   "scripts": {
-    "build": "# tsup ",
+    "build": "# tsup",
     "dev": "# tsup --watch",
     "prepack": "rm -rf dist && pnpm build",
     "test": "pnpm test:typecheck && pnpm test:lint && pnpm test:unit && pnpm test:package",
     "test:unit": "vitest run",
-    "test:typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:typecheck": "tsc -p tsconfig.json",
     "test:lint": "eslint . --max-warnings 0 --ignore-pattern dist",
     "test:package": "publint"
   },
@@ -67,6 +71,7 @@
   },
   "dependencies": {
     "@hattip/router": "^0.0.33",
-    "history": "^5.3.0"
+    "history": "^5.3.0",
+    "react-error-boundary": "^4.0.3"
   }
 }

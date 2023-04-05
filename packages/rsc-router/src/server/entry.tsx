@@ -1,14 +1,20 @@
 import { createModuleMapProxy, setupWebpackEnv } from "./webpack";
-import { createHandler } from "./handler";
+import { createServerRouter } from "./handler";
 import Root from "~/root?rsc";
+import { Router } from "@hattip/router";
 
-export function createReactServerHandler() {
+export function createReactServerHandler({
+	apiRoutes,
+}: {
+	apiRoutes?: (router: Router) => void;
+} = {}) {
 	setupWebpackEnv();
 
 	const clientModuleMap = createModuleMapProxy();
 
-	return createHandler(Root, {
+	return createServerRouter(Root, {
 		clientModuleMap,
-		clientEntry: "/node_modules/rsc-router/src/entry-client.ts",
-	});
+		clientEntry: "/app/entry-client",
+		apiRoutes: apiRoutes ?? (() => {}),
+	}).buildHandler();
 }

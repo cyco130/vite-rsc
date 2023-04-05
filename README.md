@@ -40,7 +40,20 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
 ### Mutations
 
 - [x] Server functions, ala "use server"
-- [ ] Mutations via server functions
+- [x] Mutations via server functions
+  - **API**: `useMutation` hook
+    ```ts
+    function Component({ action }) {
+      let mutate = useMutation()
+      function handleClick() {
+        mutate(() => action())
+      }
+    }
+    ```
+- [x] Throw error to nearest ErrorBoundary
+
+
+
 
 ### Head tags
 
@@ -48,7 +61,12 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
 
 ### CSS/Styling
 
-- [ ] Manage CSS dependencies (importing CSS files), inline to avoid FOUC
+- [ ] Inline CSS to avoid FOUC
+  - [x] Inline imported CSS files in RSC components
+  - [ ] Inline imported CSS files in client components
+  - [ ] Inline imported CSS Module files
+  - [ ] Try to avoid having to send styles as hydration data
+- [ ] Build CSS manifest (importing CSS files)
 
 ### Build
 

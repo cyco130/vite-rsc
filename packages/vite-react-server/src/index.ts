@@ -3,7 +3,7 @@ import { hattip } from "@hattip/vite";
 import type { Plugin } from "vite";
 import path from "node:path";
 import inspect from "vite-plugin-inspect";
-
+import { tsconfigPaths } from "vite-rsc/tsconfig-paths";
 function config() {
 	return {
 		name: "vite-react-server-config",
@@ -25,13 +25,30 @@ function config() {
 	} satisfies Plugin;
 }
 
-export function react() {
+export function react({ serverEntry = "rsc-router/entry-server" } = {}) {
 	return [
+		{
+			name: "rsc-router",
+			resolveId(src) {
+				if (src === "/app/entry-client") {
+					return "/app/entry-client";
+				}
+			},
+			load(src) {
+				if (src === "/app/entry-client") {
+					return `
+						import { mount } from "rsc-router/client/entry";
+						mount();
+					`;
+				}
+			},
+		} satisfies Plugin,
+		tsconfigPaths(),
 		config(),
 		inspect(),
 		hattip({
 			clientConfig: {},
-			hattipEntry: "rsc-router/entry-server",
+			hattipEntry: serverEntry,
 		}),
 		reactServerComponents(),
 	];

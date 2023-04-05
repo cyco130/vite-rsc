@@ -1,10 +1,16 @@
 "use client";
 
-import { createBrowserHistory, createMemoryHistory } from "history";
-import React, { startTransition, use, useMemo, useReducer } from "react";
+import { createBrowserHistory, createMemoryHistory, createPath } from "history";
+import React, {
+	startTransition,
+	use,
+	useEffect,
+	useMemo,
+	useReducer,
+} from "react";
 import { RouterContext } from "./useRouter";
 import { RedirectBoundary } from "./RedirectBoundary";
-import { createElementFromRSCFetch } from "../streams";
+import { createElementFromRSCFetch, mutate, refreshRSC } from "../streams";
 
 type RouterState = {
 	url: string;
@@ -61,14 +67,26 @@ export default function Router({
 				history.replace(url, state);
 				startTransition(() => dispatch({ type: "navigate", url }));
 			},
+			mutate: mutate,
+			refresh: refreshRSC,
 			history,
 		};
 	}, [dispatch]);
 
+	useEffect(() => {
+		return router.history.listen((update) => {
+			if (update.action === "POP") {
+				startTransition(() => {
+					dispatch({ type: "navigate", url: createPath(update.location) });
+				});
+			}
+		});
+	}, [router]);
+
 	const content = state.cache.get(state.url);
 
 	return (
-		<RouterContext.Provider value={router}>
+		<RouterContext.Provider value={{ url: state.url, ...router }}>
 			<RedirectBoundary>
 				<LayoutRouter childNode={content} />
 			</RedirectBoundary>

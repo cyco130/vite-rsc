@@ -3,6 +3,7 @@ import type { Plugin } from "vite";
 import { moduleResolve } from "import-meta-resolve";
 import { fileURLToPath } from "node:url";
 import { relative } from "node:path";
+import { hasRscQuery, addRscQuery, removeRscQuery } from "./utils";
 
 export function reactServerComponents(): Plugin {
 	let root: string;
@@ -22,7 +23,7 @@ export function reactServerComponents(): Plugin {
 		},
 
 		async resolveId(id, importer, options) {
-			if (!importer?.endsWith("?rsc")) return;
+			if (!importer || !hasRscQuery(importer)) return;
 
 			const resolved = await this.resolve(id, importer, {
 				...options,
@@ -36,10 +37,10 @@ export function reactServerComponents(): Plugin {
 				!resolved.external &&
 				!resolved.id.includes("/node_modules/")
 			) {
-				return resolved.id + "?rsc";
+				return addRscQuery(resolved.id);
 			}
 
-			if (!resolved.external) return resolved.id + "?rsc";
+			if (!resolved.external) return addRscQuery(resolved.id);
 
 			if (resolved.id.startsWith("node:")) return resolved;
 
@@ -57,13 +58,13 @@ export function reactServerComponents(): Plugin {
 			const resolvedId = fileURLToPath(resolvedUrl);
 
 			return {
-				id: resolvedId + "?rsc",
+				id: addRscQuery(resolvedId),
 				external: true,
 			};
 		},
 
 		transform(code, id, options) {
-			if (!id.endsWith("?rsc") || !options?.ssr) return;
+			if (!options?.ssr || !hasRscQuery(id)) return;
 
 			const bareId = id.slice(0, -4);
 			this.emitFile({
@@ -73,7 +74,8 @@ export function reactServerComponents(): Plugin {
 
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this;
-			return transformModuleIfNeeded(code, bareId);
+
+			return transformModuleIfNeeded(code, removeRscQuery(id));
 
 			async function transformModuleIfNeeded(
 				code: string,

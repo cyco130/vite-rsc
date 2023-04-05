@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: 'Cal Sans', sans-serif;
+}
+
+html {
+  font-size: 16px;
+}
