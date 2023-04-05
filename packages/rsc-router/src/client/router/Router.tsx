@@ -85,7 +85,7 @@ export default function Router({
 	const content = state.cache.get(state.url);
 
 	return (
-		<RouterContext.Provider value={router}>
+		<RouterContext.Provider value={{ url: state.url, ...router }}>
 			<RedirectBoundary>
 				<LayoutRouter childNode={content} />
 			</RedirectBoundary>
