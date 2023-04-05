@@ -20,6 +20,9 @@
     "*": {
       "*": [
         "dist/*.d.ts"
+      ],
+      "./tsconfig-paths": [
+        "dist/tsconfig-paths.d.ts"
       ]
     }
   },
