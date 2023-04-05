@@ -2,9 +2,13 @@ import { parse } from "acorn-loose";
 import type { Plugin } from "vite";
 import { moduleResolve } from "import-meta-resolve";
 import { fileURLToPath } from "node:url";
+import { relative } from "node:path";
 
 export function reactServerComponents(): Plugin {
 	let root: string;
+	let isBuild = false;
+	let isSsr = false;
+	const rscChunks = new Set();
 
 	return {
 		name: "react-server-components",
@@ -13,6 +17,8 @@ export function reactServerComponents(): Plugin {
 
 		configResolved(config) {
 			root = config.root;
+			isBuild = config.command === "build";
+			isSsr = !!config.build.ssr;
 		},
 
 		async resolveId(id, importer, options) {
@@ -59,10 +65,15 @@ export function reactServerComponents(): Plugin {
 		transform(code, id, options) {
 			if (!id.endsWith("?rsc") || !options?.ssr) return;
 
+			const bareId = id.slice(0, -4);
+			this.emitFile({
+				type: "chunk",
+				id: bareId,
+			});
+
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this;
-
-			return transformModuleIfNeeded(code, id.slice(0, -4));
+			return transformModuleIfNeeded(code, bareId);
 
 			async function transformModuleIfNeeded(
 				code: string,
@@ -122,6 +133,8 @@ export function reactServerComponents(): Plugin {
 
 				await parseExportNamesInto(ast, names, id);
 
+				const localId = relative(root, id);
+
 				let newSrc =
 					"const CLIENT_REFERENCE = Symbol.for('react.client.reference');\n";
 				for (let i = 0; i < names.length; i++) {
@@ -132,7 +145,7 @@ export function reactServerComponents(): Plugin {
 						newSrc +=
 							"throw new Error(" +
 							JSON.stringify(
-								`Attempted to call the default export of ${id} from the server` +
+								`Attempted to call the default export of ${localId} from the server ` +
 									`but it's on the client. It's not possible to invoke a client function from ` +
 									`the server, it can only be rendered as a Component or passed to props of a` +
 									`Client Component.`,
@@ -152,7 +165,8 @@ export function reactServerComponents(): Plugin {
 					}
 					newSrc += "},{";
 					newSrc += "$$typeof: {value: CLIENT_REFERENCE},";
-					newSrc += "$$id: {value: " + JSON.stringify(id + "#" + name) + "}";
+					newSrc +=
+						"$$id: {value: " + JSON.stringify(localId + "#" + name) + "}";
 					newSrc += "});\n";
 				}
 				return newSrc;
@@ -354,6 +368,16 @@ export function reactServerComponents(): Plugin {
 				}
 
 				return { url: resolved.id };
+			}
+		},
+
+		writeBundle() {
+			if (isBuild && isSsr) {
+				this.emitFile({
+					type: "asset",
+					fileName: "rsc-chunks.json",
+					source: JSON.stringify([...rscChunks]),
+				});
 			}
 		},
 	};
