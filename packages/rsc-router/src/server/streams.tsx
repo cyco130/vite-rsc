@@ -209,6 +209,12 @@ export async function createRSCStreamResponse(
 	);
 }
 
+async function executeAction(action: any, encodedArgs: any) {
+	const args = await decodeActionArgs(encodedArgs);
+	const result = await action(...args);
+	return result;
+}
+
 export async function createActionStreamResponse(
 	action: any,
 	encodedArgs: any,
@@ -217,14 +223,38 @@ export async function createActionStreamResponse(
 	},
 	responseInit: ResponseInit = {},
 ) {
-	const args = await decodeActionArgs(encodedArgs);
-	const result = await action(...args);
 	return new Response(
-		renderToResultStream(result, renderOptions.clientModuleMap, {}),
+		renderToResultStream(
+			await executeAction(action, encodedArgs),
+			renderOptions.clientModuleMap,
+			{},
+		),
 		{
 			...responseInit,
 			headers: {
 				"Content-Type": "application/json",
+				...(responseInit.headers ?? {}),
+			},
+		},
+	);
+}
+
+export async function createMutationStreamResponse(
+	action: any,
+	encodedArgs: any,
+	element: JSX.Element,
+	renderOptions: RenderToReadableStreamOptions & {
+		clientModuleMap: ModuleMap;
+	},
+	responseInit: ResponseInit = {},
+) {
+	const result = await executeAction(action, encodedArgs);
+	return new Response(
+		renderToRSCStream(element, renderOptions.clientModuleMap, {}),
+		{
+			...responseInit,
+			headers: {
+				"Content-Type": "text/x-component",
 				...(responseInit.headers ?? {}),
 			},
 		},

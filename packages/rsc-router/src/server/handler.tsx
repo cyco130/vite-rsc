@@ -4,6 +4,7 @@ import {
 	createHTMLStreamResponse,
 	createRSCStreamResponse,
 	createActionStreamResponse,
+	createMutationStreamResponse,
 } from "./streams";
 
 export async function handleActionRequest(
@@ -18,6 +19,24 @@ export async function handleActionRequest(
 
 	const [filePath, name] = actionId.split("#");
 	const action = (await import(/* @vite-ignore */ filePath))[name];
+
+	const isMutating = request.headers.get("x-mutation") === "1";
+
+	if (isMutating) {
+		const url = new URL(request.url);
+
+		return createMutationStreamResponse(
+			action,
+			await request.text(),
+			<Root
+				url={url.href}
+				searchParams={Object.fromEntries(url.searchParams.entries())}
+				headers={Object.fromEntries(request.headers.entries())}
+				params={{}}
+			/>,
+			{ clientModuleMap },
+		);
+	}
 
 	return createActionStreamResponse(action, await request.text(), {
 		clientModuleMap,

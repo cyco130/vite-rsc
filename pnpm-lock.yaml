@@ -490,6 +490,58 @@ importers:
         specifier: ^0.0.1
         version: link:../../packages/vite-react-server
 
+  examples/server-counter:
+    dependencies:
+      '@prisma/client':
+        specifier: ^4.12.0
+        version: 4.12.0(prisma@4.12.0)
+      react:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
+      react-dom:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
+      rsc-router:
+        specifier: ^0.0.1
+        version: link:../../packages/rsc-router
+    devDependencies:
+      '@faker-js/faker':
+        specifier: ^7.6.0
+        version: 7.6.0
+      '@hattip/adapter-node':
+        specifier: ^0.0.33
+        version: 0.0.33
+      '@hattip/vite':
+        specifier: ^0.0.33
+        version: 0.0.33(vite@4.2.1)
+      '@types/react':
+        specifier: ^18.0.33
+        version: 18.0.33
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11
+      match-sorter:
+        specifier: ^6.3.1
+        version: 6.3.1
+      prisma:
+        specifier: ^4.12.0
+        version: 4.12.0
+      sort-by:
+        specifier: ^1.2.0
+        version: 1.2.0
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1
+      vite-react-server:
+        specifier: ^0.0.1
+        version: link:../../packages/vite-react-server
+
   examples/shadcn-ui:
     dependencies:
       '@radix-ui/react-accessible-icon':
@@ -1688,6 +1740,28 @@ packages:
 
   /@polka/url@1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+
+  /@prisma/client@4.12.0(prisma@4.12.0):
+    resolution: {integrity: sha512-j9/ighfWwux97J2dS15nqhl60tYoH8V0IuSsgZDb6bCFcQD3fXbXmxjYC8GHhIgOk3lB7Pq+8CwElz2MiDpsSg==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.12.0-67.659ef412370fa3b41cd7bf6e94587c1dfb7f67e7
+      prisma: 4.12.0
+    dev: false
+
+  /@prisma/engines-version@4.12.0-67.659ef412370fa3b41cd7bf6e94587c1dfb7f67e7:
+    resolution: {integrity: sha512-JIHNj5jlXb9mcaJwakM0vpgRYJIAurxTUqM0iX0tfEQA5XLZ9ONkIckkhuAKdAzocZ+80GYg7QSsfpjg7OxbOA==}
+    dev: false
+
+  /@prisma/engines@4.12.0:
+    resolution: {integrity: sha512-0alKtnxhNB5hYU+ymESBlGI4b9XrGGSdv7Ud+8TE/fBNOEhIud0XQsAR+TrvUZgS4na5czubiMsODw0TUrgkIA==}
+    requiresBuild: true
 
   /@radix-ui/number@1.0.0:
     resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
@@ -5759,6 +5833,14 @@ packages:
       ansi-styles: 5.2.0
       react-is: 17.0.2
     dev: true
+
+  /prisma@4.12.0:
+    resolution: {integrity: sha512-xqVper4mbwl32BWzLpdznHAYvYDWQQWK2tBfXjdUD397XaveRyAP7SkBZ6kFlIg8kKayF4hvuaVtYwXd9BodAg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 4.12.0
 
   /prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}

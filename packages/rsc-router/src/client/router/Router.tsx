@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { RouterContext } from "./useRouter";
 import { RedirectBoundary } from "./RedirectBoundary";
-import { createElementFromRSCFetch } from "../streams";
+import { createElementFromRSCFetch, mutate } from "../streams";
 
 type RouterState = {
 	url: string;
@@ -66,6 +66,9 @@ export default function Router({
 			replace(url: string, state: any) {
 				history.replace(url, state);
 				startTransition(() => dispatch({ type: "navigate", url }));
+			},
+			mutate(fn: any) {
+				mutate(fn);
 			},
 			history,
 		};
