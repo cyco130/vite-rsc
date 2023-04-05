@@ -20,7 +20,7 @@ export function removeRscQuery(id: string) {
 		.filter((part) => !part.match(/rsc($|=)/))
 		.join("&");
 
-	if (newQuery) return base;
+	if (!newQuery) return base;
 
 	return base + "?" + newQuery;
 }

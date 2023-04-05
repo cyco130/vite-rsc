@@ -7,6 +7,7 @@ import type { Manifest } from "vite";
 import { promises as fs, existsSync } from "node:fs";
 
 declare global {
+	var moduleCache: Map<string, any>;
 	function __webpack_require__(id: string): any;
 	function __webpack_chunk_load__(id: string): any;
 }
@@ -33,24 +34,25 @@ export const bundlerConfig: BundleMap = new Proxy(
 				id,
 				chunks: [id],
 				name,
-				async: true,
 			};
 		},
 	},
 );
 
+globalThis.__webpack_require__ = (id: string) => {
+	if (!globalThis.moduleCache.has(id))
+		throw new Error(`Module ${id} not found`);
+	return globalThis.moduleCache.get(id);
+};
+
+globalThis.moduleCache = globalThis.moduleCache ?? new Map<string, any>();
+
 export async function render(
 	context: Context,
 	mod: () => Promise<RouteModule<ElementType>>,
-	// bootstrapModules?: Array<string>,
+	bootstrapModules?: Array<string>,
 ) {
-	const clientScriptName = join(process.cwd(), "src/entry-client.tsx");
-
 	const serverDist = join(process.cwd(), "dist/server");
-
-	const clientManifest: { default: Manifest } = await import(
-		"../dist/static/manifest.json"
-	);
 
 	const serverManifestPath = join(serverDist, "manifest.json");
 
@@ -58,41 +60,24 @@ export async function render(
 		throw new Error("Server manifest not found. Did you do an SSR build?");
 	}
 
-	const serverManifest = JSON.parse(
+	const serverManifest: Manifest = JSON.parse(
 		await fs.readFile(serverManifestPath, "utf-8"),
 	);
 
 	globalThis.__webpack_chunk_load__ = async (chunk: string) => {
 		console.log("Loading chunk", chunk, serverManifest[chunk]?.file);
-		return import(
-			/* @vite-ignore */ join(serverDist, serverManifest[chunk]?.file ?? chunk)
+		globalThis.moduleCache.set(
+			chunk,
+			await import(
+				join(serverDist, serverManifest[relative(process.cwd(), chunk)]?.file)
+			),
 		);
 	};
-
-	globalThis.__webpack_require__ = async (chunk: string) => {
-		console.log("Requiring chunk", chunk);
-		return import(
-			/* @vite-ignore */ join(serverDist, serverManifest[chunk]?.file ?? chunk)
-		);
-	};
-
-	console.log(clientScriptName, clientManifest.default);
-
-	// const bundleMap: BundleMap = (
-	// 	await import(
-	// 		// @ts-expect-error
-	// 		"../../dist/server/client-bundle-map.json"
-	// 	)
-	// ).default;
-
-	const clientScript =
-		clientManifest.default[relative(process.cwd(), clientScriptName)].file ??
-		clientScriptName;
 
 	const { default: Page } = await mod();
 
 	const htmlStream = await renderToHTMLStream(<Page {...context} />, {
-		bootstrapModules: [clientScript],
+		bootstrapModules,
 		clientModuleMap: bundlerConfig,
 	});
 

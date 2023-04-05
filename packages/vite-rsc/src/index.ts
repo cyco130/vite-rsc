@@ -66,10 +66,10 @@ export function reactServerComponents(): Plugin {
 		transform(code, id, options) {
 			if (!options?.ssr || !hasRscQuery(id)) return;
 
-			const bareId = id.slice(0, -4);
+			// Emit the non-rsc version of the module as a chunk
 			this.emitFile({
 				type: "chunk",
-				id: bareId,
+				id: removeRscQuery(id),
 			});
 
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -135,8 +135,6 @@ export function reactServerComponents(): Plugin {
 
 				await parseExportNamesInto(ast, names, id);
 
-				const localId = relative(root, id);
-
 				let newSrc =
 					"const CLIENT_REFERENCE = Symbol.for('react.client.reference');\n";
 				for (let i = 0; i < names.length; i++) {
@@ -147,7 +145,7 @@ export function reactServerComponents(): Plugin {
 						newSrc +=
 							"throw new Error(" +
 							JSON.stringify(
-								`Attempted to call the default export of ${localId} from the server ` +
+								`Attempted to call the default export of ${id} from the server ` +
 									`but it's on the client. It's not possible to invoke a client function from ` +
 									`the server, it can only be rendered as a Component or passed to props of a` +
 									`Client Component.`,
@@ -167,8 +165,7 @@ export function reactServerComponents(): Plugin {
 					}
 					newSrc += "},{";
 					newSrc += "$$typeof: {value: CLIENT_REFERENCE},";
-					newSrc +=
-						"$$id: {value: " + JSON.stringify(localId + "#" + name) + "}";
+					newSrc += "$$id: {value: " + JSON.stringify(id + "#" + name) + "}";
 					newSrc += "});\n";
 				}
 				return newSrc;
