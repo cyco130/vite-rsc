@@ -1,3 +1,4 @@
-export const modules = import.meta.glob("./routes/**/*.{tsx,jsx}");
+// TODO
+// export const modules = import.meta.glob("./routes/**/*.{tsx,jsx}");
 
-console.log(modules);
+console.log("hello world");

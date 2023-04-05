@@ -2,14 +2,10 @@ import { parse } from "acorn-loose";
 import type { Plugin } from "vite";
 import { moduleResolve } from "import-meta-resolve";
 import { fileURLToPath } from "node:url";
-import { relative } from "node:path";
 import { hasRscQuery, addRscQuery, removeRscQuery } from "./utils";
 
 export function reactServerComponents(): Plugin {
 	let root: string;
-	let isBuild = false;
-	let isSsr = false;
-	const rscChunks = new Set();
 
 	return {
 		name: "react-server-components",
@@ -18,8 +14,6 @@ export function reactServerComponents(): Plugin {
 
 		configResolved(config) {
 			root = config.root;
-			isBuild = config.command === "build";
-			isSsr = !!config.build.ssr;
 		},
 
 		async resolveId(id, importer, options) {
@@ -367,16 +361,6 @@ export function reactServerComponents(): Plugin {
 				}
 
 				return { url: resolved.id };
-			}
-		},
-
-		writeBundle() {
-			if (isBuild && isSsr) {
-				this.emitFile({
-					type: "asset",
-					fileName: "rsc-chunks.json",
-					source: JSON.stringify([...rscChunks]),
-				});
 			}
 		},
 	};

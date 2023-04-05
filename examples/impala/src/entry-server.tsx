@@ -11,6 +11,8 @@ declare global {
 	function __webpack_require__(id: string): any;
 	function __webpack_chunk_load__(id: string): any;
 }
+
+// Load the route modules as RSC and export for impala
 export const routeModules = import.meta.glob<RouteModule>(
 	"./routes/**/*.{tsx,jsx}",
 	{
