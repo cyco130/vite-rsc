@@ -41,6 +41,19 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
 
 - [x] Server functions, ala "use server"
 - [x] Mutations via server functions
+  - **API**: `useMutation` hook
+    ```ts
+    function Component({ action }) {
+      let mutate = useMutation()
+      function handleClick() {
+        mutate(() => action())
+      }
+    }
+    ```
+- [x] Throw error to nearest ErrorBoundary
+
+
+
 
 ### Head tags
 
