@@ -7,6 +7,9 @@
     "build": "hattip build"
   },
   "dependencies": {
+    "@auth/core": "^0.5.1",
+    "@next-auth/prisma-adapter": "^1.0.5",
+    "@prisma/client": "^4.12.0",
     "@radix-ui/react-accessible-icon": "^1.0.1",
     "@radix-ui/react-accordion": "^1.1.0",
     "@radix-ui/react-alert-dialog": "^1.0.2",
@@ -17,6 +20,7 @@
     "@radix-ui/react-context-menu": "^2.1.1",
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-dropdown-menu": "^2.0.1",
+    "@radix-ui/react-form": "^0.0.2",
     "@radix-ui/react-hover-card": "^1.0.3",
     "@radix-ui/react-label": "^2.0.0",
     "@radix-ui/react-menubar": "^1.0.0",
@@ -35,14 +39,16 @@
     "@radix-ui/react-toggle": "^1.0.1",
     "@radix-ui/react-toggle-group": "^1.0.1",
     "@radix-ui/react-tooltip": "^1.0.5",
-    "rsc-router": "^0.0.1",
     "cal-sans": "^1.0.1",
     "class-variance-authority": "^0.5.1",
     "clsx": "^1.2.1",
     "lucide-react": "^0.130.0",
+    "prisma": "^4.12.0",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
+    "rsc-auth": "workspace:^0.0.1",
+    "rsc-router": "^0.0.1",
     "tailwind-merge": "^1.11.0"
   },
   "devDependencies": {
@@ -51,17 +57,17 @@
     "@hattip/vite": "^0.0.33",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
     "match-sorter": "^6.3.1",
     "postcss": "^8.4.21",
     "sort-by": "^1.2.0",
     "tailwindcss": "^3.3.1",
+    "tailwindcss-animate": "^1.0.5",
     "typescript": "^5.0.3",
     "vite": "^4.2.1",
-    "vite-react-server": "^0.0.1",
-    "@vitejs/plugin-react": "^3.1.0",
-    "tailwindcss-animate": "^1.0.5",
     "vite-plugin-inspect": "^0.7.18",
+    "vite-react-server": "^0.0.1",
     "vite-tsconfig-paths": "^4.0.8"
   }
 }

@@ -8,5 +8,11 @@ export default defineConfig({
 	ssr: {
 		external: ["react/jsx-dev-runtime", "@react-refresh"],
 	},
-	plugins: [tsconfigPaths(), reactRefresh(), react()],
+	plugins: [
+		tsconfigPaths(),
+		reactRefresh(),
+		react({
+			serverEntry: "./app/entry-server.ts",
+		}),
+	],
 });

@@ -2,10 +2,16 @@ import { PageProps } from "rsc-router";
 import { createRouter, InlineStyles } from "rsc-router/server";
 import { Suspense } from "react";
 import HomePage from "./home";
-import { AppleMusicDemo, ListenNow } from "./apple-music-demo";
+import { AppleMusicDemo } from "./apple-music-demo";
+import { ListenNow } from "./ListenNow";
 
 import "cal-sans";
 import "./root.css";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { getCount, increment } from "./actions";
+import { Form } from "rsc-router";
+import FormDemo from "./form";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -50,13 +56,27 @@ window.__vite_plugin_react_preamble_installed__ = true
 	);
 }
 
+async function Browse() {
+	return (
+		<div>
+			<Form action={increment}>
+				<div>{await getCount()}</div>
+				<Button>Increment</Button>
+			</Form>
+			<FormDemo>
+				<Form.ActionId action={increment} />
+			</FormDemo>
+		</div>
+	);
+}
+
 export default createRouter([
 	{
 		path: "",
 		component: Root,
 		children: [
 			{ index: true, component: ListenNow },
-			{ path: "/browse", component: ListenNow },
+			{ path: "/browse", component: Browse },
 			{ path: "/radio", component: ListenNow },
 			{ path: "/library/playlists", component: ListenNow },
 			{ path: "/library/songs", component: ListenNow },

@@ -1,5 +1,5 @@
 import { History } from "history";
-import { createContext, use, useContext } from "react";
+import { createContext, Thenable, use, useContext } from "react";
 
 export interface RouterAPI {
 	push: (path: string, state?: any) => void;
@@ -7,6 +7,7 @@ export interface RouterAPI {
 	history: History;
 	mutate: (fn: any) => Promise<void>;
 	refresh: () => void;
+	cache: Map<string, Thenable<JSX.Element>>;
 	url: string;
 }
 

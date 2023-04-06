@@ -1,11 +1,18 @@
 import { createPath, createBrowserHistory } from "history";
-import { useState, useMemo, startTransition, useEffect, use } from "react";
+import {
+	useState,
+	useMemo,
+	startTransition,
+	useEffect,
+	use,
+	useCallback,
+} from "react";
 import {
 	createFromFetch,
 	encodeReply as encodeActionArgs,
 	createFromReadableStream,
 } from "react-server-dom-webpack/client.browser";
-import { RouterAPI } from "./router/useRouter";
+import { RouterAPI, useRouter } from "./router/useRouter";
 
 const decoder = new TextDecoder();
 
@@ -60,10 +67,66 @@ export async function callServer(id: string, args: any[]) {
 	const data = createFromReadableStream(response.body!, { callServer });
 
 	if (isMutating) {
-		mutationCallbacks.forEach((callback) => callback(data));
+		mutationCallbacks[0](data);
 	}
 
 	return data;
+}
+
+export async function submitForm(formData: FormData) {
+	const response = await fetch("", {
+		method: "POST",
+		headers: {
+			Accept: "text/x-component",
+			"x-action": formData.get("$$id") as string,
+			"x-mutation": "1",
+		},
+		body: formData,
+	});
+
+	if (!response.ok) {
+		throw new Error("Server error");
+	}
+
+	const data = createFromReadableStream(response.body!, { callServer });
+
+	mutationCallbacks[0](data);
+
+	return data;
+}
+
+export function useSubmitForm() {
+	const router = useRouter();
+	return useCallback(
+		async (formData: FormData) => {
+			const response = await fetch("", {
+				method: "POST",
+				headers: {
+					Accept: "text/x-component",
+					"x-action": formData.get("$$id") as string,
+					"x-mutation": "1",
+				},
+				body: formData,
+			});
+
+			if (!response.ok) {
+				throw new Error("Server error");
+			}
+
+			const data = createFromReadableStream(response.body!, { callServer });
+
+			const redirectURL = response.headers.get("x-redirect");
+			if (redirectURL) {
+				router.cache.set(redirectURL, data);
+				router.push(redirectURL);
+			} else {
+				mutationCallbacks[0](data);
+			}
+
+			return data;
+		},
+		[router],
+	);
 }
 
 export function refreshRSC() {
@@ -151,11 +214,11 @@ export function useRSCStream(url: string) {
 	return rscCache.get(url)!;
 }
 
-function useRerender() {
+export function useRerender() {
 	const [_, rerender] = useState(() => 0);
-	return () => {
+	return useCallback(() => {
 		rerender((n) => n + 1);
-	};
+	}, [rerender]);
 }
 
 export function useRSCClientRouter() {
@@ -179,6 +242,7 @@ export function useRSCClientRouter() {
 			mutate: mutate,
 			refresh: refreshRSC,
 			history,
+			cache: rscCache,
 		} satisfies Omit<RouterAPI, "url">;
 	}, [setURL]);
 
@@ -193,6 +257,7 @@ export function useRSCClientRouter() {
 	}, [router]);
 
 	useEffect(() => {
+		// this should only be triggered if no other mutation listeners have been added below it
 		return addMutationListener((val) => {
 			startTransition(() => {
 				rscCache.set(url, val);
