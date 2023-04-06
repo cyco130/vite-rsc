@@ -9,6 +9,8 @@ export interface RouterAPI {
 	refresh: () => void;
 	cache: Map<string, Thenable<JSX.Element>>;
 	url: string;
+	enable(): void;
+	disable(): void;
 }
 
 export const RouterContext = createContext<RouterAPI>({} as RouterAPI);

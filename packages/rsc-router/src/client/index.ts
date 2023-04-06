@@ -15,6 +15,8 @@ export * from "./router/ErrorBoundary";
 export * from "./router/Form";
 export * from "./router/redirect";
 export * from "./streams";
+export { interpolatePath } from "./router/types/path";
+export type { LinkFn as TypedLink } from "./router/link";
 export type { PageProps } from "../types";
 
 export type TypedRouteModule<

@@ -1,15 +1,14 @@
 "use client";
 
-import { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
+import React, { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
 import { useRouter } from "./useRouter";
 import { LinkFn } from "./link";
+import { interpolatePath } from "./types";
 
-export const A: LinkFn = function A({
-	href,
+export const A: LinkFn<{}> = function A({
 	activeProps = {},
 	...props
 }: {
-	href: string;
 	activeProps?: DetailedHTMLProps<
 		AnchorHTMLAttributes<HTMLAnchorElement>,
 		HTMLAnchorElement
@@ -20,7 +19,9 @@ export const A: LinkFn = function A({
 > &
 	any) {
 	const router = useRouter();
+	const href = props.href ?? interpolatePath(props.to, props.params);
 	const isActive = router.url === href;
+	console.log(isActive);
 	return (
 		<a
 			href={href}

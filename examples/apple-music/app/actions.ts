@@ -9,8 +9,6 @@ export async function increment() {
 		where: { id: 1 },
 		data: { value: count + 1 },
 	});
-	await new Promise((resolve) => setTimeout(resolve, 1000));
-	redirect("/");
 }
 
 export async function getCount() {

@@ -19,11 +19,3 @@ export default async function Root({ children }: LayoutProps) {
 		</html>
 	);
 }
-
-export const config = {
-	validateSearch: (search) => {
-		return {
-			page1: Number(search?.page ?? 1),
-		};
-	},
-} satisfies LayoutConfig;

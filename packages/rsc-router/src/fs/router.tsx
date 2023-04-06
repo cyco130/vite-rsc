@@ -23,9 +23,7 @@ export function toPath(id: string, removePathlessLayouts = true) {
 		removePathlessLayouts
 			? idWithoutLayout.replace(/\([^)/]+\)/g, "")
 			: idWithoutLayout
-	).replace(/\[([^\[]+)\]/g, (_, m) =>
-		m.startsWith("...") ? `*${m.slice(3)}` : `:${m}`,
-	);
+	).replace(/\[([^\[]+)\]/g, (_, m) => (m.startsWith("...") ? `*` : `:${m}`));
 }
 
 /**

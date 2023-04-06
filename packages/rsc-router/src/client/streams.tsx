@@ -6,6 +6,7 @@ import {
 	useEffect,
 	use,
 	useCallback,
+	useRef,
 } from "react";
 import {
 	createFromFetch,
@@ -67,7 +68,7 @@ export async function callServer(id: string, args: any[]) {
 	const data = createFromReadableStream(response.body!, { callServer });
 
 	if (isMutating) {
-		mutationCallbacks[0](data);
+		mutationCallbacks.forEach((cb) => cb(data));
 	}
 
 	return data;
@@ -90,7 +91,7 @@ export async function submitForm(formData: FormData) {
 
 	const data = createFromReadableStream(response.body!, { callServer });
 
-	mutationCallbacks[0](data);
+	mutationCallbacks.forEach((cb) => cb(data));
 
 	return data;
 }
@@ -120,7 +121,7 @@ export function useSubmitForm() {
 				router.cache.set(redirectURL, data);
 				router.push(redirectURL);
 			} else {
-				mutationCallbacks[0](data);
+				mutationCallbacks.forEach((cb) => cb(data));
 			}
 
 			return data;
@@ -189,7 +190,7 @@ export function getRSCStream(url: string) {
 		stream = window.init_rsc;
 		self.init_rsc = null;
 	} else {
-		stream = fetch(`/__rsc${url}`, {
+		stream = fetch(`${url}`, {
 			headers: {
 				Accept: "text/x-component",
 				"x-navigate": url,
@@ -223,6 +224,7 @@ export function useRerender() {
 
 export function useRSCClientRouter() {
 	const [url, setURL] = useState(() => createPath(new URL(location.href)));
+	const enabledRef = useRef(true);
 	const render = useRerender();
 	const router = useMemo(() => {
 		const history = createBrowserHistory();
@@ -243,15 +245,23 @@ export function useRSCClientRouter() {
 			refresh: refreshRSC,
 			history,
 			cache: rscCache,
+			disable() {
+				enabledRef.current = false;
+			},
+			enable() {
+				enabledRef.current = true;
+			},
 		} satisfies Omit<RouterAPI, "url">;
 	}, [setURL]);
 
 	useEffect(() => {
 		return router.history.listen((update) => {
-			if (update.action === "POP") {
-				startTransition(() => {
-					setURL(createPath(update.location));
-				});
+			if (enabledRef.current) {
+				if (update.action === "POP") {
+					startTransition(() => {
+						setURL(createPath(update.location));
+					});
+				}
 			}
 		});
 	}, [router]);
@@ -259,10 +269,13 @@ export function useRSCClientRouter() {
 	useEffect(() => {
 		// this should only be triggered if no other mutation listeners have been added below it
 		return addMutationListener((val) => {
-			startTransition(() => {
-				rscCache.set(url, val);
-				render();
-			});
+			console.log("mutation", enabledRef.current);
+			if (enabledRef.current) {
+				startTransition(() => {
+					rscCache.set(url, val);
+					render();
+				});
+			}
 		});
 	}, [url, router]);
 

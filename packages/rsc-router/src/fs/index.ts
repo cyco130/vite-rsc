@@ -50,7 +50,7 @@ export type LayoutProps = {
 	children: React.ReactNode;
 };
 
-export type LayoutConfig = TypedRouteOptions<parentRoute, "/">;
+export type LayoutConfig = TypedRouteOptions<RootRoute, "/">;
 
 declare module "rsc-router" {
 	interface Register {
@@ -146,6 +146,8 @@ function generateTypeForRoute(
 						(c.path ?? "/")
 							.replaceAll("/", "_")
 							.replaceAll("[", "_")
+							.replaceAll("...", "___")
+							.replaceAll("*", "___")
 							.replaceAll(":", "_")
 							.replaceAll("]", "_"),
 					),
@@ -257,6 +259,10 @@ function generateTypes(
 }
 
 export function createFileSystemRoutes(rootDir: string) {
+	if (!fs.existsSync(rootDir) || !fs.existsSync(path.join(rootDir, "routes"))) {
+		console.warn("No routes found");
+		return [];
+	}
 	const routeManifest = defineFileSystemRoutes(rootDir, ["**/*.css"]);
 	if (!fs.existsSync(".vite")) {
 		fs.mkdirSync(".vite");
@@ -271,5 +277,6 @@ export function createFileSystemRoutes(rootDir: string) {
 		rootDir.replace(/\/app$/, "/.vite/app"),
 		routeManifest,
 	);
+	console.log(routes);
 	return routes;
 }

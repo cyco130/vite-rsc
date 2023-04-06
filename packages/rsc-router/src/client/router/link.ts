@@ -12,6 +12,7 @@ import {
 } from "./types";
 
 export interface LinkFn<
+	Props extends {} = {},
 	TDefaultFrom extends RegisteredRoutesInfo["routePaths"] = "/",
 	TDefaultTo extends string = "",
 > {
@@ -19,22 +20,25 @@ export interface LinkFn<
 		TFrom extends RegisteredRoutesInfo["routePaths"] = TDefaultFrom,
 		TTo extends string = TDefaultTo,
 	>(
-		props: MakeLinkOptions<TFrom, TTo> & React.RefAttributes<HTMLAnchorElement>,
+		props: MakeLinkOptions<Props, TFrom, TTo> &
+			React.RefAttributes<HTMLAnchorElement> &
+			Props,
 	): JSX.Element;
 }
 
 export type LinkPropsOptions<
+	Props extends {} = {},
 	TFrom extends RegisteredRoutesInfo["routePaths"] = "/",
 	TTo extends string = "",
 > = LinkOptions<RegisteredRoutesInfo, TFrom, TTo> & {
 	// A function that returns additional props for the `active` state of this link. These props override other props passed to the link (`style`'s are merged, `className`'s are concatenated)
 	activeProps?:
-		| React.AnchorHTMLAttributes<HTMLAnchorElement>
-		| (() => React.AnchorHTMLAttributes<HTMLAnchorElement>);
+		| (React.AnchorHTMLAttributes<HTMLAnchorElement> & Props)
+		| (() => React.AnchorHTMLAttributes<HTMLAnchorElement> & Props);
 	// A function that returns additional props for the `inactive` state of this link. These props override other props passed to the link (`style`'s are merged, `className`'s are concatenated)
 	inactiveProps?:
-		| React.AnchorHTMLAttributes<HTMLAnchorElement>
-		| (() => React.AnchorHTMLAttributes<HTMLAnchorElement>);
+		| (React.AnchorHTMLAttributes<HTMLAnchorElement> & Props)
+		| (() => React.AnchorHTMLAttributes<HTMLAnchorElement> & Props);
 };
 
 export type MakeUseMatchRouteOptions<
@@ -59,15 +63,17 @@ export type MakeMatchRouteOptions<
 	};
 
 export type MakeLinkPropsOptions<
+	Props extends {} = {},
 	TFrom extends ValidFromPath<RegisteredRoutesInfo> = "/",
 	TTo extends string = "",
-> = LinkPropsOptions<TFrom, TTo> &
+> = LinkPropsOptions<Props, TFrom, TTo> &
 	React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 export type MakeLinkOptions<
+	Props extends {} = {},
 	TFrom extends RegisteredRoutesInfo["routePaths"] = "/",
 	TTo extends string = "",
-> = LinkPropsOptions<TFrom, TTo> &
+> = LinkPropsOptions<Props, TFrom, TTo> &
 	React.AnchorHTMLAttributes<HTMLAnchorElement> &
 	Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
 		// If a function is passed as a child, it will be given the `isActive` boolean to aid in further styling on the element it returns

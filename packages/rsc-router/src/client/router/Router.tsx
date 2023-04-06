@@ -5,8 +5,10 @@ import React, {
 	startTransition,
 	use,
 	useEffect,
+	useLayoutEffect,
 	useMemo,
 	useReducer,
+	useRef,
 	useState,
 } from "react";
 import { RouterContext } from "./useRouter";
@@ -49,7 +51,9 @@ export default function Router({
 	children: React.ReactNode;
 	initialURL: string;
 }) {
+	const existingRouter = use(RouterContext);
 	const [cache] = useState(() => new Map<string, Promise<JSX.Element>>());
+	const enabledRef = useRef(true);
 	const initialState = useMemo(() => {
 		cache.set(initialURL, children as any);
 		return {
@@ -80,12 +84,18 @@ export default function Router({
 			refresh: refreshRSC,
 			history,
 			cache,
+			disable() {
+				enabledRef.current = false;
+			},
+			enable() {
+				enabledRef.current = true;
+			},
 		};
 	}, [dispatch, cache]);
 
 	useEffect(() => {
 		return router.history.listen((update) => {
-			if (update.action === "POP") {
+			if (enabledRef.current && update.action === "POP") {
 				startTransition(() => {
 					dispatch({ type: "navigate", url: createPath(update.location) });
 				});
@@ -93,13 +103,25 @@ export default function Router({
 		});
 	}, [router]);
 
+	useLayoutEffect(() => {
+		if (existingRouter) {
+			existingRouter.disable();
+		}
+		return () => {
+			if (existingRouter) {
+				existingRouter.enable();
+			}
+		};
+	});
+
 	useEffect(() => {
 		return addMutationListener((val) => {
-			startTransition(() => {
-				console.log("rerendering");
-				initialState.cache.set(initialState.url, val);
-				renrender();
-			});
+			if (enabledRef.current)
+				startTransition(() => {
+					console.log("rerendering");
+					initialState.cache.set(initialState.url, val);
+					renrender();
+				});
 		});
 	}, [initialState.url, router, renrender]);
 

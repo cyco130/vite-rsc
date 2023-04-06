@@ -58,6 +58,8 @@ export type Split<S, TIncludeTrailingSlash = true> = S extends unknown
 export type ParsePathParams<T extends string> = Split<T>[number] extends infer U
 	? U extends `:${infer V}`
 		? V
+		: U extends `*`
+		? "*"
 		: never
 	: never;
 
