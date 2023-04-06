@@ -5,7 +5,7 @@ export default function Playlist(props: PageProps) {
 	return (
 		<div>
 			<A
-				to=''
+				to="/:library"
 				params={{
 					playlist: "2",
 				}}

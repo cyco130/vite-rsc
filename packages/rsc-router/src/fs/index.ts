@@ -123,6 +123,11 @@ function generateTypeForRoute(
 	const typesPath = routeMan.file
 		.replace(rootDir, outDir)
 		.replace(".tsx", ".types.d.ts");
+
+	if (!fs.existsSync(path.dirname(typesPath))) {
+		fs.mkdirSync(path.dirname(typesPath), { recursive: true });
+	}
+
 	if (route.id === "") {
 		if (route.children) {
 			fs.writeFileSync(
