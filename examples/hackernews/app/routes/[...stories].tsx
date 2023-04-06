@@ -19,7 +19,8 @@ const mapStories: Record<string, string> = {
 };
 
 export default async function Stories({ searchParams, params }: PageProps) {
-	let type = params["*"] || "top";
+	let type =
+		params["*"].length && mapStories[params["*"]] ? params["*"] : "top";
 	let page = +searchParams.page || 1;
 	let stories = await fetchAPI<IStory[]>(`${mapStories[type]}?page=${page}`);
 

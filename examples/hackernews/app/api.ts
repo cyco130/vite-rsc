@@ -5,6 +5,7 @@ const user = (path: string) =>
 export default async function fetchAPI<T>(path: string): Promise<T> {
 	const url = path.startsWith("user") ? user(path) : story(path);
 	const headers: Record<string, string> = { "User-Agent": "chrome" };
+	console.log(url);
 
 	try {
 		let response = await fetch(url, { headers });
