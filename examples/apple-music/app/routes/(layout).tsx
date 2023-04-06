@@ -1,8 +1,8 @@
-import { PageProps } from "rsc-router";
 import { InlineStyles, ReactRefreshScript } from "rsc-router/server";
 import { AppleMusicDemo } from "../apple-music-demo";
+import { LayoutConfig, LayoutProps } from "./(layout).types";
 
-export default async function Root({ children }: PageProps) {
+export default async function Root({ children }: LayoutProps) {
 	return (
 		<html lang="en">
 			<head>
@@ -19,6 +19,14 @@ export default async function Root({ children }: PageProps) {
 		</html>
 	);
 }
+
+export const config = {
+	validateSearch: (search) => {
+		return {
+			page1: Number(search?.page ?? 1),
+		};
+	},
+} satisfies LayoutConfig;
 
 // export default createRouter([
 // 	{

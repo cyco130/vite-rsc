@@ -189,7 +189,7 @@ export function normalizeSlashes(file: string) {
 	return file.split(path.win32.sep).join("/");
 }
 
-function stripFileExtension(file: string) {
+export function stripFileExtension(file: string) {
 	return file.replace(/\.[a-z0-9]+$/i, "");
 }
 

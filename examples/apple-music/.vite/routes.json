@@ -4,6 +4,35 @@
     "parentId": "root",
     "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/(layout).tsx"
   },
+  "/[playlist]": {
+    "path": "/:playlist",
+    "id": "/[playlist]",
+    "parentId": "",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/[playlist]/(layout).tsx"
+  },
+  "/[playlist]/[playlist]": {
+    "path": ":playlist",
+    "id": "/[playlist]/[playlist]",
+    "parentId": "/[playlist]",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/[playlist]/[playlist].tsx"
+  },
+  "/[library]": {
+    "path": "/:library",
+    "id": "/[library]",
+    "parentId": "",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/[library]/(layout).tsx"
+  },
+  "/[library]/[playlist]": {
+    "path": ":playlist",
+    "id": "/[library]/[playlist]",
+    "parentId": "/[library]",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/[library]/[playlist].tsx"
+  },
+  "/[library]/(home)": {
+    "id": "/[library]/(home)",
+    "parentId": "/[library]",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/[library]/(home).tsx"
+  },
   "/browse": {
     "path": "/browse",
     "id": "/browse",

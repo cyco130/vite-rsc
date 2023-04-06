@@ -1,13 +1,12 @@
 import {
 	TypedRouter,
-	Route,
 	RootRoute,
 	RouteWithChildren,
 	TypedRouteOptions,
 } from "rsc-router";
 import { route as libraryRoute } from "./library/[library]/$types";
 import { route as playlistRoute } from "./playlist/[playlist]/$types";
-import { config } from "./(layout)";
+import * as layout from "./(layout)";
 import React from "react";
 
 export type route = RootRoute<
@@ -23,7 +22,7 @@ export type LayoutProps = {
 	children: React.ReactNode;
 };
 
-export type LayoutConfig = TypedRouteOptions<unknown, "/">;
+export type LayoutConfig = TypedRouteOptions<RootRoute, "/">;
 
 declare module "rsc-router" {
 	interface Register {

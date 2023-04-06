@@ -21,7 +21,7 @@ export function toPath(id: string, removePathlessLayouts = true) {
 		: idWithoutIndex;
 	return (
 		removePathlessLayouts
-			? idWithoutLayout.replace(/\/\([^)/]+\)/g, "")
+			? idWithoutLayout.replace(/\([^)/]+\)/g, "")
 			: idWithoutLayout
 	).replace(/\[([^\[]+)\]/g, (_, m) =>
 		m.startsWith("...") ? `*${m.slice(3)}` : `:${m}`,
@@ -63,7 +63,6 @@ export function defineFileSystemRoutes(
 
 		throw new Error(`Invalid route module file: ${path.join(routesDir, file)}`);
 	});
-	console.log(files);
 
 	const routeIds = Object.keys(files).sort(byLongestFirst);
 	const parentRouteIds = getParentRouteIds(routeIds);
@@ -86,7 +85,6 @@ export function defineFileSystemRoutes(
 
 			const isIndexRoute = routeId.endsWith("/");
 			const fullPath = createRoutePath(routeId);
-			console.log({ routeId, fullPath });
 			const uniqueRouteId = (fullPath || "") + (isIndexRoute ? "?index" : "");
 
 			if (uniqueRouteId) {
@@ -155,7 +153,6 @@ export const optionalEnd = ")" as const;
 export function createRemixRoutePath(
 	partialRouteId: string,
 ): string | undefined {
-	console.log({ partialRouteId });
 	let result = "";
 	let rawSegmentBuffer = "";
 
@@ -291,9 +288,7 @@ export function createRemixRoutePath(
 }
 
 export function createRoutePath(partialRouteId: string): string | undefined {
-	const path = toPath(partialRouteId);
 	return toPath(partialRouteId) ?? "/";
-	console.log({ partialRouteId });
 	let result = "";
 	let rawSegmentBuffer = "";
 
