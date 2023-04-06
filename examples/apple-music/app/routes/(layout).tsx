@@ -27,21 +27,3 @@ export const config = {
 		};
 	},
 } satisfies LayoutConfig;
-
-// export default createRouter([
-// 	{
-// 		path: "",
-// 		component: Root,
-// 		children: [
-// 			{ index: true, component: ListenNow },
-// 			{ path: "/browse", component: Browse },
-// 			{ path: "/radio", component: ListenNow },
-// 			{ path: "/library/playlists", component: ListenNow },
-// 			{ path: "/library/songs", component: ListenNow },
-// 			{ path: "/library/made-for-you", component: ListenNow },
-// 			{ path: "/library/artists", component: ListenNow },
-// 			{ path: "/library/albums", component: ListenNow },
-// 			{ path: "/playlist/:playlist", component: ListenNow },
-// 		],
-// 	},
-// ]);
