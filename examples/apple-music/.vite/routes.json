@@ -1,0 +1,20 @@
+{
+  "": {
+    "id": "",
+    "parentId": "root",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/(layout).tsx"
+  },
+  "/browse": {
+    "path": "/browse",
+    "id": "/browse",
+    "parentId": "",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/browse.tsx"
+  },
+  "/": {
+    "path": "/",
+    "index": true,
+    "id": "/",
+    "parentId": "",
+    "file": "/Users/nikhilsaraf/garage/scraps/vite-rsc/examples/apple-music/app/routes/page.tsx"
+  }
+}

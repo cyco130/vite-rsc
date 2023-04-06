@@ -1,0 +1,18 @@
+import { Button } from "@/components/ui/button";
+import { getCount, increment } from "../actions";
+import { Form } from "rsc-router";
+import FormDemo from "../form";
+
+export default async function Browse() {
+	return (
+		<div>
+			<Form action={increment}>
+				<div>{await getCount()}</div>
+				<Button>Increment</Button>
+			</Form>
+			<FormDemo>
+				<Form.ActionId action={increment} />
+			</FormDemo>
+		</div>
+	);
+}

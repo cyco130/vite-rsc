@@ -13,6 +13,8 @@
 		"paths": {
 			"~/*": ["app/*"],
 			"@/*": ["./*"]
-		}
-	}
+		},
+		"rootDirs": [".", ".vite"]
+	},
+	"exclude": ["node_modules", ".vite"]
 }

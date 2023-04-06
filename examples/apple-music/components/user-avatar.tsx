@@ -22,6 +22,7 @@ export async function UserAvatar() {
 				</SignInButton>
 			</div>
 		);
+
 	return (
 		<>
 			<div className="ml-auto mr-4">

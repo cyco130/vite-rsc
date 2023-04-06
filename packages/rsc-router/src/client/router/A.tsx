@@ -1,9 +1,10 @@
 "use client";
 
-import React, { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
+import { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
 import { useRouter } from "./useRouter";
+import { LinkFn } from "./link";
 
-export default function A({
+export const A: LinkFn = function A({
 	href,
 	activeProps = {},
 	...props
@@ -16,7 +17,8 @@ export default function A({
 } & DetailedHTMLProps<
 	AnchorHTMLAttributes<HTMLAnchorElement>,
 	HTMLAnchorElement
->) {
+> &
+	any) {
 	const router = useRouter();
 	const isActive = router.url === href;
 	return (
@@ -31,4 +33,4 @@ export default function A({
 			{...(isActive ? activeProps : {})}
 		/>
 	);
-}
+};
