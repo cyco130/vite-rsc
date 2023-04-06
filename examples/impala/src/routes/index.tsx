@@ -3,9 +3,12 @@ import { App } from "../App";
 import logo from "../assets/impala.png";
 import "./index.css";
 import { Button } from "../components/button";
-export default function Hello({ path }: StaticRouteProps) {
+export default function Hello({
+	path,
+	assets,
+}: StaticRouteProps & { assets?: Array<string> }) {
 	return (
-		<App title="Home">
+		<App title="Home" assets={assets}>
 			<div className="App">
 				<div>
 					<img src={logo} alt="Impala Logo" className="logo" />

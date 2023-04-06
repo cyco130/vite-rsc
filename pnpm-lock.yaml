@@ -395,8 +395,8 @@ importers:
   examples/impala:
     dependencies:
       '@impalajs/core':
-        specifier: ^0.0.7
-        version: 0.0.7(vite@4.2.1)
+        specifier: ^0.0.9
+        version: 0.0.9(vite@4.2.1)
       react:
         specifier: 18.3.0-next-8310854ce-20230331
         version: 18.3.0-next-8310854ce-20230331
@@ -1790,8 +1790,8 @@ packages:
       - supports-color
     dev: true
 
-  /@impalajs/core@0.0.7(vite@4.2.1):
-    resolution: {integrity: sha512-EBmY2QGP5fyjAw5cfKj60PifDeb1QKW8BaJPAPEA9vn653WjdQxrCC8c+tYFWRcelhy0xcq1Bp3NwUUMgdX6Og==}
+  /@impalajs/core@0.0.9(vite@4.2.1):
+    resolution: {integrity: sha512-oXxFiZvVSM6+Dsml2wfT+yMDAX289yZ2nh7WLguLVANMz/NJVEVZuKLV9hSU8Dhaqjiv9fGxMGLaMQwrUGpD4Q==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:

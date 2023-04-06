@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@impalajs/core": "^0.0.7",
+    "@impalajs/core": "^0.0.9",
     "react": "18.3.0-next-8310854ce-20230331",
     "react-dom": "18.3.0-next-8310854ce-20230331",
     "rsc-router": "workspace:^0.0.1"

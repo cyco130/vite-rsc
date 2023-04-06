@@ -52,13 +52,17 @@ globalThis.moduleCache = globalThis.moduleCache ?? new Map<string, any>();
 export async function render(
 	context: Context,
 	mod: () => Promise<RouteModule<ElementType>>,
-	bootstrapModules?: Array<string>,
+	bootstrapModules: Array<string> = [],
 ) {
 	const clientManifestPath = join(
 		process.cwd(),
 		"dist",
 		"static",
 		"manifest.json",
+	);
+
+	context.assets = Array.from(new Set(context.assets)).map(
+		(asset) => `/${asset}`,
 	);
 
 	if (!existsSync(clientManifestPath)) {
@@ -91,9 +95,11 @@ export async function render(
 	};
 
 	const { default: Page } = await mod();
-
 	const htmlStream = await renderToHTMLStream(<Page {...context} />, {
-		bootstrapModules: [`/${clientManifest["src/entry-client.tsx"].file}`],
+		bootstrapModules: [
+			...bootstrapModules,
+			`/${clientManifest["src/entry-client.tsx"].file}`,
+		],
 		bootstrapScriptContent: `window.___CONTEXT=${JSON.stringify(context)};`,
 		clientModuleMap: bundlerConfig,
 	});

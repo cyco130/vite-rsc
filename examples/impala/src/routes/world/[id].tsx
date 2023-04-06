@@ -5,9 +5,12 @@ export default function Hello({
 	path,
 	params,
 	data,
-}: DynamicRouteProps<typeof import("./[id].data")>) {
+	assets,
+}: DynamicRouteProps<typeof import("./[id].data")> & {
+	assets?: Array<string>;
+}) {
 	return (
-		<App>
+		<App assets={assets}>
 			<meta name="description" content={data.description || "A page"} />
 			<title>{data.title || "Hello"}</title>
 			<div>
