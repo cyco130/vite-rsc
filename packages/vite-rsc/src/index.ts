@@ -6,7 +6,7 @@ import { hasRscQuery, addRscQuery, removeRscQuery } from "./utils";
 
 export function reactServerComponents(): Plugin {
 	let root: string;
-
+	let isBuild = false;
 	return {
 		name: "react-server-components",
 
@@ -14,6 +14,7 @@ export function reactServerComponents(): Plugin {
 
 		configResolved(config) {
 			root = config.root;
+			isBuild = config.command === "build";
 		},
 
 		async resolveId(id, importer, options) {
@@ -60,12 +61,13 @@ export function reactServerComponents(): Plugin {
 		transform(code, id, options) {
 			if (!options?.ssr || !hasRscQuery(id)) return;
 
-			// Emit the non-rsc version of the module as a chunk
-			this.emitFile({
-				type: "chunk",
-				id: removeRscQuery(id),
-			});
-
+			if (isBuild) {
+				// Emit the non-rsc version of the module as a chunk
+				this.emitFile({
+					type: "chunk",
+					id: removeRscQuery(id),
+				});
+			}
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this;
 

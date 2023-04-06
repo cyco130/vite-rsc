@@ -5,6 +5,7 @@ import consumers from "node:stream/consumers";
 import { join, relative } from "node:path";
 import type { Manifest } from "vite";
 import { promises as fs, existsSync } from "node:fs";
+import { renderDev } from "./dev";
 
 declare global {
 	var moduleCache: Map<string, any>;
@@ -27,7 +28,7 @@ export const dataModules = import.meta.glob<DataModule>(
 	},
 );
 
-export const bundlerConfig: BundleMap = new Proxy(
+const bundlerConfig: BundleMap = new Proxy(
 	{},
 	{
 		get(_, prop) {
@@ -54,6 +55,10 @@ export async function render(
 	mod: () => Promise<RouteModule<ElementType>>,
 	bootstrapModules: Array<string> = [],
 ) {
+	if (import.meta.env.DEV) {
+		return renderDev(context, mod, bootstrapModules);
+	}
+
 	const clientManifestPath = join(
 		process.cwd(),
 		"dist",
