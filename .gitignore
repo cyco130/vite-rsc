@@ -132,3 +132,6 @@ dist
 
 # Packed packages
 *.tgz
+
+# Local Netlify folder
+.netlify

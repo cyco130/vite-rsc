@@ -54,8 +54,22 @@ export async function render(
 	mod: () => Promise<RouteModule<ElementType>>,
 	bootstrapModules?: Array<string>,
 ) {
-	const serverDist = join(process.cwd(), "dist/server");
+	const clientManifestPath = join(
+		process.cwd(),
+		"dist",
+		"static",
+		"manifest.json",
+	);
 
+	if (!existsSync(clientManifestPath)) {
+		throw new Error("Client manifest not found. Did you do a client build?");
+	}
+
+	const clientManifest: Manifest = JSON.parse(
+		await fs.readFile(clientManifestPath, "utf-8"),
+	);
+
+	const serverDist = join(process.cwd(), "dist", "server");
 	const serverManifestPath = join(serverDist, "manifest.json");
 
 	if (!existsSync(serverManifestPath)) {
@@ -67,7 +81,7 @@ export async function render(
 	);
 
 	globalThis.__webpack_chunk_load__ = async (chunk: string) => {
-		console.log("Loading chunk", chunk, serverManifest[chunk]?.file);
+		console.log("Loading chunk", chunk);
 		globalThis.moduleCache.set(
 			chunk,
 			await import(
@@ -79,7 +93,8 @@ export async function render(
 	const { default: Page } = await mod();
 
 	const htmlStream = await renderToHTMLStream(<Page {...context} />, {
-		bootstrapModules,
+		bootstrapModules: [`/${clientManifest["src/entry-client.tsx"].file}`],
+		bootstrapScriptContent: `window.___CONTEXT=${JSON.stringify(context)};`,
 		clientModuleMap: bundlerConfig,
 	});
 

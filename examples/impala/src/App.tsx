@@ -15,7 +15,7 @@ export const App: React.FC<React.PropsWithChildren<AppProps>> = ({
 				{title ? <title>{title}</title> : null}
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
-			{children}
+			<body>{children}</body>
 		</html>
 	);
 };
