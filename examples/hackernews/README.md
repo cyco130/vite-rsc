@@ -1,4 +1,4 @@
-# Vite RSC Counter Demo
+# Vite RSC Hackernews Demo
 
 ## How to run
 
