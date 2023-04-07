@@ -11,7 +11,6 @@ function prettyPrintRoutes(routes: any, tabs = 0) {
 		const gap = Array.from({ length: tabs })
 			.map(() => "  ")
 			.join("");
-		console.log(gap, r.path ?? "/");
 		if (r.children) {
 			prettyPrintRoutes(r.children, tabs + 1);
 		}
@@ -248,14 +247,9 @@ function generateTypes(
 	outDir: string,
 	manifest: RouteManifest,
 ) {
-	console.log(outDir);
-
 	routes.forEach((r: any) => {
 		generateTypeForRoute(r, rootDir, outDir, manifest);
 	});
-	// if (fs.existsSync(outDir)) {
-	// 	fs.rmSync(outDir, { recursive: true });
-	// }
 }
 
 export function createFileSystemRoutes(rootDir: string) {
@@ -277,6 +271,5 @@ export function createFileSystemRoutes(rootDir: string) {
 		rootDir.replace(/\/app$/, "/.vite/app"),
 		routeManifest,
 	);
-	console.log(routes);
 	return routes;
 }

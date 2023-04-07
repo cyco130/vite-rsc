@@ -246,7 +246,6 @@ export async function createMutationStreamResponse(
 ) {
 	try {
 		const result = await action(...args);
-		console.log(result);
 
 		return new Response(
 			renderToRSCStream(element, renderOptions.clientModuleMap, {}),

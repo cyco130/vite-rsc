@@ -429,7 +429,6 @@ export function isSegmentSeparator(checkChar: string | undefined) {
 function getParentRouteIds(
 	routeIds: string[],
 ): Record<string, string | undefined> {
-	console.log(routeIds);
 	return routeIds.reduce<Record<string, string | undefined>>(
 		(parentRouteIds, childRouteId) => ({
 			...parentRouteIds,

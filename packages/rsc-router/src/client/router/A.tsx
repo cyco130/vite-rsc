@@ -21,7 +21,6 @@ export const A: LinkFn<{}> = function A({
 	const router = useRouter();
 	const href = props.href ?? interpolatePath(props.to, props.params);
 	const isActive = router.url === href;
-	console.log(isActive);
 	return (
 		<a
 			href={href}

@@ -118,7 +118,6 @@ export default function Router({
 		return addMutationListener((val) => {
 			if (enabledRef.current)
 				startTransition(() => {
-					console.log("rerendering");
 					initialState.cache.set(initialState.url, val);
 					renrender();
 				});
