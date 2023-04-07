@@ -1,6 +1,6 @@
-import { InlineStyles } from "rsc-router/server";
+import { InlineStyles } from "flight-router/server";
 import { LayoutProps } from "./(layout).types";
-import { A } from "rsc-router";
+import { A } from "flight-router";
 
 function Nav() {
 	return (

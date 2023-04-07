@@ -1,5 +1,5 @@
-import { PageProps } from "rsc-router";
-import { createRouter, InlineStyles } from "rsc-router/server";
+import { PageProps } from "flight-router";
+import { createRouter, InlineStyles } from "flight-router/server";
 import { Suspense } from "react";
 import HomePage from "./home";
 import { AppleMusicDemo } from "./apple-music-demo";

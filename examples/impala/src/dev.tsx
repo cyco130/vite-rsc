@@ -1,7 +1,7 @@
 import type { ElementType } from "react";
 import { Context, RouteModule } from "@impalajs/core";
-import { ModuleMap, renderToHTMLStream } from "rsc-router/streams";
-import { createModuleMapProxy, setupWebpackEnv } from "rsc-router/webpack";
+import { ModuleMap, renderToHTMLStream } from "flight-router/streams";
+import { createModuleMapProxy, setupWebpackEnv } from "flight-router/webpack";
 import consumers from "node:stream/consumers";
 
 export async function renderDev(

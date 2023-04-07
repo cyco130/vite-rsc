@@ -1,5 +1,5 @@
 #!/bin/bash
-PACKAGES="vite-rsc vite-react-server vite-devtools rsc-router @vite-rsc/*"
+PACKAGES="vite-rsc vite-react-server vite-devtools flight-router @vite-rsc/*"
 
 WHITE='\033[1;37m'
 GREEN='\033[0;32m'

@@ -24,7 +24,7 @@ const rootLayoutTemplate = (
 	path: any,
 	fileName: any,
 ) => `
-import { TypedRouter, TypedRootRoute, TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "rsc-router";
+import { TypedRouter, TypedRootRoute, TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "flight-router";
 ${paths
 	.map(
 		([c, bool], i) =>
@@ -51,7 +51,7 @@ export type LayoutProps = {
 
 export type LayoutConfig = TypedRouteOptions<RootRoute, "/">;
 
-declare module "rsc-router" {
+declare module "flight-router" {
 	interface Register {
 		router: TypedRouter<routeWithChildren>;
 	}
@@ -65,7 +65,7 @@ const layoutTemplate = (
 	path: any,
 	fileName: any,
 	parentFilename: any,
-) => `import { TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "rsc-router";
+) => `import { TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "flight-router";
 ${paths
 	.map(
 		([c, bool], i) =>
@@ -100,7 +100,7 @@ const pageTemplate = (
 	parentFileName: string,
 ) => `import * as page from "./${fileName}";
 import type { route as parentRoute } from "./${parentFileName}.types";
-import { TypedRouteModule, TypedRouteOptions } from "rsc-router";
+import { TypedRouteModule, TypedRouteOptions } from "flight-router";
 
 export type route = TypedRouteModule<parentRoute, "${path}", typeof page>;
 

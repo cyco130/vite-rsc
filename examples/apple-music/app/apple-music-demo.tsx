@@ -44,7 +44,7 @@ import {
 	User,
 } from "lucide-react";
 import { Link } from "@/components/link";
-import { A } from "rsc-router";
+import { A } from "flight-router";
 
 const playlists = [
 	"Recently Added",

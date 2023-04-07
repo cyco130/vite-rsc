@@ -1,6 +1,7 @@
 import { increment, getCount } from "./api";
-import { InlineStyles } from "rsc-router/server";
-import { ErrorBoundary, ResetButton, Form } from "rsc-router";
+import { InlineStyles } from "flight-router/dev";
+import { Form } from "stream-react/form";
+import { ErrorBoundary, ResetButton } from "stream-react/error-boundary";
 
 async function Counter() {
 	return (

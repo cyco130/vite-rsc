@@ -1,5 +1,5 @@
 {
-  "name": "rsc-router",
+  "name": "flight-router",
   "version": "0.0.1",
   "type": "module",
   "files": [
@@ -11,7 +11,7 @@
     "./streams": "./src/server/streams.tsx",
     "./webpack": "./src/server/webpack.ts",
     "./entry-client": "./src/entry-client.ts",
-    "./server": "./src/server/server.ts",
+    "./server": "./src/server/index.ts",
     "./dev": "./src/server/dev/index.ts",
     "./client/entry": "./src/client/entry.tsx",
     "./server/entry": "./src/server/entry.tsx",
@@ -25,7 +25,7 @@
         "./src/client/index.ts"
       ],
       "server": [
-        "./src/server/server.ts"
+        "./src/server/index.ts"
       ],
       "dev": [
         "./src/server/dev/index.ts"

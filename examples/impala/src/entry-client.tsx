@@ -1,4 +1,4 @@
-import { mount } from "rsc-router/client/entry";
+import { mount } from "flight-router/client/entry";
 
 // Load the route modules as RSC and export for impala
 

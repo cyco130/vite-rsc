@@ -13,7 +13,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { A } from "rsc-router";
+import { A } from "flight-router";
 
 interface MainNavProps {
 	items?: NavItem[];

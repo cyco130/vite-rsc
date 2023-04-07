@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { LinkTag } from "./components/LinkTag";
-import { InlineStyles, ReactRefreshScript } from "rsc-router/dev";
+import { InlineStyles, ReactRefreshScript } from "flight-router/dev";
 
 interface AppProps {
 	title?: string;

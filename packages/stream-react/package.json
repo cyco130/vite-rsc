@@ -10,6 +10,8 @@
     "./entry-server": "./src/entry-server.ts",
     "./webpack": "./src/server/webpack.ts",
     "./mutation": "./src/client/mutation.ts",
+    "./form": "./src/client/form/index.ts",
+    "./error-boundary": "./src/client/error-boundary.tsx",
     "./entry-client": "./src/entry-client.ts",
     "./server": "./src/server/server.ts",
     "./dev": "./src/server/dev/index.ts",
@@ -48,6 +50,12 @@
       ],
       "mutation": [
         "./src/client/mutation.ts"
+      ],
+      "error-boundary": [
+        "./src/client/error-boundary.ts"
+      ],
+      "form": [
+        "./src/client/form/index.ts"
       ],
       "router": [
         "./src/client/router/index.ts"

@@ -1,10 +1,10 @@
 import Counter from "./Counter";
 import { increment, getCount } from "./api";
-import { component, InlineStyles, request } from "rsc-router/server";
+import { component, InlineStyles, request } from "flight-router/server";
 import { getSession } from "rsc-auth";
 import { SignInButton, SignOutButton } from "rsc-auth/components";
 import { authOptions } from "./auth";
-import { ErrorBoundary, ResetButton } from "rsc-router";
+import { ErrorBoundary, ResetButton } from "flight-router";
 
 const Profile = component(async function Profile() {
 	const user = await getSession(request(), authOptions);

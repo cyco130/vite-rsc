@@ -1,4 +1,4 @@
-import { InlineStyles, ReactRefreshScript } from "rsc-router/server";
+import { InlineStyles, ReactRefreshScript } from "flight-router/server";
 import { AppleMusicDemo } from "../apple-music-demo";
 import { LayoutConfig, LayoutProps } from "./(layout).types";
 

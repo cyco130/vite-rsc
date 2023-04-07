@@ -1,6 +1,6 @@
 import "./root.css";
-import { createRouter } from "rsc-router/server";
-import { createFileSystemRoutes } from "rsc-router/fs";
+import { createRouter } from "flight-router/server";
+import { createFileSystemRoutes } from "flight-router/fs";
 import path from "path";
 import { fileURLToPath } from "url";
 

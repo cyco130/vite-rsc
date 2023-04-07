@@ -1,5 +1,5 @@
-import type { PageProps } from "rsc-router";
-import { component } from "rsc-router/server";
+import type { PageProps } from "flight-router";
+import { component } from "flight-router/server";
 import { Suspense } from "react";
 import Search from "./Search";
 

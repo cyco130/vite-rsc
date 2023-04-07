@@ -1,4 +1,4 @@
-import { A } from "rsc-router";
+import { A } from "flight-router";
 import { PageProps } from "./[id].types";
 import fetchAPI from "~/api";
 import Comment from "~/components/comment";

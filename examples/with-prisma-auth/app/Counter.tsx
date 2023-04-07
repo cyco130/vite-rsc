@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "rsc-router";
-import { useMutation } from "rsc-router";
+import { useRouter } from "flight-router";
+import { useMutation } from "flight-router";
 
 export default function Counter({
 	count = 0,

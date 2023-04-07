@@ -1,6 +1,6 @@
 "use client";
 
-import { A, createRouter, PageProps } from "rsc-router";
+import { A, createRouter, PageProps } from "flight-router";
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
 

@@ -16,7 +16,7 @@
     "react-error-boundary": "^4.0.3",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
     "rsc-auth": "workspace:^0.0.1",
-    "rsc-router": "^0.0.1"
+    "flight-router": "^0.0.1"
   },
   "devDependencies": {
     "@hattip/adapter-node": "^0.0.33",

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { getCount, increment } from "../actions";
-import { A, Form } from "rsc-router";
+import { A, Form } from "flight-router";
 import FormDemo from "../form";
 
 export default async function Browse() {

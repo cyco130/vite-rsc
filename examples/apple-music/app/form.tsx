@@ -5,7 +5,7 @@ import * as Form from "@radix-ui/react-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useSubmitForm } from "rsc-router";
+import { useSubmitForm } from "flight-router";
 
 export const FormDemo = ({ children }: { children: React.ReactNode }) => {
 	const submitForm = useSubmitForm();

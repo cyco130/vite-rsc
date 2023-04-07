@@ -3,7 +3,7 @@ import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
-import { A } from "rsc-router";
+import { A } from "flight-router";
 
 export function SiteHeader() {
 	return (

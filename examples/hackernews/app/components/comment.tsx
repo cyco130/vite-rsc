@@ -1,4 +1,4 @@
-import { A } from "rsc-router";
+import { A } from "flight-router";
 import Toggle from "./toggle";
 import { IComment } from "~/types";
 

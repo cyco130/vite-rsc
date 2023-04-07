@@ -1,4 +1,4 @@
-import { A } from "rsc-router";
+import { A } from "flight-router";
 import { IStory } from "~/types";
 
 function Story(props: { story: IStory }) {

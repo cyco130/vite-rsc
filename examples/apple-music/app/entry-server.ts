@@ -1,4 +1,4 @@
-import { createReactServerHandler } from "rsc-router/server";
+import { createReactServerHandler } from "flight-router/server";
 import { authOptions } from "../lib/auth";
 import { handleAuthRequest } from "rsc-auth";
 

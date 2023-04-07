@@ -1,7 +1,7 @@
 "use server";
 
 import { getSession } from "rsc-auth";
-import { request } from "rsc-router/server";
+import { request } from "flight-router/server";
 import { authOptions } from "./auth";
 import db from "./db";
 

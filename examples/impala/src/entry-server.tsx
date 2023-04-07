@@ -1,12 +1,12 @@
 import { ElementType } from "react";
 import { Context, RouteModule, DataModule } from "@impalajs/core";
-import { ModuleMap, renderToHTMLStream } from "rsc-router/streams";
+import { ModuleMap, renderToHTMLStream } from "flight-router/streams";
 import consumers from "node:stream/consumers";
 import { join, relative } from "node:path";
 import type { Manifest } from "vite";
 import { promises as fs, existsSync } from "node:fs";
 import { renderDev } from "./dev";
-import { createModuleMapProxy, setupWebpackEnv } from "rsc-router/webpack";
+import { createModuleMapProxy, setupWebpackEnv } from "flight-router/webpack";
 import { findAssetsInManifest } from "./manifest";
 
 // Load the route modules as RSC and export for impala

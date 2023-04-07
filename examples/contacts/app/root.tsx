@@ -1,5 +1,5 @@
-import { InlineStyles, createRouter } from "rsc-router/server";
-import { A, PageProps } from "rsc-router";
+import { InlineStyles, createRouter } from "flight-router/server";
+import { A, PageProps } from "flight-router";
 import { getContacts, getContact, Contact } from "./contacts";
 import "./root.css";
 

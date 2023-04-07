@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "rsc-router";
+import { useRouter } from "flight-router";
 import { useTransition } from "react";
 
 export default function Search({ initialSearch }: { initialSearch: string }) {

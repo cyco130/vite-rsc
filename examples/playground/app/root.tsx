@@ -1,7 +1,7 @@
 import { SearchPage } from "./SearchPage";
 import { Suspense } from "react";
-import { A, createRouter, PageProps } from "rsc-router";
-import { InlineStyles } from "rsc-router/server";
+import { A, createRouter, PageProps } from "flight-router";
+import { InlineStyles } from "flight-router/server";
 
 const InfiniteChildren: any = async ({ level = 0 }) => {
 	await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -37,7 +37,7 @@ function config() {
 				},
 				ssr: {
 					external: ["react-server-dom-webpack"],
-					noExternal: ["rsc-router", "stream-react"],
+					noExternal: ["flight-router", "stream-react"],
 				},
 			};
 		},
@@ -53,17 +53,18 @@ export function react({
 } = {}) {
 	return [
 		{
-			name: "rsc-router",
+			name: "flight-router",
 			resolveId(src) {
 				if (src === "/app/entry-client") {
-					return "/app/entry-client";
+					return "/app/entry-client.tsx";
 				}
 			},
 			load(src) {
-				if (src === "/app/entry-client") {
+				if (src === "/app/entry-client.tsx") {
 					return `
-						import { mount } from "stream-router/client/entry";
-						mount();
+						import { mount, BaseRouter } from "stream-react/web/entry";
+						import React from "react";
+						mount(<BaseRouter />);
 					`;
 				}
 			},
@@ -79,7 +80,6 @@ export function react({
 			? hattip({
 					clientConfig: {},
 					hattipEntry: serverEntry,
-					
 			  })
 			: exposeDevServer(),
 		reactServerComponents(),
