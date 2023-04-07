@@ -4,12 +4,12 @@ import {
 	matchRoutes,
 	RouteManifest,
 	RouteMatch,
-} from "./utils";
-import { createLocation, createPath } from "../../path";
-import Router from "./Router";
+} from "../client/router/utils";
+import { createLocation, createPath } from "../path";
+import Router from "../web/base-router";
 import React from "react";
-import { PageProps } from "../../types";
-import { InlineStyles } from "../../server/server";
+import { PageProps } from "../types";
+import { InlineStyles } from ".";
 
 function renderMatches(
 	matches: RouteMatch[],

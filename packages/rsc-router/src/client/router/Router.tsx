@@ -1,7 +1,7 @@
 "use client";
 
 import { createBrowserHistory, createMemoryHistory, createPath } from "history";
-import React, {
+import {
 	startTransition,
 	use,
 	useEffect,
@@ -11,15 +11,13 @@ import React, {
 	useRef,
 	useState,
 } from "react";
-import { RouterContext } from "./useRouter";
+import * as React from "react";
+import { RouterContext } from "../../shared/useRouter";
 import { RedirectBoundary } from "./RedirectBoundary";
-import {
-	addMutationListener,
-	createElementFromRSCFetch,
-	mutate,
-	refreshRSC,
-	useRerender,
-} from "../streams";
+import { createElementFromRSCFetch } from "../stream";
+import { refresh } from "../refresh";
+import { addMutationListener } from "../mutation";
+import { useRerender } from "../hooks";
 
 type RouterState = {
 	url: string;
@@ -28,7 +26,7 @@ type RouterState = {
 
 type RouterAction = { type: "navigate"; url: string };
 
-function reducer(state: RouterState, action: RouterAction) {
+function clientReducer(state: RouterState, action: RouterAction) {
 	switch (action.type) {
 		case "navigate":
 			if (!state.cache.has(action.url)) {
@@ -39,6 +37,12 @@ function reducer(state: RouterState, action: RouterAction) {
 			return state;
 	}
 }
+
+function serverReducer(state: RouterState, action: RouterAction) {
+	return state;
+}
+
+const reducer = typeof window === "undefined" ? serverReducer : clientReducer;
 
 // Main Router component, should be rendered with the initial request during SSR
 // and hydrated on the client. But because it's meant to be a nested router, after
@@ -80,8 +84,8 @@ export default function Router({
 				history.replace(url, state);
 				startTransition(() => dispatch({ type: "navigate", url }));
 			},
-			mutate: mutate,
-			refresh: refreshRSC,
+			mutate: globalThis.mutate,
+			refresh: refresh,
 			history,
 			cache,
 			disable() {

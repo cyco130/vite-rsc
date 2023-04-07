@@ -8,4 +8,8 @@ export default defineConfig([
 		target: "node14",
 		dts: true,
 	},
+	{
+		entry: ["./src/cli.ts"],
+		format: ["cjs"],
+	},
 ]);

@@ -1,8 +1,12 @@
 "use client";
 
 import React, { Component, startTransition, useEffect } from "react";
-import { getURLFromRedirectError, isRedirectError } from "./redirect";
-import { RouterAPI, useRouter } from "./useRouter";
+import {
+	getURLFromRedirectError,
+	isRedirectError,
+} from "../../shared/redirect";
+import { useRouter } from "../../shared/useRouter";
+import { RouterAPI } from "./router-api";
 
 interface RedirectBoundaryProps {
 	router: RouterAPI;

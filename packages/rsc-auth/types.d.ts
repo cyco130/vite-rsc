@@ -1,6 +1,12 @@
 type ModuleSpec = {};
-type ModuleMap = { [key: string]: ModuleSpec };
-
+export interface ModuleMap {
+	[key: string]: {
+		id: string;
+		chunks: string[];
+		name: string;
+		async?: boolean;
+	};
+}
 declare module "react-server-dom-webpack/server.edge" {
 	function renderToReadableStream(
 		element: React.ReactElement,

@@ -1,9 +1,12 @@
-export function setupWebpackEnv() {
+export function setupWebpackEnv(
+	load: (chunk: string) => Promise<any> = async (chunk) =>
+		await import(/* @vite-ignore */ chunk),
+) {
 	const cache = new Map<string, any>();
 
 	(globalThis as any).__webpack_chunk_load__ = async (chunk: string) => {
 		console.log("Loading chunk", chunk);
-		cache.set(chunk, await import(/* @vite-ignore */ chunk));
+		cache.set(chunk, await load(chunk));
 	};
 
 	(globalThis as any).__webpack_require__ = (id: string) => {

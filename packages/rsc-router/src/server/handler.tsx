@@ -1,14 +1,14 @@
 import { createRouter, Router } from "@hattip/router";
 import React from "react";
-import { getURLFromRedirectError, isRedirectError } from "../client";
-import { asyncLocalStorage } from "./async-storage";
+import { getURLFromRedirectError, isRedirectError } from "../shared/redirect";
+import { requestAsyncContext } from "./async-storage";
 import {
 	createHTMLStreamResponse,
 	createRSCStreamResponse,
 	createActionStreamResponse,
-	createMutationStreamResponse,
 	decodeServerFunctionArgs,
 } from "./streams";
+import { RenderToReadableStreamOptions } from "react-dom/server.edge";
 
 export async function handleActionRequest(
 	request: Request,
@@ -38,14 +38,15 @@ export async function handleActionRequest(
 	}
 
 	const [filePath, name] = actionId.split("#");
-	const action = (await import(/* @vite-ignore */ filePath))[name];
+
+	const action = (await __webpack_chunk_get__(filePath))[name];
 
 	const isMutating = request.headers.get("x-mutation") === "1";
 
 	// if it's a mutation, either plain action, or form, we return a RSC response
 	// for the next page the user needs to visit, (could be the same page too)
 	if (isMutating) {
-		return asyncLocalStorage.run({ request }, async () => {
+		return requestAsyncContext.run({ request }, async () => {
 			try {
 				await action(...data);
 				const url = new URL(request.url);
@@ -83,7 +84,7 @@ export async function handleActionRequest(
 	} else if (isForm) {
 		const url = new URL(request.url);
 
-		return asyncLocalStorage.run({ request }, async () => {
+		return requestAsyncContext.run({ request }, async () => {
 			return createHTMLStreamResponse(
 				<Root
 					url={url.href}
@@ -106,15 +107,14 @@ export async function handlePageRequest(
 	RootComponent: React.ComponentType<any>,
 	{
 		clientModuleMap,
-		clientEntry,
+		...renderOptions
 	}: {
 		clientModuleMap: ModuleMap;
-		clientEntry: string;
-	},
+	} & RenderToReadableStreamOptions,
 ) {
 	const url = new URL(request.url);
 
-	return asyncLocalStorage.run(
+	return requestAsyncContext.run(
 		{ request },
 		async () =>
 			await createHTMLStreamResponse(
@@ -126,7 +126,7 @@ export async function handlePageRequest(
 				/>,
 				{
 					clientModuleMap,
-					bootstrapModules: [clientEntry],
+					...renderOptions,
 				},
 			),
 	);
@@ -138,7 +138,7 @@ export async function handleRSCRequest(
 	{ clientModuleMap }: { clientModuleMap: any },
 ) {
 	const url = new URL(request.headers.get("x-navigate") ?? "/", request.url);
-	return asyncLocalStorage.run({ request }, () =>
+	return requestAsyncContext.run({ request }, () =>
 		createRSCStreamResponse(
 			<Root
 				url={url.href}
@@ -157,13 +157,13 @@ export function createServerRouter(
 	Root: any,
 	{
 		clientModuleMap,
-		clientEntry,
 		apiRoutes,
+
+		...renderOptions
 	}: {
 		clientModuleMap: any;
-		clientEntry: string;
 		apiRoutes: (router: any) => void;
-	},
+	} & RenderToReadableStreamOptions,
 ): Router {
 	const router = createRouter();
 
@@ -186,7 +186,7 @@ export function createServerRouter(
 		}
 
 		return await handlePageRequest(context.request, Root, {
-			clientEntry,
+			...renderOptions,
 			clientModuleMap,
 		});
 	});

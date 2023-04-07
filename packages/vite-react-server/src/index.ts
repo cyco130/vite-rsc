@@ -4,11 +4,30 @@ import type { Plugin } from "vite";
 import path from "node:path";
 import inspect from "vite-plugin-inspect";
 import { tsconfigPaths } from "vite-rsc/tsconfig-paths";
+import { exposeDevServer } from "./vite-dev-server";
+import reactRefresh from "@vitejs/plugin-react";
 function config() {
 	return {
 		name: "vite-react-server-config",
-		config(c) {
-			const root = c.root ?? process.cwd();
+		config(config, env) {
+			config.build ||= {};
+			config.build.manifest = true;
+
+			if (env.ssrBuild) {
+				if (config.build.ssr === true) {
+					config.build.rollupOptions ||= {};
+					config.build.rollupOptions.input = "/app/entry-server";
+				}
+				config.build.outDir ||= "dist/server";
+				config.build.ssrEmitAssets = true;
+			} else {
+				config.build.outDir ||= "dist/static";
+				config.build.ssrManifest = true;
+				config.build.rollupOptions ||= {};
+				config.build.rollupOptions.input ||= "/app/entry-client";
+			}
+
+			const root = config.root ?? process.cwd();
 			return {
 				resolve: {
 					alias: {
@@ -18,7 +37,7 @@ function config() {
 				},
 				ssr: {
 					external: ["react-server-dom-webpack"],
-					noExternal: ["rsc-router"],
+					noExternal: ["rsc-router", "stream-react"],
 				},
 			};
 		},
@@ -28,8 +47,9 @@ function config() {
 export function react({
 	server = true,
 	inspect: _inspect = true,
+	reactRefresh: _reactRefresh = false,
 	tsconfigPaths: _tsconfigPaths = true,
-	serverEntry = "rsc-router/entry-server",
+	serverEntry = "stream-react/entry-server",
 } = {}) {
 	return [
 		{
@@ -42,7 +62,7 @@ export function react({
 			load(src) {
 				if (src === "/app/entry-client") {
 					return `
-						import { mount } from "rsc-router/client/entry";
+						import { mount } from "stream-router/client/entry";
 						mount();
 					`;
 				}
@@ -50,12 +70,18 @@ export function react({
 		} satisfies Plugin,
 		_tsconfigPaths && tsconfigPaths(),
 		config(),
-		_inspect && inspect(),
-		server &&
-			hattip({
-				clientConfig: {},
-				hattipEntry: serverEntry,
+		_inspect &&
+			inspect({
+				build: true,
 			}),
+		_reactRefresh && reactRefresh(),
+		server
+			? hattip({
+					clientConfig: {},
+					hattipEntry: serverEntry,
+					
+			  })
+			: exposeDevServer(),
 		reactServerComponents(),
 	];
 }

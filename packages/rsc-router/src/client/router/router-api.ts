@@ -1,5 +1,5 @@
 import { History } from "history";
-import { createContext, Thenable, use, useContext } from "react";
+import { Thenable } from "react";
 
 export interface RouterAPI {
 	push: (path: string, state?: any) => void;
@@ -11,10 +11,4 @@ export interface RouterAPI {
 	url: string;
 	enable(): void;
 	disable(): void;
-}
-
-export const RouterContext = createContext<RouterAPI>({} as RouterAPI);
-
-export function useRouter() {
-	return useContext(RouterContext);
 }

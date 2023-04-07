@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "./useRouter";
+import { useRouter } from "../../shared/useRouter";
 import { useCallback, useState } from "react";
 
 export const useMutation = () => {

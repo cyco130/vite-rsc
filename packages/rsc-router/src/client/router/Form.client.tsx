@@ -1,6 +1,6 @@
 "use client";
 
-import { useSubmitForm } from "../streams";
+import { useSubmitForm } from "../form";
 import React from "react";
 
 export function ClientForm({ ...props }: React.ComponentProps<"form">) {

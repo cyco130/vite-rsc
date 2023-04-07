@@ -148,15 +148,6 @@ function bufferedTransformStream(): ReadableWritablePair<
 	});
 }
 
-export interface ModuleMap {
-	[key: string]: {
-		id: string;
-		chunks: string[];
-		name: string;
-		async?: boolean;
-	};
-}
-
 /**
  * Renders a React element to a ReadableStream of HTML. It first renders the
  * element to a ReadableStream of RSC, and then uses the RSC stream to render

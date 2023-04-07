@@ -2,8 +2,8 @@
 
 import React, { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
 import { useRouter } from "./useRouter";
-import { LinkFn } from "./link";
-import { interpolatePath } from "./types";
+import { LinkFn } from "../client/router/link";
+import { interpolatePath } from "../client/router/types";
 
 export const A: LinkFn<{}> = function A({
 	activeProps = {},

@@ -1,17 +1,13 @@
 import { ElementType } from "react";
 import { Context, RouteModule, DataModule } from "@impalajs/core";
-import { BundleMap, renderToHTMLStream } from "rsc-router/streams";
+import { ModuleMap, renderToHTMLStream } from "rsc-router/streams";
 import consumers from "node:stream/consumers";
 import { join, relative } from "node:path";
 import type { Manifest } from "vite";
 import { promises as fs, existsSync } from "node:fs";
 import { renderDev } from "./dev";
-
-declare global {
-	var moduleCache: Map<string, any>;
-	function __webpack_require__(id: string): any;
-	function __webpack_chunk_load__(id: string): any;
-}
+import { createModuleMapProxy, setupWebpackEnv } from "rsc-router/webpack";
+import { findAssetsInManifest } from "./manifest";
 
 // Load the route modules as RSC and export for impala
 export const routeModules = import.meta.glob<RouteModule>(
@@ -27,28 +23,6 @@ export const dataModules = import.meta.glob<DataModule>(
 		query: { rsc: "" },
 	},
 );
-
-const bundlerConfig: BundleMap = new Proxy(
-	{},
-	{
-		get(_, prop) {
-			const [id, name] = String(prop).split("#", 2);
-			return {
-				id,
-				chunks: [id],
-				name,
-			};
-		},
-	},
-);
-
-globalThis.__webpack_require__ = (id: string) => {
-	if (!globalThis.moduleCache.has(id))
-		throw new Error(`Module ${id} not found`);
-	return globalThis.moduleCache.get(id);
-};
-
-globalThis.moduleCache = globalThis.moduleCache ?? new Map<string, any>();
 
 export async function render(
 	context: Context,
@@ -89,24 +63,35 @@ export async function render(
 		await fs.readFile(serverManifestPath, "utf-8"),
 	);
 
-	globalThis.__webpack_chunk_load__ = async (chunk: string) => {
-		console.log("Loading chunk", chunk);
-		globalThis.moduleCache.set(
-			chunk,
-			await import(
-				join(serverDist, serverManifest[relative(process.cwd(), chunk)]?.file)
-			),
+	setupWebpackEnv((chunk: string) => {
+		let filePath = join(
+			serverDist,
+			serverManifest[relative(process.cwd(), chunk)]?.file,
 		);
-	};
+		return import(/* @vite-ignore */ filePath);
+	});
+
+	const clientModuleMap = createModuleMapProxy();
 
 	const { default: Page } = await mod();
+
+	context.assets = findAssetsInManifest(
+		serverManifest,
+		context.chunk.replace("./", "src/"),
+	)
+		.filter((asset) => !asset.endsWith(".js"))
+		.map((asset) => `/${asset}`);
+
+	context.root = process.cwd();
+	context.manifest = clientManifest;
+
 	const htmlStream = await renderToHTMLStream(<Page {...context} />, {
 		bootstrapModules: [
 			...bootstrapModules,
 			`/${clientManifest["src/entry-client.tsx"].file}`,
 		],
 		bootstrapScriptContent: `window.___CONTEXT=${JSON.stringify(context)};`,
-		clientModuleMap: bundlerConfig,
+		clientModuleMap,
 	});
 
 	const body = await consumers.text(htmlStream);

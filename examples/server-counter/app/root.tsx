@@ -1,7 +1,7 @@
 import Counter from "./Counter";
 import { increment, getCount } from "./api";
-import { InlineStyles } from "rsc-router/server";
-import { ErrorBoundary, ResetButton } from "rsc-router";
+import { InlineStyles } from "stream-react/dev";
+import "./root.css";
 
 export default async function Root() {
 	return (
@@ -11,19 +11,11 @@ export default async function Root() {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<InlineStyles />
+				<InlineStyles entries={["~/root?rsc"]} />
 			</head>
 			<body>
 				<div id="root">
-					<ErrorBoundary
-						fallback={
-							<div>
-								Error<ResetButton>Reset</ResetButton>
-							</div>
-						}
-					>
-						<Counter count={await getCount()} increment={increment} />
-					</ErrorBoundary>
+					<Counter count={await getCount()} increment={increment} />
 				</div>
 			</body>
 		</html>

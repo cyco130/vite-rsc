@@ -1,16 +1,16 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import impala from "@impalajs/core/plugin";
-import { reactServerComponents } from "vite-rsc";
+import react from "vite-react-server";
+import path from "path";
 
 export default defineConfig({
-	plugins: [react(), impala(), reactServerComponents()],
+	plugins: [impala(), react({ server: false })],
+
 	build: {
 		rollupOptions: {
-			input: {
-				"entry-client": "src/entry-client.tsx",
-				index: "index.html",
-			},
+			input: ["/src/entry-client.tsx"],
+			external: ["virtual:vite-dev-server"],
 		},
+		ssrEmitAssets: true,
 	},
 });

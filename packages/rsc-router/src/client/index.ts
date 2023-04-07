@@ -6,15 +6,15 @@ import {
 	TypedRoute,
 } from "./router/types";
 
-export { A } from "./router/A";
-export * from "./router/useRouter";
+export { A } from "../shared/A";
+export * from "../shared/useRouter";
 export { default as Router } from "./router/Router";
 export * from "./router/Router";
 export * from "./router/useMutation";
 export * from "./router/ErrorBoundary";
 export * from "./router/Form";
-export * from "./router/redirect";
-export * from "./streams";
+export * from "../shared/redirect";
+export * from "./stream";
 export { interpolatePath } from "./router/types/path";
 export type { LinkFn as TypedLink } from "./router/link";
 export type { PageProps } from "../types";

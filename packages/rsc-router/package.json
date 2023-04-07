@@ -14,6 +14,7 @@
     "./server": "./src/server/server.ts",
     "./dev": "./src/server/dev/index.ts",
     "./client/entry": "./src/client/entry.tsx",
+    "./server/entry": "./src/server/entry.tsx",
     "./fs": "./src/fs/index.ts",
     ".": "./src/client/index.ts"
   },
@@ -31,6 +32,9 @@
       ],
       "client/entry": [
         "./src/client/entry.tsx"
+      ],
+      "server/entry": [
+        "./src/server/entry.tsx"
       ],
       "streams": [
         "./src/server/streams.tsx"

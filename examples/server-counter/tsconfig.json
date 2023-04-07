@@ -7,7 +7,7 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"moduleResolution": "Node",
-		"types": ["vite/client", "react/experimental"],
+		"types": ["vite/client", "react/experimental", "stream-react/types"],
 		"jsx": "react-jsx",
 		"baseUrl": ".",
 		"paths": {

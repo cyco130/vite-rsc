@@ -25,7 +25,9 @@ export function reactServerComponents(): Plugin {
 				skipSelf: true,
 			});
 
-			if (!resolved) return;
+			if (!resolved || resolved.id.endsWith(".png")) return;
+
+			console.log(resolved.id);
 
 			if (
 				resolved.id.startsWith(root) &&
@@ -50,12 +52,21 @@ export function reactServerComponents(): Plugin {
 				false,
 			);
 
-			const resolvedId = fileURLToPath(resolvedUrl);
+			console.log({ resolvedUrl });
 
-			return {
-				id: addRscQuery(resolvedId),
-				external: true,
-			};
+			if (resolvedUrl.protocol === "file:") {
+				const resolvedId = fileURLToPath(resolvedUrl);
+
+				return {
+					id: addRscQuery(resolvedId),
+					external: true,
+				};
+			} else {
+				return {
+					id: resolvedUrl.href,
+					external: true,
+				};
+			}
 		},
 
 		transform(code, id, options) {
