@@ -2,13 +2,13 @@
 
 import React, { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
 import { useRouter } from "./useRouter";
+import { LinkFn } from "./link";
+import { interpolatePath } from "./types";
 
-export default function A({
-	href,
+export const A: LinkFn<{}> = function A({
 	activeProps = {},
 	...props
 }: {
-	href: string;
 	activeProps?: DetailedHTMLProps<
 		AnchorHTMLAttributes<HTMLAnchorElement>,
 		HTMLAnchorElement
@@ -16,8 +16,10 @@ export default function A({
 } & DetailedHTMLProps<
 	AnchorHTMLAttributes<HTMLAnchorElement>,
 	HTMLAnchorElement
->) {
+> &
+	any) {
 	const router = useRouter();
+	const href = props.href ?? interpolatePath(props.to, props.params);
 	const isActive = router.url === href;
 	return (
 		<a
@@ -31,4 +33,4 @@ export default function A({
 			{...(isActive ? activeProps : {})}
 		/>
 	);
-}
+};

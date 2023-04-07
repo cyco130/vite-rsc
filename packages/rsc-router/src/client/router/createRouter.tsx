@@ -9,6 +9,7 @@ import { createLocation, createPath } from "../../path";
 import Router from "./Router";
 import React from "react";
 import { PageProps } from "../../types";
+import { InlineStyles } from "../../server/server";
 
 function renderMatches(
 	matches: RouteMatch[],
@@ -28,7 +29,27 @@ function renderMatches(
 	}, null as React.ReactElement | null);
 }
 
-export function createRouter(routes: RouteObject[]) {
+function DefaultErrorComponent() {
+	return (
+		<html lang="en">
+			<head>
+				<title>RSC Playground</title>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+				<InlineStyles />
+			</head>
+			<body>
+				<div>404</div>
+			</body>
+		</html>
+	);
+}
+
+export function createRouter(
+	routes: RouteObject[],
+	{ errorComponent = DefaultErrorComponent } = {},
+) {
 	const manifest: RouteManifest = {};
 	const dataRoutes = convertRoutesToDataRoutes(
 		routes,
@@ -45,7 +66,7 @@ export function createRouter(routes: RouteObject[]) {
 
 		let content;
 		if (!matches) {
-			const RootComponent = dataRoutes[0].component;
+			const RootComponent = dataRoutes[0]?.component ?? errorComponent;
 			content = (
 				<RootComponent {...props} params={{}} children={<div>404</div>} />
 			);

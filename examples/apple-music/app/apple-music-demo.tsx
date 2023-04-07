@@ -44,6 +44,7 @@ import {
 	User,
 } from "lucide-react";
 import { Link } from "@/components/link";
+import { A } from "rsc-router";
 
 const playlists = [
 	"Recently Added",
@@ -250,7 +251,10 @@ export function Nav() {
 						<div className="space-y-1 p-2">
 							{playlists.map((playlist) => (
 								<Link
-									href={`/playlist/${encodeURIComponent(playlist)}`}
+									to={"/playlist/:playlist"}
+									params={{
+										playlist: encodeURIComponent(playlist),
+									}}
 									variant="ghost"
 									activeProps={{
 										variant: "subtle",

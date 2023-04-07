@@ -6,7 +6,9 @@ export function ActionIDInput({
 }: {
 	action: ((formData: FormData) => void) & { $$id?: string };
 }) {
-	return <input name="$$id" hidden={true} value={action.$$id} />;
+	return (
+		<input name="$$id" hidden={true} value={action.$$id} readOnly={true} />
+	);
 }
 
 export function Form({

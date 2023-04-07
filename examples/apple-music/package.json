@@ -39,17 +39,20 @@
     "@radix-ui/react-toggle": "^1.0.1",
     "@radix-ui/react-toggle-group": "^1.0.1",
     "@radix-ui/react-tooltip": "^1.0.5",
+    "@tanstack/react-store": "0.0.1-beta.53",
     "cal-sans": "^1.0.1",
     "class-variance-authority": "^0.5.1",
     "clsx": "^1.2.1",
     "lucide-react": "^0.130.0",
+    "minimatch": "^8.0.3",
     "prisma": "^4.12.0",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
     "rsc-auth": "workspace:^0.0.1",
     "rsc-router": "^0.0.1",
-    "tailwind-merge": "^1.11.0"
+    "tailwind-merge": "^1.11.0",
+    "tiny-invariant": "^1.3.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",

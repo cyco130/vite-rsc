@@ -11,6 +11,55 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3
 
+  examples/api-routes:
+    dependencies:
+      '@prisma/client':
+        specifier: ^4.12.0
+        version: 4.12.0(prisma@4.12.0)
+      minimatch:
+        specifier: ^8.0.3
+        version: 8.0.3
+      react:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
+      react-dom:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      react-error-boundary:
+        specifier: ^4.0.3
+        version: 4.0.3(react@18.3.0-next-b14f8da15-20230403)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)(webpack@5.77.0)
+      rsc-router:
+        specifier: ^0.0.1
+        version: link:../../packages/rsc-router
+    devDependencies:
+      '@hattip/adapter-node':
+        specifier: ^0.0.33
+        version: 0.0.33
+      '@hattip/vite':
+        specifier: ^0.0.33
+        version: 0.0.33(vite@4.2.1)
+      '@types/react':
+        specifier: ^18.0.33
+        version: 18.0.33
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11
+      prisma:
+        specifier: ^4.12.0
+        version: 4.12.0
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1(@types/node@18.15.11)
+      vite-react-server:
+        specifier: ^0.0.1
+        version: link:../../packages/vite-react-server
+
   examples/apple-music:
     dependencies:
       '@auth/core':
@@ -109,6 +158,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.5
         version: 1.0.5(@types/react@18.0.33)(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
+      '@tanstack/react-store':
+        specifier: 0.0.1-beta.53
+        version: 0.0.1-beta.53(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)
       cal-sans:
         specifier: ^1.0.1
         version: 1.0.1
@@ -121,6 +173,9 @@ importers:
       lucide-react:
         specifier: ^0.130.0
         version: 0.130.0(react@18.3.0-next-b14f8da15-20230403)
+      minimatch:
+        specifier: ^8.0.3
+        version: 8.0.3
       prisma:
         specifier: ^4.12.0
         version: 4.12.0
@@ -142,6 +197,9 @@ importers:
       tailwind-merge:
         specifier: ^1.11.0
         version: 1.11.0
+      tiny-invariant:
+        specifier: ^1.3.1
+        version: 1.3.1
     devDependencies:
       '@faker-js/faker':
         specifier: ^7.6.0
@@ -198,14 +256,14 @@ importers:
   examples/basic:
     dependencies:
       react:
-        specifier: 18.3.0-next-8310854ce-20230331
-        version: 18.3.0-next-8310854ce-20230331
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
       react-dom:
-        specifier: 18.3.0-next-8310854ce-20230331
-        version: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
       react-server-dom-webpack:
-        specifier: 18.3.0-next-8310854ce-20230331
-        version: 18.3.0-next-8310854ce-20230331(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)(webpack@5.77.0)
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)(webpack@5.77.0)
       vite-rsc:
         specifier: ^0.0.1
         version: link:../../packages/vite-rsc
@@ -410,17 +468,75 @@ importers:
         specifier: ^0.0.1
         version: link:../../packages/vite-react-server
 
+  examples/hackernews:
+    dependencies:
+      '@prisma/client':
+        specifier: ^4.12.0
+        version: 4.12.0(prisma@4.12.0)
+      minimatch:
+        specifier: ^8.0.3
+        version: 8.0.3
+      react:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
+      react-dom:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      react-error-boundary:
+        specifier: ^4.0.3
+        version: 4.0.3(react@18.3.0-next-b14f8da15-20230403)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)(webpack@5.77.0)
+      rsc-router:
+        specifier: ^0.0.1
+        version: link:../../packages/rsc-router
+    devDependencies:
+      '@hattip/adapter-node':
+        specifier: ^0.0.33
+        version: 0.0.33
+      '@hattip/vite':
+        specifier: ^0.0.33
+        version: 0.0.33(vite@4.2.1)
+      '@types/react':
+        specifier: ^18.0.33
+        version: 18.0.33
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11
+      prisma:
+        specifier: ^4.12.0
+        version: 4.12.0
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.2.1
+        version: 4.2.1(@types/node@18.15.11)
+      vite-react-server:
+        specifier: ^0.0.1
+        version: link:../../packages/vite-react-server
+
   examples/impala:
     dependencies:
+      '@hattip/adapter-node':
+        specifier: ^0.0.33
+        version: 0.0.33
+      '@hattip/vite':
+        specifier: ^0.0.33
+        version: 0.0.33(vite@4.2.1)
       '@impalajs/core':
         specifier: ^0.0.9
         version: 0.0.9(vite@4.2.1)
       react:
-        specifier: 18.3.0-next-8310854ce-20230331
-        version: 18.3.0-next-8310854ce-20230331
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
       react-dom:
-        specifier: 18.3.0-next-8310854ce-20230331
-        version: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)(webpack@5.77.0)
       rsc-router:
         specifier: workspace:^0.0.1
         version: link:../../packages/rsc-router
@@ -437,15 +553,15 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^3.1.0
         version: 3.1.0(vite@4.2.1)
-      react-server-dom-webpack:
-        specifier: 18.3.0-next-8310854ce-20230331
-        version: 18.3.0-next-8310854ce-20230331(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)(webpack@5.77.0)
       typescript:
         specifier: ^4.9.3
         version: 4.9.3
       vite:
         specifier: ^4.2.0
         version: 4.2.1(@types/node@18.15.11)
+      vite-react-server:
+        specifier: workspace:^
+        version: link:../../packages/vite-react-server
       vite-rsc:
         specifier: ^0.0.1
         version: link:../../packages/vite-rsc
@@ -1088,9 +1204,18 @@ importers:
       history:
         specifier: ^5.3.0
         version: 5.3.0
+      minimatch:
+        specifier: ^8.0.3
+        version: 8.0.3
       react-error-boundary:
         specifier: ^4.0.3
         version: 4.0.3(react@18.3.0-next-b14f8da15-20230403)
+      tiny-invariant:
+        specifier: ^1.3.1
+        version: 1.3.1
+      tiny-warning:
+        specifier: ^1.0.3
+        version: 1.0.3
     devDependencies:
       '@cyco130/eslint-config':
         specifier: ^3.0.2
@@ -3014,6 +3139,13 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@tanstack/loaders@0.0.1-beta.52:
+    resolution: {integrity: sha512-6J1QHbsb1b4mdu/2YjSwRDC1wtF8bvkDmcmV6P3kUskwvblmESFttdX209s5wjaWkFCiGeyUAK74YRkjTmeQew==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@tanstack/store': 0.0.1-beta.52
+    dev: false
+
   /@tanstack/match-sorter-utils@8.8.4:
     resolution: {integrity: sha512-rKH8LjZiszWEvmi01NR72QWZ8m4xmXre0OOwlRGnjU01Eqz/QnN+cqpty2PJ0efHblq09+KilvyR7lsbzmXVEw==}
     engines: {node: '>=12'}
@@ -3057,6 +3189,26 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: true
+
+  /@tanstack/react-store@0.0.1-beta.53(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403):
+    resolution: {integrity: sha512-cQBT/wZmkcIegfLiQDzLKWWKwdqWbvRjkoIss5NPf4Xh470TKa+f2shnQa32BFpRO897jFhLP4cykIBNhtK/Dg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/loaders': 0.0.1-beta.52
+      react: 18.3.0-next-b14f8da15-20230403
+      react-dom: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      use-sync-external-store: 1.2.0(react@18.3.0-next-b14f8da15-20230403)
+    dev: false
+
+  /@tanstack/store@0.0.1-beta.52:
+    resolution: {integrity: sha512-3/5XqeG09sCJnakHpq8qgXjdVpm97aITbi1wfbjLGXdVsss62zpJAvc4vL8ccHf+J/OmoS4dJTNuEZ0alywZtg==}
+    engines: {node: '>=12'}
+    dependencies:
+      immer: 9.0.21
+    dev: false
 
   /@types/acorn@4.0.6:
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
@@ -3858,7 +4010,6 @@ packages:
 
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
-    dev: true
 
   /binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
@@ -3896,7 +4047,6 @@ packages:
     resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
     dependencies:
       balanced-match: 1.0.2
-    dev: true
 
   /braces@3.0.2:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
@@ -5227,6 +5377,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /immer@9.0.21:
+    resolution: {integrity: sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==}
+    dev: false
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -6118,6 +6272,13 @@ packages:
       brace-expansion: 2.0.1
     dev: true
 
+  /minimatch@8.0.3:
+    resolution: {integrity: sha512-tEEvU9TkZgnFDCtpnrEYnPsjT7iUx42aXfs4bzmQ5sMA09/6hZY0jeZcGkXyDagiBOvkUjNo8Viom+Me6+2x7g==}
+    engines: {node: '>=16 || 14 >=14.17'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: false
+
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
     dev: true
@@ -6786,15 +6947,6 @@ packages:
       scheduler: 0.23.0
     dev: true
 
-  /react-dom@18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331):
-    resolution: {integrity: sha512-G1k2UtiAvmxsyYtGoWDLp7Pxf3s6B99b+bfA0gzzpoqt/L8+c3aM+A8h3gbpCcg5t+o1lMVf9EKDcFHgefbzmg==}
-    peerDependencies:
-      react: 18.3.0-next-8310854ce-20230331
-    dependencies:
-      loose-envify: 1.4.0
-      react: 18.3.0-next-8310854ce-20230331
-      scheduler: 0.24.0-next-8310854ce-20230331
-
   /react-dom@18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403):
     resolution: {integrity: sha512-p5Z/zgyqY3lvJqyoLH2KKggL5uA1KE7xsEnQyfjmxmaYJt9Yh/sWba2c1i3C9szB42z5U2QSrI7qlPvwfHyQCw==}
     peerDependencies:
@@ -6908,21 +7060,6 @@ packages:
       react: 18.2.0
     dev: true
 
-  /react-server-dom-webpack@18.3.0-next-8310854ce-20230331(react-dom@18.3.0-next-8310854ce-20230331)(react@18.3.0-next-8310854ce-20230331)(webpack@5.77.0):
-    resolution: {integrity: sha512-pYtaAgr/1QnhLSygtksJByTyyXPoiXb3i6f4c78pt2L7shx3AtJ7h+k7LhLeaSUsplnhpvFPOdrXkryyMoipPw==}
-    engines: {node: '>=0.10.0'}
-    peerDependencies:
-      react: 18.3.0-next-8310854ce-20230331
-      react-dom: 18.3.0-next-8310854ce-20230331
-      webpack: ^5.59.0
-    dependencies:
-      acorn-loose: 8.3.0
-      loose-envify: 1.4.0
-      neo-async: 2.6.2
-      react: 18.3.0-next-8310854ce-20230331
-      react-dom: 18.3.0-next-8310854ce-20230331(react@18.3.0-next-8310854ce-20230331)
-      webpack: 5.77.0(esbuild@0.17.15)
-
   /react-server-dom-webpack@18.3.0-next-b14f8da15-20230403(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)(webpack@5.77.0):
     resolution: {integrity: sha512-etQn7w7GyY8+5yARLK/Er55H+gwVpQnnBhESFuI7bOvFlKYFmwW1agWxK1qz02P8BIU9auK/6MQew/ZLrIg5dg==}
     engines: {node: '>=0.10.0'}
@@ -6957,12 +7094,6 @@ packages:
 
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      loose-envify: 1.4.0
-
-  /react@18.3.0-next-8310854ce-20230331:
-    resolution: {integrity: sha512-KX3Ikd9inA/78dga+kyXKK3/LtRKup0sAjwGPh37DppGzZcy9sztFzJh90QQX5wjzk4N0VOeHs/y/hTwNxGXoA==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -7113,11 +7244,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
     dev: true
-
-  /scheduler@0.24.0-next-8310854ce-20230331:
-    resolution: {integrity: sha512-wrKUQAolDIWDRGi+rObT1w5zvXXOxizpeiHWX4ozQ+NetPIONWeJkCiwuWycrvbjsiOuXe9GqsZMPdBiY1Po0A==}
-    dependencies:
-      loose-envify: 1.4.0
 
   /scheduler@0.24.0-next-b14f8da15-20230403:
     resolution: {integrity: sha512-j2FVkHAPSRDSTDTiwwE9PWRw5fWbLXIx8WV+XFIyer8pjsXFx+srtOSU4EeOqs/HkZJh9T/ufBXKrwP7IexbSA==}
@@ -7560,6 +7686,14 @@ packages:
       globrex: 0.1.2
     dev: true
 
+  /tiny-invariant@1.3.1:
+    resolution: {integrity: sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==}
+    dev: false
+
+  /tiny-warning@1.0.3:
+    resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
+    dev: false
+
   /tinybench@2.4.0:
     resolution: {integrity: sha512-iyziEiyFxX4kyxSp+MtY1oCH/lvjH3PxFN8PGCDeqcZWAJ/i+9y+nL85w99PxVzrIvew/GSkSbDYtiGVa85Afg==}
     dev: true
@@ -7963,6 +8097,14 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
+
+  /use-sync-external-store@1.2.0(react@18.3.0-next-b14f8da15-20230403):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.3.0-next-b14f8da15-20230403
+    dev: false
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
