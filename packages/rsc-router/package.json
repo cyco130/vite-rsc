@@ -9,8 +9,10 @@
   "exports": {
     "./entry-server": "./src/entry-server.ts",
     "./streams": "./src/server/streams.tsx",
+    "./webpack": "./src/server/webpack.ts",
     "./entry-client": "./src/entry-client.ts",
     "./server": "./src/server/server.ts",
+    "./dev": "./src/server/dev/index.ts",
     "./client/entry": "./src/client/entry.tsx",
     ".": "./src/client/index.ts"
   },
@@ -23,11 +25,17 @@
       "server": [
         "./src/server/server.ts"
       ],
+      "dev": [
+        "./src/server/dev/index.ts"
+      ],
       "client/entry": [
         "./src/client/entry.tsx"
       ],
       "streams": [
         "./src/server/streams.tsx"
+      ],
+      "webpack": [
+        "./src/server/webpack.ts"
       ],
       "entry-server": [
         "./src/entry-server.ts"

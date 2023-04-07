@@ -25,7 +25,12 @@ function config() {
 	} satisfies Plugin;
 }
 
-export function react({ serverEntry = "rsc-router/entry-server" } = {}) {
+export function react({
+	server = true,
+	inspect: _inspect = true,
+	tsconfigPaths: _tsconfigPaths = true,
+	serverEntry = "rsc-router/entry-server",
+} = {}) {
 	return [
 		{
 			name: "rsc-router",
@@ -43,13 +48,14 @@ export function react({ serverEntry = "rsc-router/entry-server" } = {}) {
 				}
 			},
 		} satisfies Plugin,
-		tsconfigPaths(),
+		_tsconfigPaths && tsconfigPaths(),
 		config(),
-		inspect(),
-		hattip({
-			clientConfig: {},
-			hattipEntry: serverEntry,
-		}),
+		_inspect && inspect(),
+		server &&
+			hattip({
+				clientConfig: {},
+				hattipEntry: serverEntry,
+			}),
 		reactServerComponents(),
 	];
 }

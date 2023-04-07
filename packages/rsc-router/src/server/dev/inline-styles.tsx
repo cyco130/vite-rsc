@@ -1,4 +1,3 @@
-import { component } from "../../client/router/utils";
 import devServer from "virtual:vite-dev-server";
 import path from "node:path";
 import { ModuleNode } from "vite";
@@ -104,13 +103,19 @@ export async function collectStyles(match: string[]) {
 	return styles;
 }
 
-export const InlineStyles = component(async function InlineStyles() {
-	const styles = await collectStyles(["~/root?rsc"]);
+export const InlineStyles = async function InlineStyles(props: {
+	entries: string[];
+}) {
+	const styles = await collectStyles(props.entries ?? ["~/root.tsx?rsc"]);
 	return (
 		<>
 			{Object.entries(styles ?? {}).map(([url, css]) => (
-				<style key={url} dangerouslySetInnerHTML={{ __html: css }} />
+				<style
+					key={url}
+					dangerouslySetInnerHTML={{ __html: css }}
+					suppressHydrationWarning={true}
+				/>
 			))}
 		</>
 	);
-});
+} as unknown as React.FC<{ entries: string[] }>;

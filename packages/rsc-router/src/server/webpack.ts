@@ -1,10 +1,18 @@
+import { ModuleMap as ModuleMap } from "./streams";
+
 declare global {
 	var moduleCache: Map<string, any>;
 	function __webpack_chunk_load__(chunk: string): Promise<void>;
 	function __webpack_require__(id: string): any;
 }
 
-export function setupWebpackEnv() {
+function dynamicImport(chunk: string) {
+	return import(/* @vite-ignore */ chunk);
+}
+
+export function setupWebpackEnv(
+	load: (chunk: string) => Promise<void> = dynamicImport,
+) {
 	/**
 	 * This is a hack to make vite dev server work with react-server-dom-webpack.
 	 * The cache is persisted between HMR updates on the server.
@@ -12,7 +20,7 @@ export function setupWebpackEnv() {
 	globalThis.moduleCache = globalThis.moduleCache ?? new Map<string, any>();
 
 	globalThis.__webpack_chunk_load__ = async (chunk: string) => {
-		globalThis.moduleCache.set(chunk, await import(/* @vite-ignore */ chunk));
+		globalThis.moduleCache.set(chunk, await load(chunk));
 	};
 
 	globalThis.__webpack_require__ = (id: string) => {
@@ -27,7 +35,7 @@ export function setupWebpackEnv() {
  * We use a proxy during dev in order to make the bundler config look like the one that
  * react-server-dom-webpack expects at build time.
  */
-export function createModuleMapProxy() {
+export function createModuleMapProxy(): ModuleMap {
 	return new Proxy(
 		{},
 		{

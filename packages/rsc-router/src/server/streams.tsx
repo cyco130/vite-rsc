@@ -1,6 +1,5 @@
 import {
 	renderToReadableStream as renderToRSCStream,
-	decodeReply as decodeActionArgs,
 	renderToReadableStream as renderToResultStream,
 } from "react-server-dom-webpack/server.edge";
 import { createFromReadableStream as createElementFromRSCStream } from "react-server-dom-webpack/client.edge";
@@ -10,7 +9,6 @@ import {
 } from "react-dom/server.edge";
 import { ReactElement } from "react";
 import { sanitize } from "./htmlescape";
-import { asyncLocalStorage } from "./async-storage";
 
 export {
 	renderToReadableStream as renderToRSCStream,
@@ -150,7 +148,7 @@ function bufferedTransformStream(): ReadableWritablePair<
 	});
 }
 
-export interface BundleMap {
+export interface ModuleMap {
 	[key: string]: {
 		id: string;
 		chunks: string[];
