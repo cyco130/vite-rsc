@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Asset } from "stream-react/src/shared/assets";
+import { Asset } from "stream-react/assets";
 import { InlineStyles } from "stream-react/dev";
 
 interface AppProps {

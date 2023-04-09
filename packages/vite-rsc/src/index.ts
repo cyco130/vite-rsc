@@ -3,7 +3,7 @@ import type { Plugin } from "vite";
 import { moduleResolve } from "import-meta-resolve";
 import { fileURLToPath } from "node:url";
 import { hasRscQuery, addRscQuery, removeRscQuery } from "./utils";
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 export function reactServerComponents(): Plugin {
@@ -380,6 +380,7 @@ export function reactServerComponents(): Plugin {
 			}
 		},
 		generateBundle(options) {
+			mkdirSync(options.dir!, { recursive: true });
 			writeFileSync(
 				join(options.dir!, "client-manifest.json"),
 				JSON.stringify([...clientModules.values()], null, 2),

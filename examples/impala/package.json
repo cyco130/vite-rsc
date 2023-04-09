@@ -8,8 +8,8 @@
     "build:server": "vite build --ssr",
     "build:client": "vite build",
     "build:prerender": "impala prerender",
-    "build": "npm run build:client && npm run build:server && npm run build:prerender && cp dist/server/assets/* dist/static/assets",
-    "preview": "vite preview"
+    "build": "npm run build:server && npm run build:client && npm run build:prerender",
+    "start": "vite preview"
   },
   "dependencies": {
     "@impalajs/core": "^0.0.9",
