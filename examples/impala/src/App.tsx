@@ -1,11 +1,59 @@
 import React from "react";
 import "./App.css";
-import { LinkTag } from "./components/LinkTag";
-import { InlineStyles, ReactRefreshScript } from "flight-router/dev";
+import { Asset } from "stream-react/src/shared/assets";
+import { InlineStyles } from "stream-react/dev";
 
 interface AppProps {
 	title?: string;
 	assets?: string[];
+}
+
+function Links({
+	assets,
+}: {
+	assets?: (string | { type: "style"; style: string })[];
+}) {
+	return (
+		<>
+			{assets?.map((asset) =>
+				typeof asset === "string" ? (
+					<Asset key={asset} file={asset} />
+				) : (
+					<style
+						key={asset.style}
+						dangerouslySetInnerHTML={{ __html: asset.style }}
+					/>
+				),
+			)}
+		</>
+	);
+}
+
+// const Assets = component(async function Assets({
+// 	entries,
+// }: {
+// 	entries: string[];
+// }) {
+// 	let assets = Array.from(
+// 		new Set(
+// 			(
+// 				await Promise.all(
+// 					entries.map(async (entry) => {
+// 						let assets = await globalThis.findAssets(entry);
+// 						return assets;
+// 					}),
+// 				)
+// 			).flat(),
+// 		).values(),
+// 	);
+
+// 	console.log(assets);
+
+// 	return <AssetsLinks assets={assets} />;
+// });
+
+function DevAssets() {
+	return import.meta.env.DEV ? <InlineStyles /> : null;
 }
 
 export const App: React.FC<React.PropsWithChildren<AppProps>> = ({
@@ -18,18 +66,17 @@ export const App: React.FC<React.PropsWithChildren<AppProps>> = ({
 			<head>
 				{title ? <title>{title}</title> : null}
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				{assets?.map((asset) => (
-					<LinkTag key={asset} file={asset} />
-				))}
-				{import.meta.env.DEV && (
-					<>
-						<InlineStyles entries={["/src/App.tsx?rsc"]} />
-						<ReactRefreshScript />
-					</>
-				)}
+				<Links assets={assets} />
+				<DevAssets />
 			</head>
 			<body>
-				<div id="__impala">{children}</div>
+				<div id="__impala">
+					<div>
+						<a href="/">Home</a> | <a href="/hello">Hello</a> |{" "}
+						<a href="/world/1">World 1</a>
+					</div>
+					{children}
+				</div>
 			</body>
 		</html>
 	);

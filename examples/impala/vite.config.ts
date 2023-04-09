@@ -5,11 +5,9 @@ import path from "path";
 
 export default defineConfig({
 	plugins: [impala(), react({ server: false })],
-
 	build: {
 		rollupOptions: {
 			input: ["/src/entry-client.tsx"],
-			external: ["virtual:vite-dev-server"],
 		},
 		ssrEmitAssets: true,
 	},

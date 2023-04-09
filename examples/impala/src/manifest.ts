@@ -14,6 +14,7 @@ export const findAssetsInManifest = (
 	id: string,
 	assetMap: Map<string, Array<string>> = new Map(),
 ): Array<string> => {
+	console.log(manifest, id);
 	function traverse(id: string): Array<string> {
 		const cached = assetMap.get(id);
 		if (cached) {

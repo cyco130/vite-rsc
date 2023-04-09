@@ -1,26 +1,39 @@
 import type { ElementType } from "react";
 import { Context, RouteModule } from "@impalajs/core";
-import { ModuleMap, renderToHTMLStream } from "flight-router/streams";
-import { createModuleMapProxy, setupWebpackEnv } from "flight-router/webpack";
+import { renderToHTMLStream } from "stream-react/server";
+import { createModuleMapProxy, setupWebpackEnv } from "stream-react/webpack";
 import consumers from "node:stream/consumers";
+import { collectStyles } from "stream-react/dev";
 
 export async function renderDev(
 	context: Context,
 	mod: () => Promise<RouteModule<ElementType>>,
-	bootstrapModules: Array<string> = [],
 ) {
 	setupWebpackEnv();
-	const clientModuleMap: ModuleMap = createModuleMapProxy();
+	const clientModuleMap = createModuleMapProxy();
 
 	context.assets = Array.from(new Set(context.assets)).map(
 		(asset) => `/${asset}`,
 	);
 
+	const { default: devServer } = await import("virtual:vite-dev-server");
+
 	const { default: Page } = await mod();
 
+	let styles = await collectStyles(devServer, [
+		context.chunk.replace("./", "src/") + "?rsc",
+	]);
+
+	context.assets.push(
+		// @ts-ignore
+		...Object.entries(styles ?? {}).map(([key, value]) => ({
+			type: "style",
+			style: value,
+		})),
+	);
+
 	const htmlStream = await renderToHTMLStream(<Page {...context} />, {
-		bootstrapModules: [...bootstrapModules, "/src/entry-client.tsx"],
-		bootstrapScriptContent: `window.___CONTEXT=${JSON.stringify(context)};`,
+		bootstrapModules: ["/src/entry-client.tsx"],
 		clientModuleMap,
 	});
 

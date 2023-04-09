@@ -1,12 +1,12 @@
-import { ElementType } from "react";
+import React, { ElementType } from "react";
 import { Context, RouteModule, DataModule } from "@impalajs/core";
-import { ModuleMap, renderToHTMLStream } from "flight-router/streams";
+import { renderToHTMLStream } from "stream-react/server";
 import consumers from "node:stream/consumers";
 import { join, relative } from "node:path";
 import type { Manifest } from "vite";
 import { promises as fs, existsSync } from "node:fs";
 import { renderDev } from "./dev";
-import { createModuleMapProxy, setupWebpackEnv } from "flight-router/webpack";
+import { createModuleMapProxy, setupWebpackEnv } from "stream-react/webpack";
 import { findAssetsInManifest } from "./manifest";
 
 // Load the route modules as RSC and export for impala
@@ -27,10 +27,9 @@ export const dataModules = import.meta.glob<DataModule>(
 export async function render(
 	context: Context,
 	mod: () => Promise<RouteModule<ElementType>>,
-	bootstrapModules: Array<string> = [],
 ) {
 	if (import.meta.env.DEV) {
-		return renderDev(context, mod, bootstrapModules);
+		return renderDev(context, mod);
 	}
 
 	const clientManifestPath = join(
@@ -75,22 +74,27 @@ export async function render(
 
 	const { default: Page } = await mod();
 
-	context.assets = findAssetsInManifest(
-		serverManifest,
-		context.chunk.replace("./", "src/"),
-	)
-		.filter((asset) => !asset.endsWith(".js"))
-		.map((asset) => `/${asset}`);
+	let findAssets = (chunk: string) => {
+		return findAssetsInManifest(serverManifest, chunk)
+			.filter((asset) => !asset.endsWith(".js"))
+			.map((asset) => `/${asset}`);
+	};
 
-	context.root = process.cwd();
-	context.manifest = clientManifest;
+	let clientModuleManifest = Object.fromEntries(
+		Object.entries(clientManifest)
+			.filter(([key, asset]) => asset.file)
+			.map(([key, asset]) => [key, asset.file]),
+	);
+
+	context.assets.push(
+		...findAssets(context.chunk.replace("./", "src/") + "?rsc"),
+	);
+
+	let manifest = { root: process.cwd(), client: clientModuleManifest };
 
 	const htmlStream = await renderToHTMLStream(<Page {...context} />, {
-		bootstrapModules: [
-			...bootstrapModules,
-			`/${clientManifest["src/entry-client.tsx"].file}`,
-		],
-		bootstrapScriptContent: `window.___CONTEXT=${JSON.stringify(context)};`,
+		bootstrapModules: [`/${clientManifest["src/entry-client.tsx"].file}`],
+		bootstrapScriptContent: `window.manifest=${JSON.stringify(manifest)};`,
 		clientModuleMap,
 	});
 

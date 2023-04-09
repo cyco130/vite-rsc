@@ -24,13 +24,13 @@ export function createReactServerHandler({
 			clientModuleMap,
 			bootstrapScriptContent: import.meta.env.DEV
 				? undefined
-				: `window.__rsc__ = ${JSON.stringify({
+				: `window.manifest = ${JSON.stringify({
 						manifest: globalThis.clientManifest,
 						root: process.cwd(),
 				  })};`,
 			bootstrapModules: [
 				import.meta.env.DEV
-					? "/app/entry-client"
+					? "~root/entry-client"
 					: `/${globalThis.clientManifest["app/entry-client.tsx"].file}`,
 			],
 			apiRoutes: apiRoutes ?? (() => {}),
