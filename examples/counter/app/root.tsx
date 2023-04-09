@@ -1,7 +1,7 @@
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
-import { InlineStyles } from "flight-router/server";
-
+import { Assets } from "stream-react/assets";
+import "./root.css";
 export default function Root() {
 	return (
 		<html lang="en">
@@ -10,7 +10,7 @@ export default function Root() {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<InlineStyles />
+				<Assets />
 			</head>
 			<body>
 				<div id="root">

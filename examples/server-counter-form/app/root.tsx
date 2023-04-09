@@ -1,7 +1,8 @@
 import { increment, getCount } from "./api";
-import { InlineStyles } from "flight-router/dev";
+import { Assets } from "stream-react/assets";
 import { Form } from "stream-react/form";
 import { ErrorBoundary, ResetButton } from "stream-react/error-boundary";
+import "./root.css";
 
 async function Counter() {
 	return (
@@ -20,7 +21,7 @@ export default async function Root() {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<InlineStyles />
+				<Assets />
 			</head>
 			<body>
 				<div id="root">

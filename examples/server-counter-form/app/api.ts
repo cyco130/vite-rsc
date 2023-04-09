@@ -1,6 +1,6 @@
 "use server";
 
-import { redirect } from "flight-router";
+import { redirect } from "stream-react/redirect";
 import db from "./db";
 
 export async function increment() {
@@ -9,6 +9,7 @@ export async function increment() {
 		where: { id: 1 },
 		data: { value: count + 1 },
 	});
+	console.log("incremented");
 	redirect("/" + (count + 1));
 }
 

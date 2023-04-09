@@ -1,5 +1,4 @@
-import { BaseRouter, mount } from "stream-react/web/entry";
+import { mount } from "stream-react/web/entry";
+import { Router } from "stream-react/web/router";
 
-import("./Counter");
-
-mount(<BaseRouter />);
+mount(<Router />);
