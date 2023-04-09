@@ -33,7 +33,18 @@ export default defineConfig([
 		platform: "node",
 		target: "esnext",
 		shims: false,
-		external: ["~/root?rsc"],
+		external: [],
+	},
+	{
+		entry: {
+			"entry-rsc": "./src/entry-rsc.tsx",
+		},
+		dts: false,
+		format: ["esm"],
+		platform: "node",
+		target: "esnext",
+		shims: false,
+		external: ["stream-react", "virtual:vite-dev-server"],
 	},
 	{
 		entry: {

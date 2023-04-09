@@ -28,10 +28,12 @@ export function setupWebpackEnv(
 	globalThis.moduleCache = globalThis.moduleCache ?? new Map<string, any>();
 
 	globalThis.__webpack_chunk_load__ = async (chunk: string) => {
+		console.log("Loading chunk", chunk);
 		globalThis.moduleCache.set(chunk, await load(chunk));
 	};
 
 	globalThis.__webpack_require__ = (id: string) => {
+		console.log("Requiring chunk", id);
 		if (!globalThis.moduleCache.has(id))
 			throw new Error(`Module ${id} not found`);
 		return globalThis.moduleCache.get(id);
@@ -56,6 +58,7 @@ export function createModuleMapProxy(
 		{
 			get(_, prop) {
 				const [id, name] = String(prop).split("#", 2);
+				console.log(id, name);
 				return {
 					id,
 					chunks: [resolve(id)],

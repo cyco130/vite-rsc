@@ -10,7 +10,7 @@ declare global {
 import { basename, join, relative } from "node:path";
 import { ModuleNode, Manifest } from "vite";
 import { collectStyles } from "./dev/find-styles";
-import { existsSync } from "node:fs";
+import { Env } from "./env";
 
 /**
  * Traverses the module graph and collects assets for a given chunk
@@ -143,62 +143,30 @@ export function renderLinkTag(file: string) {
 	return `<link href="${file}" ${attrs} />`;
 }
 
-export function createHandler(
-	Root: any,
-	{
-		apiRoutes,
-	}: {
-		apiRoutes?: (router: Router) => void;
-	} = {},
-) {
+function devHandler() {
 	setupWebpackEnv(async (chunk) => {
-		if (import.meta.env.PROD) {
-			console.log(chunk);
-			const url = join(
-				process.cwd(),
-				"dist",
-				"server",
-				globalThis.serverManifest[relative(process.cwd(), chunk)].file,
-			);
-			console.log(relative(process.cwd(), chunk), url);
-			const mod = await import(/* @vite-ignore */ url);
-			return mod;
-		} else {
-			return await import(/* @vite-ignore */ chunk);
-		}
+		return await import(/* @vite-ignore */ chunk);
 	});
 
 	const clientModuleMap = createModuleMapProxy();
 
-	if (import.meta.env.DEV) {
-		globalThis.findAssets = async () => {
-			const { default: devServer } = await import("virtual:vite-dev-server");
-			const styles = await collectStyles(devServer, ["~/root?rsc"]);
-			return [
-				// @ts-ignore
-				...Object.entries(styles ?? {}).map(([key, value]) => ({
-					type: "style" as const,
-					style: value,
-					src: key,
-				})),
-			];
-		};
-	} else {
-		globalThis.findAssets = async () => {
-			const findAssets = (chunk: string) => {
-				return findAssetsInManifest(serverManifest, chunk)
-					.filter((asset) => !asset.endsWith(".js"))
-					.map((asset) => `/${asset}`);
-			};
-
-			return [...findAssets("app/root.tsx")];
-		};
-	}
+	globalThis.findAssets = async () => {
+		const { default: devServer } = await import("virtual:vite-dev-server");
+		const styles = await collectStyles(devServer, ["~/root?rsc"]);
+		return [
+			// @ts-ignore
+			...Object.entries(styles ?? {}).map(([key, value]) => ({
+				type: "style" as const,
+				style: value,
+				src: key,
+			})),
+		];
+	};
 
 	console.log(relative(process.cwd(), import.meta.env.CLIENT_ENTRY));
 	// const assetMap = new Map<string, Array<string>>();
 	// const assets = findAssetsInManifest(serverManifest, "app/root.tsx", assetMap);
-	return createServerRouter(Root, {
+	return createServerRouter({
 		clientModuleMap,
 		bootstrapScriptContent: import.meta.env.DEV
 			? undefined
@@ -219,6 +187,89 @@ export function createHandler(
 						].file
 				  }`,
 		],
-		apiRoutes: apiRoutes ?? (() => {}),
+		components: { root: "~/root?rsc" },
+		routeHandlers: () => {},
 	}).buildHandler();
+}
+
+const createServerEnv = (): Env => {
+	setupWebpackEnv(async (chunk) => {
+		if (import.meta.env.PROD) {
+			console.log(chunk);
+			const url = join(
+				process.cwd(),
+				"dist",
+				"server",
+				globalThis.serverManifest[relative(process.cwd(), chunk)].file,
+			);
+			console.log(relative(process.cwd(), chunk), url);
+			const mod = await import(/* @vite-ignore */ url);
+			return mod;
+		} else {
+			return await import(/* @vite-ignore */ chunk);
+		}
+	});
+
+	const clientModuleMap = createModuleMapProxy();
+
+	const env: Env = {};
+
+	if (import.meta.env.DEV) {
+		env.findAssets = async () => {
+			const { default: devServer } = await import("virtual:vite-dev-server");
+			const styles = await collectStyles(devServer, ["~/root?rsc"]);
+			return [
+				// @ts-ignore
+				...Object.entries(styles ?? {}).map(([key, value]) => ({
+					type: "style" as const,
+					style: value,
+					src: key,
+				})),
+			];
+		};
+	} else {
+		env.findAssets = async () => {
+			const findAssets = (chunk: string) => {
+				return findAssetsInManifest(serverManifest, chunk)
+					.filter((asset) => !asset.endsWith(".js"))
+					.map((asset) => `/${asset}`);
+			};
+
+			return [...findAssets("app/root.tsx")];
+		};
+	}
+
+	return {
+		clientModuleMap,
+		components: {},
+		bootstrapScriptContent: import.meta.env.DEV
+			? undefined
+			: `window.manifest = ${JSON.stringify({
+					root: process.cwd(),
+					client: Object.fromEntries(
+						Object.entries(clientManifest)
+							.filter(([key, asset]) => asset.file)
+							.map(([key, asset]) => [key, asset.file]),
+					),
+			  })};`,
+		bootstrapModules: [
+			import.meta.env.DEV
+				? import.meta.env.CLIENT_ENTRY
+				: `/${
+						globalThis.clientManifest[
+							relative(import.meta.env.ROOT_DIR, import.meta.env.CLIENT_ENTRY)
+						].file
+				  }`,
+		],
+	};
+};
+
+export function createHandler({
+	apiRoutes,
+}: {
+	apiRoutes?: (router: Router) => void;
+} = {}) {
+	const env = createServerEnv();
+
+	return createServerRouter(env).buildHandler();
 }

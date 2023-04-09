@@ -59,6 +59,7 @@ const reducer = typeof window === "undefined" ? serverReducer : clientReducer;
 export default function Router({
 	children,
 	initialURL,
+	notFound,
 }: {
 	children: React.ReactNode;
 	initialURL: string;
@@ -152,17 +153,28 @@ export default function Router({
 	return (
 		<routerContext.Provider value={{ url: state.url, ...router }}>
 			<RedirectBoundary>
-				<NotFoundBoundary notFound={<div>Hello</div>}>
-					<LayoutRouter childNode={content} />
+				<NotFoundBoundary notFound={notFound}>
+					<LayoutRouter child={content} />
 				</NotFoundBoundary>
 			</RedirectBoundary>
 		</routerContext.Provider>
 	);
 }
+const layoutContext = React.createContext();
 
-function LayoutRouter({ childNode }: { childNode: any }) {
-	const resolvedContext = childNode?.then
-		? use(childNode)
-		: childNode ?? (null as any);
+export function LayoutRouter({ child, segment }: { child: any }) {
+	return (
+		<layoutContext.Provider key={segment} value={{}}>
+			<RedirectBoundary>
+				<NotFoundBoundary notFound={<div>404</div>}>
+					<InnerLayoutRouter child={child} />
+				</NotFoundBoundary>
+			</RedirectBoundary>
+		</layoutContext.Provider>
+	);
+}
+
+function InnerLayoutRouter({ child }: { children: any }) {
+	const resolvedContext = child?.then ? use(child) : child ?? (null as any);
 	return resolvedContext;
 }

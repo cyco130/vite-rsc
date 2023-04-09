@@ -3,18 +3,14 @@ import React from "react";
 import { getURLFromRedirectError, isRedirectError } from "../shared/redirect";
 import { requestAsyncContext } from "./async-storage";
 import {
-	createHTMLResponse,
-	createServerComponentResponse as createServerComponentStreamResponse,
+	createServerComponentResponse,
 	createActionResponse,
 	decodeServerFunctionArgs,
 } from "./streams";
-import { RenderToReadableStreamOptions } from "react-dom/server.edge";
+import { createHTMLResponse } from "./html";
+import { Env } from "./env";
 
-export async function handleActionRequest(
-	request: Request,
-	Root: any,
-	{ clientModuleMap }: { clientModuleMap: ModuleMap },
-) {
+export async function handleActionRequest(request: Request, env: Env) {
 	let actionId = request.headers.get("x-action")!;
 	const isAction = !!actionId;
 	const isForm =
@@ -55,27 +51,30 @@ export async function handleActionRequest(
 				try {
 					await action(...data);
 					const url = new URL(request.url);
-					return createServerComponentStreamResponse(
-						<Root
-							url={url.href}
-							searchParams={Object.fromEntries(url.searchParams.entries())}
-							headers={Object.fromEntries(request.headers.entries())}
-							params={{}}
-						/>,
-						{ clientModuleMap },
+					return createServerComponentResponse(
+						"root",
+						{
+							url: url.href,
+							searchParams: Object.fromEntries(url.searchParams.entries()),
+							headers: Object.fromEntries(request.headers.entries()),
+							params: {},
+						},
+						env,
 					);
 				} catch (e) {
+					console.error(e);
 					if (isRedirectError(e)) {
 						const redirectPath = getURLFromRedirectError(e);
 						const url = new URL(redirectPath, request.url);
-						return createServerComponentStreamResponse(
-							<Root
-								url={url.href}
-								searchParams={Object.fromEntries(url.searchParams.entries())}
-								headers={Object.fromEntries(request.headers.entries())}
-								params={{}}
-							/>,
-							{ clientModuleMap },
+						return createServerComponentResponse(
+							"root",
+							{
+								url: url.href,
+								searchParams: Object.fromEntries(url.searchParams.entries()),
+								headers: Object.fromEntries(request.headers.entries()),
+								params: {},
+							},
+							env,
 							{
 								status: 200,
 								headers: {
@@ -96,13 +95,14 @@ export async function handleActionRequest(
 				{ request, response: responseInit },
 				async () => {
 					return createHTMLResponse(
-						<Root
-							url={url.href}
-							searchParams={Object.fromEntries(url.searchParams.entries())}
-							headers={Object.fromEntries(request.headers.entries())}
-							params={{}}
-						/>,
-						{ clientModuleMap },
+						"root",
+						{
+							url: url.href,
+							searchParams: Object.fromEntries(url.searchParams.entries()),
+							headers: Object.fromEntries(request.headers.entries()),
+							params: {},
+						},
+						env,
 						responseInit,
 					);
 				},
@@ -119,37 +119,24 @@ export async function handleActionRequest(
 		}
 	}
 
-	return createActionResponse(action, data, {
-		clientModuleMap,
-	});
+	return createActionResponse(action, data, env);
 }
 
-export async function handlePageRequest(
-	request: Request,
-	RootComponent: React.ComponentType<any>,
-	{
-		clientModuleMap,
-		...renderOptions
-	}: {
-		clientModuleMap: ModuleMap;
-	} & RenderToReadableStreamOptions,
-) {
+export async function handlePageRequest(request: Request, env: Env) {
 	const url = new URL(request.url);
 	const response: ResponseInit = {};
 	return requestAsyncContext.run(
 		{ request, response },
 		async () =>
 			await createHTMLResponse(
-				<RootComponent
-					url={request.url}
-					searchParams={Object.fromEntries(url.searchParams.entries())}
-					headers={Object.fromEntries(request.headers.entries())}
-					params={{}}
-				/>,
+				"root",
 				{
-					clientModuleMap,
-					...renderOptions,
+					url: request.url,
+					searchParams: Object.fromEntries(url.searchParams.entries()),
+					headers: Object.fromEntries(request.headers.entries()),
+					params: {},
 				},
+				env,
 				response,
 			),
 	);
@@ -157,45 +144,35 @@ export async function handlePageRequest(
 
 export async function handleServerComponentRequest(
 	request: Request,
-	Root: any,
-	{ clientModuleMap }: { clientModuleMap: any },
+	{ clientModuleMap }: Env,
 ) {
 	const url = new URL(request.headers.get("x-navigate") ?? "/", request.url);
 	const response: ResponseInit = {};
 	return requestAsyncContext.run({ request, response }, () =>
-		createServerComponentStreamResponse(
-			<Root
-				url={url.href}
-				searchParams={Object.fromEntries(url.searchParams.entries())}
-				headers={Object.fromEntries(request.headers.entries())}
-				params={{}}
-			/>,
-			{ clientModuleMap },
+		createServerComponentResponse(
+			"root",
+			{
+				url: request.url,
+				searchParams: Object.fromEntries(url.searchParams.entries()),
+				headers: Object.fromEntries(request.headers.entries()),
+				params: {},
+			},
+			{ clientModuleMap, components: {} },
 			response,
 		),
 	);
 }
 
-export function createServerRouter(
-	Root: any,
-	{
-		clientModuleMap,
-		apiRoutes: routeHandlers,
-		...renderOptions
-	}: {
-		clientModuleMap: any;
-		apiRoutes: (router: any) => void;
-	} & RenderToReadableStreamOptions,
-): Router {
+export function createServerRouter(env: Env): Router {
 	const router = createRouter();
 
-	routeHandlers(router);
+	// env.routeHandlers?.(router);
 
 	/**
 	 * This is the single RSF endpoint. It is used to respond to server functions.
 	 */
 	router.post("/*", async (context) => {
-		return handleActionRequest(context.request, Root, { clientModuleMap });
+		return handleActionRequest(context.request, env);
 	});
 
 	/**
@@ -204,15 +181,10 @@ export function createServerRouter(
 	 */
 	router.get("/*", async (context) => {
 		if (context.request.headers.get("accept") === "text/x-component") {
-			return handleServerComponentRequest(context.request, Root, {
-				clientModuleMap,
-			});
+			return handleServerComponentRequest(context.request, env);
 		}
 
-		return await handlePageRequest(context.request, Root, {
-			...renderOptions,
-			clientModuleMap,
-		});
+		return await handlePageRequest(context.request, env);
 	});
 
 	return router;

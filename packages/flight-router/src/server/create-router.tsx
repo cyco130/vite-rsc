@@ -6,7 +6,7 @@ import {
 	RouteMatch,
 } from "../client/router/utils";
 import { createLocation, createPath } from "../path";
-import Router from "../client/router/Router";
+import Router, { LayoutRouter } from "../client/router/Router";
 import React, { useLayoutEffect } from "react";
 import { PageProps } from "../types";
 import { Assets } from "stream-react/assets";
@@ -22,7 +22,12 @@ function renderMatches(
 	return renderedMatches.reduceRight((outlet, match) => {
 		const getChildren = () => {
 			if (match.route.component) {
-				return <match.route.component children={outlet} {...props} />;
+				return (
+					<LayoutRouter
+						segment={match.pathname}
+						child={<match.route.component children={outlet} {...props} />}
+					/>
+				);
 			}
 
 			return <div>404</div>;
@@ -66,29 +71,19 @@ export function createRouter(
 	);
 
 	function AppRouter(props: PageProps) {
+		console.log(props);
 		const basename = "/";
 		const url = new URL(props.url);
 		const location = createLocation("", createPath(url), null, "default");
 		const matches = matchRoutes(dataRoutes, location, basename);
 
-		let content;
-		let notFound = false;
-		if (!matches) {
-			const RootComponent = dataRoutes[0]?.component ?? notFoundComponent;
-			content = (
-				<RootComponent
-					{...props}
-					params={{}}
-					children={
-						<div>
-							404
-							{import.meta.env.SSR ? <StatusCode code={404} /> : null}
-						</div>
-					}
-				/>
-			);
-			notFound = content as any;
-		} else {
+		const NotFound = dataRoutes[0]?.component ?? notFoundComponent;
+		const notFound = (
+			<NotFound {...props} params={{}} children={<div>404</div>} />
+		);
+		let content = notFound;
+
+		if (matches) {
 			const params = matches.reduce((params, match) => {
 				return { ...params, ...match.params };
 			}, {});
@@ -107,9 +102,9 @@ export function createRouter(
 		}
 
 		return (
-			<NotFoundBoundary notFound={notFound} asNotFound={true}>
-				<Router initialURL={location.pathname}>{content}</Router>
-			</NotFoundBoundary>
+			<Router initialURL={location.pathname} notFound={notFound}>
+				{content}
+			</Router>
 		);
 	}
 

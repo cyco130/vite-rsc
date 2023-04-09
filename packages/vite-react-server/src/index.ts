@@ -24,11 +24,7 @@ function makeDefaultNodeEntry(hattipEntry: string | undefined) {
 const _dirname = dirname(fileURLToPath(import.meta.url));
 
 import { createRequire } from "node:module";
-import { type Writable, PassThrough, Readable, Transform } from "node:stream";
 import { Worker } from "node:worker_threads";
-import { ViteNodeServer } from "vite-node/server";
-import { ViteNodeRunner } from "vite-node/client";
-import { installSourcemapsSupport } from "vite-node/source-map";
 
 const require = createRequire(import.meta.url);
 
@@ -59,19 +55,18 @@ export async function createRSCWorker(buildPath: string) {
 			}
 		}),
 	);
-	const responses = new Map<string, Writable>();
+	const responses = new Map<string, ReadableStreamDefaultController>();
+	const encoder = new TextEncoder();
 	worker.on("message", (msg) => {
-		const { id, type, payload } = JSON.parse(msg);
+		const { id, chunk } = JSON.parse(msg);
 		const res = responses.get(id)!;
-		switch (type) {
-			case "data":
-				res.write(payload);
-				break;
-			case "end":
-				res.end();
-				responses.delete(id);
-				break;
+		if (chunk === "end") {
+			res.close();
+			responses.delete(id);
+			return;
 		}
+
+		res.enqueue(encoder.encode(chunk));
 	});
 	worker.once("exit", (code) => {
 		console.log("RSC worker exited with code", code);
@@ -79,20 +74,23 @@ export async function createRSCWorker(buildPath: string) {
 	});
 
 	return {
-		render(url: string | URL) {
+		render(component: string, props: any) {
+			debugger;
+			console.log("rendering", component, props);
 			const id = Math.random() + "";
-
-			const writeable = new PassThrough();
-			responses.set(id, writeable);
 			worker.postMessage(
 				JSON.stringify({
-					url: url.toString(),
-					headers: {},
-					searchParams: {},
+					component,
+					props,
+					id,
 				}),
 			);
 
-			return writeable;
+			return new ReadableStream({
+				start(controller) {
+					responses.set(id, controller);
+				},
+			});
 		},
 	};
 }
@@ -115,7 +113,10 @@ export function react({
 					const rscWorker = await createRSCWorker("");
 					// @ts-ignore
 					server.rscServer = rscWorker;
-					console.log(rscWorker.render(new URL("/", "http://localhost:3000")));
+					// const stream = rscWorker.render(
+					// 	new URL("/", "http://localhost:3000"),
+					// );
+					// console.log(text(stream).then(console.log));
 				}
 			},
 			config(config, env) {

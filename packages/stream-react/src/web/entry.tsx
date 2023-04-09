@@ -1,5 +1,5 @@
 import React, { startTransition } from "react";
-import { hydrateRoot, HydrationOptions } from "react-dom/client";
+import { createRoot, hydrateRoot, HydrationOptions } from "react-dom/client";
 import { setupWebpackEnv } from "./webpack";
 import { initMutation } from "../client/mutation";
 
@@ -56,7 +56,11 @@ export function mount(
 ) {
 	setupWebpackEnv(_loadModule);
 	initMutation();
-	startTransition(() => {
-		hydrateRoot(document, element, hydrationOptions);
-	});
+	if (window.document.documentElement.id === "__error__") {
+		createRoot(document).render(element);
+	} else {
+		startTransition(() => {
+			hydrateRoot(document, element, hydrationOptions);
+		});
+	}
 }

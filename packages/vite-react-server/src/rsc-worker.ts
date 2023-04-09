@@ -1,10 +1,8 @@
 /// <reference types="node" />
 
-import { parentPort, workerData } from "node:worker_threads";
+import { fileURLToPath } from "node:url";
+import { parentPort } from "node:worker_threads";
 import { createServer } from "vite";
-import * as React from "react";
-import RSDWServer from "react-server-dom-webpack/server.edge";
-import { ViteNodeServer } from "vite-node/server";
 
 // create vite server
 const server = await createServer({
@@ -16,66 +14,45 @@ const server = await createServer({
 // this is need to initialize the plugins
 await server.pluginContainer.buildStart({});
 
-// create vite-node server
-const node = new ViteNodeServer(server);
+parentPort?.addListener("message", handleMessage);
+parentPort?.postMessage("ready");
 
-parentPort.addListener("message", handleMessage);
-parentPort.postMessage("ready");
-
-async function handleMessage(msg) {
+async function handleMessage(msg: string) {
 	const event = JSON.parse(msg);
-	console.log(msg);
+	console.log({ msg });
 
 	const { default: entry } = await server.ssrLoadModule(
-		process.cwd() + "/" + "app/entry-rsc.tsx",
+		fileURLToPath(new URL("./entry-rsc.js", import.meta.url)),
 	);
 
-	console.log(entry(event));
+	function streamToMessageChannel(
+		stream: ReadableStream,
+		onMessage: (message: string) => void,
+	) {
+		const forwardReader = stream.getReader();
 
-	// const { id, type, payload } = event;
+		const textDecoder = new TextDecoder();
 
-	// const url = new URL(payload.url);
+		function read() {
+			forwardReader.read().then(({ done, value }) => {
+				if (done) {
+					onMessage("end");
+				} else {
+					onMessage(textDecoder.decode(value));
+					read();
+				}
+			});
+		}
+		read();
+	}
 
-	// const passthrough = new PassThrough({
-	// 	transform(chunk, _, callback) {
-	// 		parentPort.postMessage(
-	// 			JSON.stringify({
-	// 				id,
-	// 				type: "data",
-	// 				payload: chunk.toString(),
-	// 			}),
-	// 		);
-	// 		callback(null, chunk);
-	// 	},
-	// 	destroy(error, callback) {
-	// 		if (error) {
-	// 			parentPort.postMessage(
-	// 				JSON.stringify({
-	// 					id,
-	// 					type: "error",
-	// 				}),
-	// 			);
-	// 		}
-	// 		callback(error);
-	// 	},
-	// 	final(callback) {
-	// 		parentPort.postMessage(
-	// 			JSON.stringify({
-	// 				id,
-	// 				type: "end",
-	// 			}),
-	// 		);
-	// 		callback();
-	// 	},
-	// });
+	try {
+		const stream = await entry(event);
 
-	// Render the RSC chunks and pipe them through the passthrough stream
-	// to relay up to the parent thread.
-	// RSDWServer.renderToPipeableStream(
-	// 	React.createElement(Router, {
-	// 		trie,
-	// 		url,
-	// 	}),
-	// 	manifest,
-	// ).pipe(passthrough);
+		streamToMessageChannel(stream, (msg) => {
+			parentPort?.postMessage(JSON.stringify({ chunk: msg, id: event.id }));
+		});
+	} catch (e) {
+		console.error(e);
+	}
 }

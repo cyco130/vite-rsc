@@ -2,7 +2,7 @@ import { PageProps, createRouter } from "flight-router/server";
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
 import { A } from "flight-router";
-import { notFound } from "stream-react/navigation";
+import { notFound, redirect } from "stream-react/navigation";
 
 function CounterPage() {
 	return <Counter initialCount={42} sayHello={sayHello} />;
@@ -20,7 +20,8 @@ export function Root({ children }: PageProps) {
 			<body>
 				<div id="root">
 					<A href="/">Home</A> | <A href="/about">About</A> |{" "}
-					<A href="/404">404</A>
+					<A href="/not-found">Not found</A> | <A href="/404">404</A> |{" "}
+					<A href="/redirect">Redirect</A>
 					{children}
 				</div>
 			</body>
@@ -40,8 +41,21 @@ export default createRouter([
 			{
 				path: "/about",
 				component: () => {
+					return <div>about</div>;
+				},
+			},
+			{
+				path: "/not-found",
+				component: () => {
 					console.log("rendering component");
 					notFound();
+					return <div>About</div>;
+				},
+			},
+			{
+				path: "/redirect",
+				component: () => {
+					redirect("/");
 					return <div>About</div>;
 				},
 			},
