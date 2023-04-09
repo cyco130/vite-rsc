@@ -73,7 +73,7 @@ export function useBaseRouter() {
 	return { ...router, url } as const;
 }
 
-export function BaseRouter() {
+export function Router() {
 	const router = useBaseRouter();
 
 	return (

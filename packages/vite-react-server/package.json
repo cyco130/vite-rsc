@@ -14,12 +14,16 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./node": "./dist/node.js"
   },
   "typesVersions": {
     "*": {
       "*": [
         "dist/*.d.ts"
+      ],
+      "node": [
+        "dist/node.d.ts"
       ]
     }
   },
@@ -50,17 +54,23 @@
     "@types/node": "^18.15.11",
     "eslint": "^8.37.0",
     "publint": "^0.1.11",
+    "stream-react": "workspace:^",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
     "vite": "^4.2.1",
     "vitest": "^0.29.8"
   },
   "dependencies": {
-    "@hattip/vite": "^0.0.33",
     "@vitejs/plugin-react": "^3.1.0",
     "import-meta-resolve": "^2.2.2",
     "vite-plugin-inspect": "^0.7.18",
     "vite-rsc": "workspace:^0.0.1",
-    "vite-tsconfig-paths": "^4.0.8"
+    "vite-tsconfig-paths": "^4.0.8",
+    "winterkit": "workspace:^",
+    "react": "18.3.0-next-b14f8da15-20230403"
+  },
+  "peerDependencies": {
+    "stream-react": "*",
+    "react": "*"
   }
 }

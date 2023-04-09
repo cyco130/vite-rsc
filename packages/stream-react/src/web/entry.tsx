@@ -1,17 +1,42 @@
 import React, { startTransition } from "react";
 import { hydrateRoot, HydrationOptions } from "react-dom/client";
-import { setupWebpackEnv } from "../client/webpack";
+import { setupWebpackEnv } from "./webpack";
 import { initMutation } from "../client/mutation";
 
 export * from "./root";
-export * from "./base-router";
+
+function pathRelative(from: string, to: string) {
+	const fromParts = from.split("/").filter(Boolean);
+	const toParts = to.split("/").filter(Boolean);
+
+	let commonLength = 0;
+	for (let i = 0; i < Math.min(fromParts.length, toParts.length); i++) {
+		if (fromParts[i] === toParts[i]) {
+			commonLength = i + 1;
+		} else {
+			break;
+		}
+	}
+
+	const upLevel = fromParts.length - commonLength;
+	let relativePath = "";
+
+	for (let i = 0; i < upLevel; i++) {
+		relativePath += "../";
+	}
+
+	for (let i = commonLength; i < toParts.length; i++) {
+		relativePath += toParts[i] + (i < toParts.length - 1 ? "/" : "");
+	}
+
+	return relativePath || "./";
+}
 
 export function loadModule(id: string) {
 	if (import.meta.env.PROD) {
 		const assetPath =
 			`/` +
-			globalThis.__rsc__.manifest[id.slice(globalThis.__rsc__.root.length + 1)]
-				.file;
+			globalThis.manifest.client[pathRelative(import.meta.env.ROOT_DIR, id)];
 		return import(/* @vite-ignore */ assetPath);
 	} else {
 		return import(/* @vite-ignore */ id);

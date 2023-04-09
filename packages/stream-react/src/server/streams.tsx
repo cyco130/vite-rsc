@@ -2,7 +2,7 @@ import {
 	renderToReadableStream as renderToServerElementStream,
 	renderToReadableStream as renderToResultStream,
 } from "react-server-dom-webpack/server.edge";
-import { createFromReadableStream as createElementFromServerElementStream } from "react-server-dom-webpack/client.edge";
+import { createFromReadableStream as createElementFromStream } from "react-server-dom-webpack/client.edge";
 import {
 	renderToReadableStream as _renderToHTMLStream,
 	RenderToReadableStreamOptions,
@@ -174,9 +174,7 @@ export async function renderToHTMLStream(
 	const [serverElementStream1, serverElementStream2] =
 		serverElementStream.tee();
 
-	const serverElement = await createElementFromServerElementStream(
-		serverElementStream1,
-	);
+	const serverElement = await createElementFromStream(serverElementStream1);
 	const htmlStream = await _renderToHTMLStream(serverElement, renderOptions);
 	return htmlStream
 		.pipeThrough(bufferedTransformStream())

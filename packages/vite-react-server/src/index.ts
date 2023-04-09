@@ -1,48 +1,27 @@
 import { reactServerComponents } from "vite-rsc";
-import { hattip } from "@hattip/vite";
+import { hattip } from "winterkit";
 import type { Plugin } from "vite";
-import path from "node:path";
+import path, { dirname, join } from "node:path";
 import inspect from "vite-plugin-inspect";
 import { tsconfigPaths } from "vite-rsc/tsconfig-paths";
 import { exposeDevServer } from "./vite-dev-server";
 import reactRefresh from "@vitejs/plugin-react";
-function config() {
-	return {
-		name: "vite-react-server-config",
-		config(config, env) {
-			config.build ||= {};
-			config.build.manifest = true;
+import { cpSync, existsSync, readFileSync, readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-			if (env.ssrBuild) {
-				if (config.build.ssr === true) {
-					config.build.rollupOptions ||= {};
-					config.build.rollupOptions.input = "/app/entry-server";
-				}
-				config.build.outDir ||= "dist/server";
-				config.build.ssrEmitAssets = true;
-			} else {
-				config.build.outDir ||= "dist/static";
-				config.build.ssrManifest = true;
-				config.build.rollupOptions ||= {};
-				config.build.rollupOptions.input ||= "/app/entry-client";
-			}
+function makeDefaultNodeEntry(hattipEntry: string | undefined) {
+	if (!hattipEntry) {
+		throw new Error("No hattip entry found");
+	}
 
-			const root = config.root ?? process.cwd();
-			return {
-				resolve: {
-					alias: {
-						app: path.resolve(root, "app"),
-						"~": path.resolve(root, "app"),
-					},
-				},
-				ssr: {
-					external: ["react-server-dom-webpack"],
-					noExternal: ["flight-router", "stream-react"],
-				},
-			};
-		},
-	} satisfies Plugin;
+	return `
+		import handler from ${JSON.stringify(hattipEntry)};
+		import { createMiddleware } from "vite-react-server/node";
+		export default createMiddleware(handler);
+	`;
 }
+
+const _dirname = dirname(fileURLToPath(import.meta.url));
 
 export function react({
 	server = true,
@@ -50,27 +29,111 @@ export function react({
 	reactRefresh: _reactRefresh = false,
 	tsconfigPaths: _tsconfigPaths = true,
 	serverEntry = "stream-react/entry-server",
+	clientEntry = undefined as string | null | undefined,
+	appRoot = "app",
 } = {}) {
+	let isSsrBuild = false;
 	return [
 		{
 			name: "flight-router",
-			resolveId(src) {
-				if (src === "/app/entry-client") {
-					return "/app/entry-client.tsx";
+			config(config, env) {
+				const root = config.root ?? process.cwd();
+				isSsrBuild = env.ssrBuild ?? false;
+				const findAny = (
+					path: string,
+					name: string,
+					exts = [".js", ".ts", ".jsx", ".tsx", ".mjs", ".mts"],
+				) => {
+					for (const ext of exts) {
+						const file = join(path, name + ext);
+						if (existsSync(file)) {
+							return file;
+						}
+					}
+					return null;
+				};
+
+				let clientModules = [];
+				if (existsSync(join(root, "dist", "server", "client-manifest.json"))) {
+					clientModules = JSON.parse(
+						readFileSync(join(root, "dist", "server", "client-manifest.json"), {
+							encoding: "utf8",
+						}),
+					);
 				}
+
+				clientEntry =
+					clientEntry ?? findAny(join(root, appRoot), "entry-client");
+				if (!clientEntry) {
+					clientEntry = join(_dirname, "..", "dist", "entry-client.js");
+				}
+
+				config.build ||= {};
+				config.build.manifest = true;
+
+				if (env.ssrBuild) {
+					if (config.build.ssr === true) {
+						config.build.rollupOptions ||= {};
+						config.build.rollupOptions.input = "/app/entry-server";
+					}
+					config.build.outDir ||= "dist/server";
+					config.build.ssrEmitAssets = true;
+				} else {
+					config.build.outDir ||= "dist/static";
+					config.build.ssrManifest = true;
+					config.build.rollupOptions ||= {};
+					config.build.rollupOptions.treeshake = false;
+					config.build.rollupOptions.preserveEntrySignatures = "exports-only";
+					config.build.rollupOptions.input ||= [clientEntry, ...clientModules];
+				}
+
+				console.log(clientEntry);
+				return {
+					resolve: {
+						alias: {
+							"~": path.resolve(root, "app"),
+
+							"~react/entry-client": clientEntry,
+						},
+					},
+					define: {
+						"import.meta.env.CLIENT_ENTRY": JSON.stringify(clientEntry),
+						"import.meta.env.ROOT_DIR": JSON.stringify(root),
+					},
+					ssr: {
+						external: ["react-server-dom-webpack"],
+						noExternal: [
+							"flight-router",
+							"stream-react",
+							"react-error-boundary",
+						],
+					},
+				};
 			},
 			load(src) {
-				if (src === "/app/entry-client.tsx") {
+				if (src === "~root/entry-client.tsx") {
 					return `
-						import { mount, BaseRouter } from "stream-react/web/entry";
+						import { mount, Router } from "stream-react/web/entry";
+						import { Router } from "stream-react/web/router";
 						import React from "react";
-						mount(<BaseRouter />);
+						mount(<Router />);
 					`;
+				}
+			},
+			generateBundle(options) {
+				if (!isSsrBuild) {
+					cpSync(
+						join(process.cwd(), "dist/server/assets/"),
+						join(options!.dir!, "assets/"),
+						{
+							recursive: true,
+							filter: (src) => !src.endsWith(".js"),
+						},
+					);
 				}
 			},
 		} satisfies Plugin,
 		_tsconfigPaths && tsconfigPaths(),
-		config(),
 		_inspect &&
 			inspect({
 				build: true,
@@ -80,6 +143,7 @@ export function react({
 			? hattip({
 					clientConfig: {},
 					hattipEntry: serverEntry,
+					devEntry: makeDefaultNodeEntry,
 			  })
 			: exposeDevServer(),
 		reactServerComponents(),

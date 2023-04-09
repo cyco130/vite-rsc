@@ -3,10 +3,13 @@ import type { Plugin } from "vite";
 import { moduleResolve } from "import-meta-resolve";
 import { fileURLToPath } from "node:url";
 import { hasRscQuery, addRscQuery, removeRscQuery } from "./utils";
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";
 
 export function reactServerComponents(): Plugin {
 	let root: string;
 	let isBuild = false;
+	const clientModules = new Set();
 	return {
 		name: "react-server-components",
 
@@ -139,7 +142,7 @@ export function reactServerComponents(): Plugin {
 				id: string,
 			): Promise<string> {
 				const names: Array<string> = [];
-
+				clientModules.add(id);
 				await parseExportNamesInto(ast, names, id);
 
 				let newSrc =
@@ -375,6 +378,12 @@ export function reactServerComponents(): Plugin {
 
 				return { url: resolved.id };
 			}
+		},
+		generateBundle(options) {
+			writeFileSync(
+				join(options.dir!, "client-manifest.json"),
+				JSON.stringify([...clientModules.values()], null, 2),
+			);
 		},
 	};
 }

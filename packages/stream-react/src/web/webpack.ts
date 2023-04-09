@@ -2,7 +2,9 @@ declare global {
 	var moduleCache: Map<string, any>;
 	function __webpack_chunk_load__(chunk: string): Promise<void>;
 	function __webpack_require__(id: string): any;
-	var __rsc__: { root: string; manifest: { [key: string]: { file: string } } };
+
+	// type client
+	var manifest: { root: string; client: { [key: string]: { file: string } } };
 }
 
 export function setupWebpackEnv(

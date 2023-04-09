@@ -41,6 +41,8 @@ export async function handleActionRequest(
 
 	const action = (await __webpack_chunk_get__(filePath))[name];
 
+	console.log(action);
+
 	const isMutating = request.headers.get("x-mutation") === "1";
 
 	// if it's a mutation, either plain action, or form, we return a RSC response
@@ -81,20 +83,31 @@ export async function handleActionRequest(
 				}
 			}
 		});
-	} else if (isForm) {
-		const url = new URL(request.url);
-
-		return requestAsyncContext.run({ request }, async () => {
-			return createHTMLResponse(
-				<Root
-					url={url.href}
-					searchParams={Object.fromEntries(url.searchParams.entries())}
-					headers={Object.fromEntries(request.headers.entries())}
-					params={{}}
-				/>,
-				{ clientModuleMap },
-			);
-		});
+	} else if (isForm || isMultiPartForm) {
+		try {
+			await action(...data);
+			const url = new URL(request.url);
+			return requestAsyncContext.run({ request }, async () => {
+				return createHTMLResponse(
+					<Root
+						url={url.href}
+						searchParams={Object.fromEntries(url.searchParams.entries())}
+						headers={Object.fromEntries(request.headers.entries())}
+						params={{}}
+					/>,
+					{ clientModuleMap },
+				);
+			});
+		} catch (e) {
+			if (isRedirectError(e)) {
+				return new Response("", {
+					status: 302,
+					headers: {
+						Location: getURLFromRedirectError(e),
+					},
+				});
+			}
+		}
 	}
 
 	return createActionResponse(action, data, {
