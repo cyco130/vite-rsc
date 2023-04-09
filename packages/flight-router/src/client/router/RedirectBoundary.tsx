@@ -4,9 +4,8 @@ import React, { Component, startTransition, useEffect } from "react";
 import {
 	getURLFromRedirectError,
 	isRedirectError,
-} from "../../shared/redirect";
-import { useRouter } from "../../shared/useRouter";
-import { RouterAPI } from "./router-api";
+} from "stream-react/navigation";
+import { RouterAPI, useRouter } from "stream-react/router";
 
 interface RedirectBoundaryProps {
 	router: RouterAPI;

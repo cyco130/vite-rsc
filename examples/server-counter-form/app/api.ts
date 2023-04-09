@@ -1,6 +1,6 @@
 "use server";
 
-import { redirect } from "stream-react/redirect";
+import { redirect } from "stream-react/navigation";
 import db from "./db";
 
 export async function increment() {

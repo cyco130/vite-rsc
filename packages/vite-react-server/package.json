@@ -52,8 +52,11 @@
   "devDependencies": {
     "@cyco130/eslint-config": "^3.0.2",
     "@types/node": "^18.15.11",
+    "@types/react": "^18.0.33",
     "eslint": "^8.37.0",
     "publint": "^0.1.11",
+    "react": "18.3.0-next-b14f8da15-20230403",
+    "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
     "stream-react": "workspace:^",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
@@ -63,14 +66,15 @@
   "dependencies": {
     "@vitejs/plugin-react": "^3.1.0",
     "import-meta-resolve": "^2.2.2",
+    "vite-node": "^0.30.0",
     "vite-plugin-inspect": "^0.7.18",
     "vite-rsc": "workspace:^0.0.1",
     "vite-tsconfig-paths": "^4.0.8",
-    "winterkit": "workspace:^",
-    "react": "18.3.0-next-b14f8da15-20230403"
+    "winterkit": "workspace:^"
   },
   "peerDependencies": {
-    "stream-react": "*",
-    "react": "*"
+    "react": "18.3.0-next-b14f8da15-20230403",
+    "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
+    "stream-react": "*"
   }
 }

@@ -1,6 +1,8 @@
-import { A, createRouter, PageProps } from "flight-router";
+import { PageProps, createRouter } from "flight-router/server";
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
+import { A } from "flight-router";
+import { notFound } from "stream-react/navigation";
 
 function CounterPage() {
 	return <Counter initialCount={42} sayHello={sayHello} />;
@@ -17,7 +19,8 @@ export function Root({ children }: PageProps) {
 			</head>
 			<body>
 				<div id="root">
-					<A href="/">Home</A> | <A href="/about">About</A>
+					<A href="/">Home</A> | <A href="/about">About</A> |{" "}
+					<A href="/404">404</A>
 					{children}
 				</div>
 			</body>
@@ -37,6 +40,8 @@ export default createRouter([
 			{
 				path: "/about",
 				component: () => {
+					console.log("rendering component");
+					notFound();
 					return <div>About</div>;
 				},
 			},

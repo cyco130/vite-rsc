@@ -48,23 +48,13 @@ export async function handleActionRequest(
 	// if it's a mutation, either plain action, or form, we return a RSC response
 	// for the next page the user needs to visit, (could be the same page too)
 	if (isMutating) {
-		return requestAsyncContext.run({ request }, async () => {
-			try {
-				await action(...data);
-				const url = new URL(request.url);
-				return createServerComponentStreamResponse(
-					<Root
-						url={url.href}
-						searchParams={Object.fromEntries(url.searchParams.entries())}
-						headers={Object.fromEntries(request.headers.entries())}
-						params={{}}
-					/>,
-					{ clientModuleMap },
-				);
-			} catch (e) {
-				if (isRedirectError(e)) {
-					const redirectPath = getURLFromRedirectError(e);
-					const url = new URL(redirectPath, request.url);
+		const responseInit: ResponseInit = {};
+		return requestAsyncContext.run(
+			{ request, response: responseInit },
+			async () => {
+				try {
+					await action(...data);
+					const url = new URL(request.url);
 					return createServerComponentStreamResponse(
 						<Root
 							url={url.href}
@@ -73,31 +63,50 @@ export async function handleActionRequest(
 							params={{}}
 						/>,
 						{ clientModuleMap },
-						{
-							status: 200,
-							headers: {
-								"x-redirect": redirectPath,
-							},
-						},
 					);
+				} catch (e) {
+					if (isRedirectError(e)) {
+						const redirectPath = getURLFromRedirectError(e);
+						const url = new URL(redirectPath, request.url);
+						return createServerComponentStreamResponse(
+							<Root
+								url={url.href}
+								searchParams={Object.fromEntries(url.searchParams.entries())}
+								headers={Object.fromEntries(request.headers.entries())}
+								params={{}}
+							/>,
+							{ clientModuleMap },
+							{
+								status: 200,
+								headers: {
+									"x-redirect": redirectPath,
+								},
+							},
+						);
+					}
 				}
-			}
-		});
+			},
+		);
 	} else if (isForm || isMultiPartForm) {
 		try {
 			await action(...data);
 			const url = new URL(request.url);
-			return requestAsyncContext.run({ request }, async () => {
-				return createHTMLResponse(
-					<Root
-						url={url.href}
-						searchParams={Object.fromEntries(url.searchParams.entries())}
-						headers={Object.fromEntries(request.headers.entries())}
-						params={{}}
-					/>,
-					{ clientModuleMap },
-				);
-			});
+			const responseInit: ResponseInit = {};
+			return requestAsyncContext.run(
+				{ request, response: responseInit },
+				async () => {
+					return createHTMLResponse(
+						<Root
+							url={url.href}
+							searchParams={Object.fromEntries(url.searchParams.entries())}
+							headers={Object.fromEntries(request.headers.entries())}
+							params={{}}
+						/>,
+						{ clientModuleMap },
+						responseInit,
+					);
+				},
+			);
 		} catch (e) {
 			if (isRedirectError(e)) {
 				return new Response("", {
@@ -126,9 +135,9 @@ export async function handlePageRequest(
 	} & RenderToReadableStreamOptions,
 ) {
 	const url = new URL(request.url);
-
+	const response: ResponseInit = {};
 	return requestAsyncContext.run(
-		{ request },
+		{ request, response },
 		async () =>
 			await createHTMLResponse(
 				<RootComponent
@@ -141,6 +150,7 @@ export async function handlePageRequest(
 					clientModuleMap,
 					...renderOptions,
 				},
+				response,
 			),
 	);
 }
@@ -151,7 +161,8 @@ export async function handleServerComponentRequest(
 	{ clientModuleMap }: { clientModuleMap: any },
 ) {
 	const url = new URL(request.headers.get("x-navigate") ?? "/", request.url);
-	return requestAsyncContext.run({ request }, () =>
+	const response: ResponseInit = {};
+	return requestAsyncContext.run({ request, response }, () =>
 		createServerComponentStreamResponse(
 			<Root
 				url={url.href}
@@ -160,6 +171,7 @@ export async function handleServerComponentRequest(
 				params={{}}
 			/>,
 			{ clientModuleMap },
+			response,
 		),
 	);
 }

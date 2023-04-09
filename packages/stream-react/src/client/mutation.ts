@@ -3,7 +3,7 @@ import { useRouter } from "./router";
 
 declare global {
 	export var isMutating: number;
-	export function mutate(data: any): void;
+	export function mutate(data: any): Promise<void>;
 	export function addMutationListener(callback: (any: any) => void): () => void;
 	export var mutationListeners: ((any: any) => void)[];
 }

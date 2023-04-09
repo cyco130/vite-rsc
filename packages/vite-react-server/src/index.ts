@@ -23,6 +23,80 @@ function makeDefaultNodeEntry(hattipEntry: string | undefined) {
 
 const _dirname = dirname(fileURLToPath(import.meta.url));
 
+import { createRequire } from "node:module";
+import { type Writable, PassThrough, Readable, Transform } from "node:stream";
+import { Worker } from "node:worker_threads";
+import { ViteNodeServer } from "vite-node/server";
+import { ViteNodeRunner } from "vite-node/client";
+import { installSourcemapsSupport } from "vite-node/source-map";
+
+const require = createRequire(import.meta.url);
+
+// TODO: Use something other than JSON for worker communication.
+
+/**
+ * Create a worker thread that will be used to render RSC chunks.
+ * @param buildPath Absolute path to the the built RSC bundle.
+ */
+export async function createRSCWorker(buildPath: string) {
+	const rscWorker = require.resolve("./rsc-worker");
+	const worker = new Worker(rscWorker, {
+		execArgv: ["--conditions", "react-server"],
+		env: {
+			RSC_WORKER: "true",
+		},
+		workerData: {
+			buildPath,
+		},
+	});
+
+	await new Promise<void>((resolve, reject) =>
+		worker.once("message", (event) => {
+			if (event === "ready") {
+				resolve();
+			} else {
+				reject(new Error("rsc worker failed to start"));
+			}
+		}),
+	);
+	const responses = new Map<string, Writable>();
+	worker.on("message", (msg) => {
+		const { id, type, payload } = JSON.parse(msg);
+		const res = responses.get(id)!;
+		switch (type) {
+			case "data":
+				res.write(payload);
+				break;
+			case "end":
+				res.end();
+				responses.delete(id);
+				break;
+		}
+	});
+	worker.once("exit", (code) => {
+		console.log("RSC worker exited with code", code);
+		process.exit(code);
+	});
+
+	return {
+		render(url: string | URL) {
+			const id = Math.random() + "";
+
+			const writeable = new PassThrough();
+			responses.set(id, writeable);
+			worker.postMessage(
+				JSON.stringify({
+					url: url.toString(),
+					headers: {},
+					searchParams: {},
+				}),
+			);
+
+			return writeable;
+		},
+	};
+}
+
 export function react({
 	server = true,
 	inspect: _inspect = true,
@@ -36,6 +110,14 @@ export function react({
 	return [
 		{
 			name: "flight-router",
+			async configureServer(server) {
+				if (!process.env.RSC_WORKER) {
+					const rscWorker = await createRSCWorker("");
+					// @ts-ignore
+					server.rscServer = rscWorker;
+					console.log(rscWorker.render(new URL("/", "http://localhost:3000")));
+				}
+			},
 			config(config, env) {
 				const root = config.root ?? process.cwd();
 				isSsrBuild = env.ssrBuild ?? false;

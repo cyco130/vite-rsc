@@ -1,4 +1,2 @@
-export * from "./createRouter";
+export * from "./create-router";
 export type { PageProps } from "../types";
-export { component } from "./component";
-export * from "./request";

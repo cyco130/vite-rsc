@@ -37,6 +37,17 @@ export default defineConfig([
 	},
 	{
 		entry: {
+			"rsc-worker": "./src/rsc-worker.ts",
+		},
+		dts: false,
+		format: ["esm"],
+		platform: "node",
+		target: "esnext",
+		shims: false,
+		external: ["react-server-dom-webpack", "vite", "vite-node"],
+	},
+	{
+		entry: {
 			"entry-client": "./src/entry-client.tsx",
 		},
 		dts: false,

@@ -9,15 +9,23 @@ import {
 	useMemo,
 	useReducer,
 	useRef,
+	useCallback,
 	useState,
 } from "react";
 import * as React from "react";
-import { RouterContext } from "../../shared/useRouter";
+import { routerContext } from "stream-react/router";
 import { RedirectBoundary } from "./RedirectBoundary";
-import { createElementFromRSCFetch } from "../stream";
-import { refresh } from "../refresh";
-import { addMutationListener } from "../mutation";
-import { useRerender } from "../hooks";
+import { createElementFromServer } from "stream-react/client";
+import { refresh } from "stream-react/refresh";
+import { addMutationListener } from "stream-react/mutation";
+import { NotFoundBoundary } from "../NotFoundBoundary";
+
+export function useRerender() {
+	const [_, rerender] = useState(() => 0);
+	return useCallback(() => {
+		rerender((n) => n + 1);
+	}, [rerender]);
+}
 
 type RouterState = {
 	url: string;
@@ -30,7 +38,7 @@ function clientReducer(state: RouterState, action: RouterAction) {
 	switch (action.type) {
 		case "navigate":
 			if (!state.cache.has(action.url)) {
-				state.cache.set(action.url, createElementFromRSCFetch(action.url));
+				state.cache.set(action.url, createElementFromServer(action.url));
 			}
 			return { ...state, url: action.url };
 		default:
@@ -55,8 +63,10 @@ export default function Router({
 	children: React.ReactNode;
 	initialURL: string;
 }) {
-	const existingRouter = use(RouterContext);
-	const [cache] = useState(() => new Map<string, Promise<JSX.Element>>());
+	const existingRouter = use(routerContext);
+	const [cache] = useState(
+		() => new Map<string, React.Thenable<React.ReactElement>>(),
+	);
 	const enabledRef = useRef(true);
 	const initialState = useMemo(() => {
 		cache.set(initialURL, children as any);
@@ -84,6 +94,14 @@ export default function Router({
 				history.replace(url, state);
 				startTransition(() => dispatch({ type: "navigate", url }));
 			},
+			preload(url: string): React.Thenable<React.ReactElement> | Promise<any> {
+				if (!cache.has(url)) {
+					const promise = createElementFromServer(url);
+					cache.set(url, promise);
+					return promise;
+				}
+				return Promise.resolve();
+			},
 			mutate: globalThis.mutate,
 			refresh: refresh,
 			history,
@@ -109,6 +127,7 @@ export default function Router({
 
 	useLayoutEffect(() => {
 		if (existingRouter) {
+			console.log(existingRouter);
 			existingRouter.disable();
 		}
 		return () => {
@@ -131,11 +150,13 @@ export default function Router({
 	const content = state.cache.get(state.url);
 
 	return (
-		<RouterContext.Provider value={{ url: state.url, ...router }}>
+		<routerContext.Provider value={{ url: state.url, ...router }}>
 			<RedirectBoundary>
-				<LayoutRouter childNode={content} />
+				<NotFoundBoundary notFound={<div>Hello</div>}>
+					<LayoutRouter childNode={content} />
+				</NotFoundBoundary>
 			</RedirectBoundary>
-		</RouterContext.Provider>
+		</routerContext.Provider>
 	);
 }
 

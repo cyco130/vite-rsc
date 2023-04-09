@@ -14,13 +14,15 @@
     "./error-boundary": "./src/client/error-boundary.tsx",
     "./entry-client": "./src/entry-client.ts",
     "./server": "./src/server/index.ts",
-    "./client": "./src/client/index.tsx",
+    "./client": "./src/client/index.ts",
     "./dev": "./src/server/dev/index.ts",
     "./assets": "./src/shared/assets.tsx",
     "./web/entry": "./src/web/entry.tsx",
     "./web/router": "./src/web/router.tsx",
     "./router": "./src/client/router/index.ts",
-    "./redirect": "./src/shared/redirect.ts",
+    "./navigation": "./src/shared/navigation.ts",
+    "./refresh": "./src/client/refresh.ts",
+    "./request": "./src/server/request.ts",
     "./server/entry": "./src/server/entry.tsx",
     "./fs": "./src/fs/index.ts",
     ".": "./src/client/index.ts"
@@ -47,7 +49,10 @@
         "./src/server/index.ts"
       ],
       "client": [
-        "./src/client/stream.tsx"
+        "./src/client/index.ts"
+      ],
+      "refresh": [
+        "./src/client/refresh.ts"
       ],
       "assets": [
         "./src/shared/assets.tsx"
@@ -64,8 +69,8 @@
       "mutation": [
         "./src/client/mutation.ts"
       ],
-      "redirect": [
-        "./src/shared/redirect.ts"
+      "navigation": [
+        "./src/shared/navigation.ts"
       ],
       "error-boundary": [
         "./src/client/error-boundary.ts"
@@ -75,6 +80,9 @@
       ],
       "router": [
         "./src/client/router/index.ts"
+      ],
+      "request": [
+        "./src/server/request.ts"
       ],
       "dev": [
         "./src/server/dev/index.ts"

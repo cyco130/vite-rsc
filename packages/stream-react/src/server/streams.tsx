@@ -1,20 +1,18 @@
-import {
-	renderToReadableStream as renderToServerElementStream,
-	renderToReadableStream as renderToResultStream,
-} from "react-server-dom-webpack/server.edge";
 import { createFromReadableStream as createElementFromStream } from "react-server-dom-webpack/client.edge";
 import {
 	renderToReadableStream as _renderToHTMLStream,
 	RenderToReadableStreamOptions,
 } from "react-dom/server.edge";
-import { ReactElement } from "react";
+import React, { ReactElement, Thenable, use } from "react";
 import { sanitize } from "./htmlescape";
+import { isNotFoundError } from "../shared/not-found";
+import { isRedirectError } from "../shared/redirect";
+import {
+	renderToResultStream,
+	renderToServerElementStream,
+} from "./server-streams";
 
-export {
-	renderToReadableStream as renderToServerElementStream,
-	renderToReadableStream as renderToResultStream,
-	decodeReply as decodeServerFunctionArgs,
-} from "react-server-dom-webpack/server.edge";
+export * from "./server-streams";
 
 async function nextMacroTask(): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, 0));
@@ -170,15 +168,145 @@ export async function renderToHTMLStream(
 	const serverElementStream = renderToServerElementStream(
 		element,
 		renderOptions.clientModuleMap,
+		{
+			onError: (e) => {
+				if (isNotFoundError(e) || isRedirectError(e)) return e.digest;
+			},
+		},
 	);
 	const [serverElementStream1, serverElementStream2] =
 		serverElementStream.tee();
 
 	const serverElement = await createElementFromStream(serverElementStream1);
-	const htmlStream = await _renderToHTMLStream(serverElement, renderOptions);
+	const htmlStream = await _renderToHTMLStream(serverElement, {
+		...renderOptions,
+		onError: (e) => {
+			if (isNotFoundError(e) || isRedirectError(e)) return e.digest;
+		},
+	});
 	return htmlStream
 		.pipeThrough(bufferedTransformStream())
 		.pipeThrough(inlineInitialServerComponent(serverElementStream2));
+}
+
+type FlightResponseRef = {
+	current: null | Thenable<JSX.Element>;
+};
+
+/**
+ * Render Flight stream.
+ * This is only used for renderToHTML, the Flight response does not need additional wrappers.
+ */
+export function useServerElement(
+	serverElementStream: ReadableStream<Uint8Array>,
+	writable: WritableStream<Uint8Array>,
+	flightResponseRef: FlightResponseRef,
+	onChunk: (chunk: Uint8Array) => void = () => {},
+	nonce?: string,
+) {
+	if (flightResponseRef.current !== null) {
+		return flightResponseRef.current;
+	}
+
+	const [renderStream, forwardStream] = serverElementStream.tee();
+	const res = createElementFromStream(renderStream, {
+		callServer: (method, args) => {
+			throw new Error("Not implemented");
+		},
+		// moduleMap: isEdgeRuntime
+		// 	? clientReferenceManifest.edgeSSRModuleMapping
+		// 	: clientReferenceManifest.ssrModuleMapping,
+	});
+
+	flightResponseRef.current = res;
+
+	let bootstrapped = false;
+	// We only attach CSS chunks to the inlined data.
+	const forwardReader = forwardStream.getReader();
+	const writer = writable.getWriter();
+	const startScriptTag = nonce
+		? `<script nonce=${JSON.stringify(nonce)}>`
+		: "<script>";
+	const textDecoder = new TextDecoder();
+	const textEncoder = new TextEncoder();
+
+	function read() {
+		forwardReader.read().then(({ done, value }) => {
+			if (value) {
+				onChunk(value);
+			}
+
+			if (!bootstrapped) {
+				bootstrapped = true;
+				writer.write(
+					textEncoder.encode(
+						`<script>(()=>{const{writable,readable}=new TransformStream();const writer=writable.getWriter();self.init_server=readable;self.chunk=(text)=>writer.write(new TextEncoder().encode(text))})()</script>`,
+					),
+				);
+			}
+			if (done) {
+				flightResponseRef.current = null;
+				writer.close();
+			} else {
+				const scripts = `<script>self.chunk(${sanitize(
+					JSON.stringify(textDecoder.decode(value)),
+				)});</script>`;
+
+				writer.write(textEncoder.encode(scripts));
+				read();
+			}
+		});
+	}
+	read();
+
+	return res;
+}
+
+/**
+ * Create a component that renders the Flight stream.
+ * This is only used for renderToHTML, the Flight response does not need additional wrappers.
+ */
+export function createServerComponentRenderer<Props>(
+	element: JSX.Element,
+	{
+		transformStream,
+		clientModuleMap,
+	}: {
+		transformStream: TransformStream;
+		clientModuleMap: ModuleMap;
+	},
+): () => JSX.Element {
+	let serverElementStream: ReadableStream<Uint8Array>;
+	const createServerElementStream = () => {
+		if (!serverElementStream) {
+			serverElementStream = renderToServerElementStream(
+				element,
+				clientModuleMap,
+				{
+					// context: serverContexts,
+					onError: (e) => {
+						if (isRedirectError(e) || isNotFoundError(e)) return e.digest;
+					},
+				},
+			);
+			console.log(serverElementStream);
+		}
+		return serverElementStream;
+	};
+
+	const flightResponseRef: FlightResponseRef = { current: null };
+
+	const writable = transformStream.writable;
+
+	return function ServerComponentWrapper(): JSX.Element {
+		const serverElementStream = createServerElementStream();
+		const response = useServerElement(
+			serverElementStream,
+			writable,
+			flightResponseRef,
+		);
+		return use(response);
+	};
 }
 
 export async function createHTMLResponse(
@@ -188,10 +316,28 @@ export async function createHTMLResponse(
 	},
 	responseInit: ResponseInit = {},
 ) {
-	return new Response(await renderToHTMLStream(element, renderOptions), {
-		...responseInit,
-		headers: { "Content-Type": "text/html", ...(responseInit.headers ?? {}) },
+	const ServerComponent = createServerComponentRenderer(element, {
+		transformStream: new TransformStream(),
+		clientModuleMap: renderOptions.clientModuleMap,
 	});
+
+	try {
+		return new Response(
+			await _renderToHTMLStream(<ServerComponent />, renderOptions),
+			{
+				...responseInit,
+				headers: {
+					"Content-Type": "text/html",
+					...(responseInit.headers ?? {}),
+				},
+			},
+		);
+	} catch (e) {
+		console.log({ error: e });
+		return new Response(`<div>Error: ${e}</div>`, {
+			headers: { "Content-Type": "text/html" },
+		});
+	}
 }
 
 export async function createServerComponentResponse(
@@ -201,16 +347,17 @@ export async function createServerComponentResponse(
 	},
 	responseInit: ResponseInit = {},
 ) {
-	return new Response(
-		renderToServerElementStream(element, renderOptions.clientModuleMap),
-		{
-			...responseInit,
-			headers: {
-				"Content-Type": "text/x-component",
-				...(responseInit.headers ?? {}),
-			},
-		},
+	const serverElement = renderToServerElementStream(
+		element,
+		renderOptions.clientModuleMap,
 	);
+	return new Response(serverElement, {
+		...responseInit,
+		headers: {
+			"Content-Type": "text/x-component",
+			...(responseInit.headers ?? {}),
+		},
+	});
 }
 
 export async function createActionResponse(
@@ -222,11 +369,7 @@ export async function createActionResponse(
 	responseInit: ResponseInit = {},
 ) {
 	return new Response(
-		renderToResultStream(
-			await action(...args),
-			renderOptions.clientModuleMap,
-			{},
-		),
+		renderToResultStream(await action(...args), renderOptions.clientModuleMap),
 		{
 			...responseInit,
 			headers: {
@@ -247,8 +390,7 @@ export async function createMutationResponse(
 	responseInit: ResponseInit = {},
 ) {
 	try {
-		const result = await action(...args);
-
+		await action(...args);
 		return new Response(
 			renderToServerElementStream(element, renderOptions.clientModuleMap, {}),
 			{

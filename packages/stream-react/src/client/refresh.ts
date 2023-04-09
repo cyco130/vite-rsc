@@ -7,3 +7,5 @@ export const refresh =
 				const element = createElementFromServer();
 				globalThis.mutate(element);
 		  };
+
+export default refresh;

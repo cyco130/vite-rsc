@@ -7,9 +7,11 @@ import {
 } from "../client/router/utils";
 import { createLocation, createPath } from "../path";
 import Router from "../client/router/Router";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { PageProps } from "../types";
-import { InlineStyles } from ".";
+import { Assets } from "stream-react/assets";
+import { StatusCode } from "./StatusCode";
+import { NotFoundBoundary } from "../client/NotFoundBoundary";
 
 function renderMatches(
 	matches: RouteMatch[],
@@ -30,6 +32,7 @@ function renderMatches(
 }
 
 function DefaultErrorComponent() {
+	console.log(DefaultErrorComponent, import.meta.env.SSR);
 	return (
 		<html lang="en">
 			<head>
@@ -37,7 +40,8 @@ function DefaultErrorComponent() {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<InlineStyles />
+				<Assets />
+				{import.meta.env.SSR ? <StatusCode code={404} /> : null}
 			</head>
 			<body>
 				<div>404</div>
@@ -48,7 +52,10 @@ function DefaultErrorComponent() {
 
 export function createRouter(
 	routes: RouteObject[],
-	{ errorComponent = DefaultErrorComponent } = {},
+	{
+		errorComponent = DefaultErrorComponent,
+		notFoundComponent = DefaultErrorComponent,
+	} = {},
 ) {
 	const manifest: RouteManifest = {};
 	const dataRoutes = convertRoutesToDataRoutes(
@@ -65,11 +72,22 @@ export function createRouter(
 		const matches = matchRoutes(dataRoutes, location, basename);
 
 		let content;
+		let notFound = false;
 		if (!matches) {
-			const RootComponent = dataRoutes[0]?.component ?? errorComponent;
+			const RootComponent = dataRoutes[0]?.component ?? notFoundComponent;
 			content = (
-				<RootComponent {...props} params={{}} children={<div>404</div>} />
+				<RootComponent
+					{...props}
+					params={{}}
+					children={
+						<div>
+							404
+							{import.meta.env.SSR ? <StatusCode code={404} /> : null}
+						</div>
+					}
+				/>
 			);
+			notFound = content as any;
 		} else {
 			const params = matches.reduce((params, match) => {
 				return { ...params, ...match.params };
@@ -88,7 +106,11 @@ export function createRouter(
 			return content;
 		}
 
-		return <Router initialURL={location.pathname}>{content}</Router>;
+		return (
+			<NotFoundBoundary notFound={notFound} asNotFound={true}>
+				<Router initialURL={location.pathname}>{content}</Router>
+			</NotFoundBoundary>
+		);
 	}
 
 	return AppRouter;
