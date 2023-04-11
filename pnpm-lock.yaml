@@ -910,6 +910,9 @@ importers:
       tiny-warning:
         specifier: ^1.0.3
         version: 1.0.3
+      vite-react-server:
+        specifier: workspace:^
+        version: link:../vite-react-server
     devDependencies:
       '@cyco130/eslint-config':
         specifier: ^3.0.2

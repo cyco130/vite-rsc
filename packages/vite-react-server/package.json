@@ -15,6 +15,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./fs-router": {
+      "import": "./dist/fs-router.js",
+      "require": "./dist/fs-router.cjs"
+    },
     "./node": "./dist/node.js"
   },
   "typesVersions": {
@@ -24,6 +28,9 @@
       ],
       "node": [
         "dist/node.d.ts"
+      ],
+      "fs-router": [
+        "dist/fs-router.d.ts"
       ]
     }
   },

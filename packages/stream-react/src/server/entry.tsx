@@ -124,7 +124,6 @@ export function renderLinkTag(file: string) {
  */
 const createProdEnv = (): Env => {
 	setupWebpackEnv(async (chunk) => {
-		console.log("JEREEE");
 		const file = globalThis.serverManifest[relative(process.cwd(), chunk)];
 		if (file) {
 			const url = join(
@@ -173,6 +172,7 @@ const createProdEnv = (): Env => {
 				].file
 			}`,
 		],
+		routesConfig: globalThis.routesConfig,
 		findAssets: async () => {
 			const findAssets = (chunk: string) => {
 				return [
@@ -204,6 +204,7 @@ const createDevEnv = (): Env => {
 		components: {},
 		bootstrapScriptContent: undefined,
 		bootstrapModules: [import.meta.env.CLIENT_ENTRY],
+		routesConfig: __vite_dev_server__.routesConfig,
 		findAssets: async () => {
 			const { default: devServer } = await import("virtual:vite-dev-server");
 			const styles = await collectStyles(devServer, ["~/root"]);
@@ -224,5 +225,6 @@ const createEnv = import.meta.env.PROD ? createProdEnv : createDevEnv;
 export function createHandler() {
 	const env = createEnv();
 	globalThis.env = env;
+
 	return createServerRouter(env).buildHandler();
 }

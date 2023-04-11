@@ -9,6 +9,13 @@ export default defineConfig([
 		dts: true,
 	},
 	{
+		entry: ["./src/fs-router.ts"],
+		format: ["esm"],
+		platform: "node",
+		target: "node14",
+		dts: true,
+	},
+	{
 		entry: ["./src/cli.ts"],
 		format: ["cjs"],
 	},

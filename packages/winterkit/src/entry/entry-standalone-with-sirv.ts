@@ -19,6 +19,10 @@ globalThis.reactServerManifest = JSON.parse(
 	fs.readFileSync(`./dist/server/react-server/manifest.json`, "utf-8"),
 );
 
+globalThis.routesConfig = JSON.parse(
+	fs.readFileSync(`./dist/server/react-server/routes.json`, "utf-8"),
+);
+
 let sirvHandler: RequestHandler;
 
 async function init() {

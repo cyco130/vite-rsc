@@ -79,6 +79,9 @@ async function handleMessage(msg: string) {
 						"node:url",
 						"@prisma/client",
 						"@auth/core",
+						"fs",
+						"path",
+						"url",
 					],
 				},
 			},
@@ -87,7 +90,6 @@ async function handleMessage(msg: string) {
 			},
 			ssr: {
 				noExternal: true,
-				external: ["node:path", "node:fs", "node:url", "node:async_hooks"],
 			},
 		});
 		const root = process.cwd();

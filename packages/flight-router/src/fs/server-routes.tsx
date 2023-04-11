@@ -10,20 +10,26 @@ export function createServerRoutes(
 		Omit<any, "children">[]
 	> = groupRoutesByParentId(manifest),
 ) {
-	return (routesByParentId[parentId] || []).map((route) => {
-		const dataRoute = {
-			id: route.id,
-			path: route.path,
-			caseSensitive: route.caseSensitive,
-			children: undefined as any,
-			index: route.index,
-			component: lazy(() => __webpack_chunk_get__(route.file)),
-			// Note: we don't need loader/action/shouldRevalidate on these routes
-			// since they're for a static render
-		};
+	return (routesByParentId[parentId] || [])
+		.map((route) => {
+			if (route.routeHandler) {
+				return;
+			}
 
-		const children = createServerRoutes(manifest, route.id, routesByParentId);
-		if (children.length > 0) dataRoute.children = children;
-		return dataRoute;
-	});
+			const dataRoute = {
+				id: route.id,
+				path: route.path,
+				caseSensitive: route.caseSensitive,
+				children: undefined as any,
+				index: route.index,
+				component: lazy(() => globalThis.__webpack_chunk_get__(route.file)),
+				// Note: we don't need loader/action/shouldRevalidate on these routes
+				// since they're for a static render
+			};
+
+			const children = createServerRoutes(manifest, route.id, routesByParentId);
+			if (children.length > 0) dataRoute.children = children;
+			return dataRoute;
+		})
+		.filter(Boolean);
 }

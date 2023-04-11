@@ -161,6 +161,25 @@ export async function handleServerComponentRequest(request: Request, env: Env) {
 export function createServerRouter(env: Env): Router {
 	const router = createRouter();
 
+	Object.entries(env.routesConfig).forEach(([entry, route]) => {
+		if (route.routeHandler) {
+			console.log(entry);
+			router.get(route.path, async (context) => {
+				const mod = await __webpack_chunk_get__(route.file);
+
+				const handler = mod[context.request.method];
+				return await handler(context.request);
+			});
+
+			router.post(route.path, async (context) => {
+				const mod = await __webpack_chunk_get__(route.file);
+
+				const handler = mod[context.request.method];
+				return await handler(context.request);
+			});
+		}
+	});
+
 	// env.routeHandlers?.(router);
 
 	/**

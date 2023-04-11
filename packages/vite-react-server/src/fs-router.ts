@@ -39,6 +39,8 @@ export interface ConfigRoute {
 	 * `config.appDirectory`.
 	 */
 	file: string;
+
+	routeHandler?: boolean;
 }
 
 export interface RouteManifest {
@@ -62,6 +64,8 @@ export interface DefineRouteOptions {
 	 * two or more routes with the same route file.
 	 */
 	id?: string;
+
+	routeHandler?: boolean;
 }
 
 interface DefineRouteChildren {
@@ -157,6 +161,7 @@ export function defineRoutes(
 				parentRoutes.length > 0
 					? parentRoutes[parentRoutes.length - 1].id
 					: "root",
+			routeHandler: options.routeHandler ? true : undefined,
 			file,
 		};
 
@@ -183,7 +188,10 @@ export function defineRoutes(
 }
 
 export function createRouteId(file: string) {
-	file = file.replace("/page", "/").replace("/(layout)", "");
+	file = file
+		.replace("/page", "/")
+		.replace("/route", "")
+		.replace("/(layout)", "");
 	return normalizeSlashes(stripFileExtension(file));
 }
 
@@ -221,13 +229,18 @@ export function isRouteModuleFile(filename: string): boolean {
 }
 
 export function toPath(id: string, removePathlessLayouts = true) {
+	console.log({ id });
 	const idWithoutIndex = id.endsWith("/page")
 		? id.slice(0, -"page".length)
 		: id;
 
-	const idWithoutLayout = idWithoutIndex.endsWith("/(layout)")
-		? idWithoutIndex.slice(0, -"/(layout)".length)
+	const idWithoutRoute = idWithoutIndex.endsWith("/route")
+		? idWithoutIndex.slice(0, -"/route".length)
 		: idWithoutIndex;
+
+	const idWithoutLayout = idWithoutRoute.endsWith("/(layout)")
+		? idWithoutRoute.slice(0, -"/(layout)".length)
+		: idWithoutRoute;
 	return (
 		removePathlessLayouts
 			? idWithoutLayout.replace(/\([^)/]+\)/g, "")
@@ -290,7 +303,10 @@ export function defineFileSystemRoutes(
 				routeId.slice(parentId ? parentId.length + 1 : 0),
 			);
 
-			const isIndexRoute = routeId.endsWith("/");
+			const isRouteHandler = stripFileExtension(files[routeId]).endsWith(
+				"/route",
+			);
+			const isIndexRoute = routeId.endsWith("/") || isRouteHandler;
 			const fullPath = createRoutePath(routeId);
 			const uniqueRouteId = (fullPath || "") + (isIndexRoute ? "?index" : "");
 
@@ -321,6 +337,7 @@ export function defineFileSystemRoutes(
 
 				defineRoute(routePath, files[routeId], routeId, {
 					index: true,
+					routeHandler: isRouteHandler,
 				});
 			} else {
 				defineRoute(routePath, files[routeId], routeId, () => {

@@ -30,6 +30,7 @@ export async function handleAuthRequest(
 		.split("/")[0] as AuthAction;
 
 	if (!actions.includes(action) || !url.pathname.startsWith(prefix + "/")) {
+		console.log(`No auth action found in ${action}`);
 		return;
 	}
 

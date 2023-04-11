@@ -6,7 +6,7 @@ import inspect from "vite-plugin-inspect";
 import { tsconfigPaths } from "vite-rsc/tsconfig-paths";
 import { exposeDevServer } from "./vite-dev-server";
 import reactRefresh from "@vitejs/plugin-react";
-import { cpSync, existsSync, readFileSync } from "node:fs";
+import { cpSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineFileSystemRoutes } from "./fs-router";
 
@@ -26,6 +26,7 @@ const _dirname = dirname(fileURLToPath(import.meta.url));
 
 import { createRequire } from "node:module";
 import { Worker } from "node:worker_threads";
+import { ReadableStream } from "node:stream/web";
 
 const require = createRequire(import.meta.url);
 
@@ -140,10 +141,14 @@ export function react({
 } = {}) {
 	let isSsrBuild = false;
 	let worker: any;
+	let routesConfig: any;
 	return [
 		{
 			name: "flight-router",
 			async configureServer(server) {
+				const root = server.config.root ?? process.cwd();
+
+				server.routesConfig = routesConfig;
 				if (!process.env.RSC_WORKER) {
 					const rscWorker = await createRSCWorker("");
 					// @ts-ignore
@@ -168,6 +173,9 @@ export function react({
 			config(config, env) {
 				const root = config.root ?? process.cwd();
 				isSsrBuild = env.ssrBuild ?? false;
+				routesConfig = defineFileSystemRoutes(path.join(root, appRoot));
+				globalThis.routesConfig = routesConfig;
+
 				const findAny = (
 					path: string,
 					name: string,
@@ -268,6 +276,7 @@ export function react({
 				}
 
 				return {
+					routes: routesConfig,
 					resolve: {
 						alias: {
 							"~": path.resolve(root, "app"),
@@ -376,13 +385,17 @@ export function react({
 				}
 			},
 			generateBundle(options) {
-				if (isSsrBuild) {
+				if (isSsrBuild && !process.env.RSC_WORKER) {
 					console.log("copying");
 					cpSync("dist/react-server", "dist/server/react-server", {
 						recursive: true,
 					});
-				}
-				if (!isSsrBuild) {
+				} else if (isSsrBuild && process.env.RSC_WORKER) {
+					writeFileSync(
+						"dist/react-server/routes.json",
+						JSON.stringify(routesConfig, null, 2),
+					);
+				} else if (!isSsrBuild) {
 					if (existsSync(join(process.cwd(), "dist/server/assets/"))) {
 						cpSync(
 							join(process.cwd(), "dist/server/assets/"),
