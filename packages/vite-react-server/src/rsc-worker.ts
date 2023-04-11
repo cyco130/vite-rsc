@@ -54,7 +54,7 @@ async function handleMessage(msg: string) {
 		}
 
 		try {
-			const stream = await entry(event);
+			const stream = await entry(event.src, event.props);
 
 			streamToMessageChannel(stream, (msg) => {
 				parentPort?.postMessage(JSON.stringify({ chunk: msg, id: event.id }));

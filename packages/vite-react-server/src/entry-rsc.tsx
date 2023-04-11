@@ -44,6 +44,7 @@ function createProdRenderer() {
 		const component = await import(
 			"./" + globalThis.reactServerManifest["app/root.tsx"].file
 		);
+		console.log({ props });
 		return renderToServerElementStream(
 			<component.default {...props} />,
 			createModuleMapProxy(),
@@ -60,10 +61,10 @@ function createProdRenderer() {
 	};
 }
 
-export default async function (event: { src: string; props: any }) {
+export default async function (src: string, props: any) {
 	const render =
 		process.env.NODE_ENV === "development"
 			? createDevRenderer()
 			: createProdRenderer();
-	return await render(event.src, event.props);
+	return await render(src, props);
 }
