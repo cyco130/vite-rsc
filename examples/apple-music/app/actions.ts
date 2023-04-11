@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "flight-router";
 import db from "@/lib/db";
 
 export async function increment() {

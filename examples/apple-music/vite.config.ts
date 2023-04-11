@@ -6,10 +6,5 @@ export default defineConfig({
 	ssr: {
 		external: ["react/jsx-dev-runtime", "@react-refresh"],
 	},
-	plugins: [
-		reactRefresh(),
-		react({
-			serverEntry: "./app/entry-server.ts",
-		}),
-	],
+	plugins: [react()],
 });

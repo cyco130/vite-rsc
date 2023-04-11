@@ -48,7 +48,6 @@ export function NotFoundBoundary({
 	asNotFound,
 	children,
 }: NotFoundBoundaryProps) {
-	console.log(notFound);
 	return notFound ? (
 		<NotFoundErrorBoundary
 			notFound={notFound}

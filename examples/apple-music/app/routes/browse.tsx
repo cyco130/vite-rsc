@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getCount, increment } from "../actions";
-import { A, Form } from "flight-router";
+import { Form } from "stream-react/form";
+import { A } from "flight-router";
 import FormDemo from "../form";
 
 export default async function Browse() {
@@ -14,10 +15,11 @@ export default async function Browse() {
 				<Form.ActionId action={increment} />
 			</FormDemo>
 			<A
-				to=""
-				search={{
-					page: 1,
-				}}
+				href=""
+				// to=""
+				// search={{
+				// 	page: 1,
+				// }}
 			/>
 		</div>
 	);

@@ -157,7 +157,6 @@ const createProdEnv = (): Env => {
 			}`,
 		],
 		findAssets: async () => {
-			console.log(serverManifest, reactServerManifest);
 			const findAssets = (chunk: string) => {
 				return [
 					...findAssetsInManifest(serverManifest, chunk)
@@ -168,8 +167,6 @@ const createProdEnv = (): Env => {
 						.map((asset) => `/${asset}`),
 				];
 			};
-
-			console.log(...findAssets("app/root.tsx"));
 
 			return [...findAssets("app/root.tsx")];
 		},

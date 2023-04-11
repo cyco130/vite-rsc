@@ -72,7 +72,13 @@ async function handleMessage(msg: string) {
 				minify: process.env.MINIFY === "true",
 				rollupOptions: {
 					treeshake: true,
-					external: ["node:path", "node:fs", "node:url", "@prisma/client"],
+					external: [
+						"node:path",
+						"node:fs",
+						"node:async_hooks",
+						"node:url",
+						"@prisma/client",
+					],
 				},
 			},
 			resolve: {
@@ -80,7 +86,7 @@ async function handleMessage(msg: string) {
 			},
 			ssr: {
 				noExternal: true,
-				external: ["node:path", "node:fs", "node:url"],
+				external: ["node:path", "node:fs", "node:url", "node:async_hooks"],
 			},
 		});
 		const root = process.cwd();

@@ -1,6 +1,6 @@
 export const ReactRefreshScript = import.meta.env.DEV
 	? function ReactRefreshScript() {
-			if (import.meta.env.DEV) {
+			if (!import.meta.env.DEV) {
 				return null;
 			}
 

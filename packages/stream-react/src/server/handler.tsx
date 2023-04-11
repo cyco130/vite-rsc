@@ -1,7 +1,7 @@
 import { createRouter, Router } from "@hattip/router";
 import React from "react";
 import { getURLFromRedirectError, isRedirectError } from "../shared/redirect";
-import { requestAsyncContext } from "./async-storage";
+import { requestAsyncContext } from "./async-context";
 import {
 	createServerComponentResponse,
 	createActionResponse,
@@ -36,8 +36,6 @@ export async function handleActionRequest(request: Request, env: Env) {
 	const [filePath, name] = actionId.split("#");
 
 	const action = (await __webpack_chunk_get__(filePath))[name];
-
-	console.log(action);
 
 	const isMutating = request.headers.get("x-mutation") === "1";
 

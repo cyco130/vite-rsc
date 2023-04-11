@@ -37,7 +37,6 @@ function renderMatches(
 }
 
 function DefaultErrorComponent() {
-	console.log(DefaultErrorComponent, import.meta.env.SSR);
 	return (
 		<html lang="en">
 			<head>
@@ -71,7 +70,6 @@ export function createRouter(
 	);
 
 	function AppRouter(props: PageProps) {
-		console.log(props);
 		const basename = "/";
 		const url = new URL(props.url);
 		const location = createLocation("", createPath(url), null, "default");
@@ -82,6 +80,8 @@ export function createRouter(
 			<NotFound {...props} params={{}} children={<div>404</div>} />
 		);
 		let content = notFound;
+
+		console.log(matches);
 
 		if (matches) {
 			const params = matches.reduce((params, match) => {

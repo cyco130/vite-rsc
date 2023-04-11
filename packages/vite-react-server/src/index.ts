@@ -40,7 +40,7 @@ export async function createRSCWorker(buildPath: string) {
 		execArgv: ["--conditions", "react-server"],
 		env: {
 			RSC_WORKER: "true",
-			DEBUG: "vite:*",
+			// DEBUG: "vite:*",
 			NODE_ENV: "production",
 			MINIFY: process.argv.includes("--minify") ? "true" : "false",
 		},
@@ -148,10 +148,21 @@ export function react({
 					const rscWorker = await createRSCWorker("");
 					// @ts-ignore
 					server.rscWorker = rscWorker;
+					worker = rscWorker;
+
+					process.on("beforeExit", () => {
+						rscWorker.close();
+					});
+
 					// const stream = rscWorker.render(
 					// 	new URL("/", "http://localhost:3000"),
 					// );
 					// console.log(text(stream).then(console.log));
+				}
+			},
+			closeWatcher() {
+				if (worker) {
+					worker.close();
 				}
 			},
 			config(config, env) {
@@ -339,6 +350,7 @@ export function react({
 						);
 					}
 
+					// @ts-ignore
 					options.input.push(...clientModules);
 				}
 			},

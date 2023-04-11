@@ -21,7 +21,6 @@ async function renderServerComponentProd<T extends any = any>(
 			"/" +
 			import.meta.env.REACT_SERVER_PROD_ENTRY
 	);
-	console.log(props);
 	const stream = await entry(src, props);
 	return stream;
 }

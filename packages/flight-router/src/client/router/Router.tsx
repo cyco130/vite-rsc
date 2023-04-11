@@ -128,7 +128,6 @@ export default function Router({
 
 	useLayoutEffect(() => {
 		if (existingRouter) {
-			console.log(existingRouter);
 			existingRouter.disable();
 		}
 		return () => {

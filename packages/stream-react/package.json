@@ -24,6 +24,7 @@
     "./refresh": "./src/client/refresh.ts",
     "./request": "./src/server/request.ts",
     "./react-server": "./src/server/server-components.tsx",
+    "./async-context": "./src/server/async-context.ts",
     "./react-server-streams": "./src/server/server-streams.tsx",
     "./server/entry": "./src/server/entry.tsx",
     "./link": "./src/client/router/link.tsx",
@@ -47,6 +48,9 @@
       ],
       "server/entry": [
         "./src/server/entry.tsx"
+      ],
+      "async-context": [
+        "./src/server/async-context.ts"
       ],
       "server": [
         "./src/server/index.ts"

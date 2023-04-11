@@ -34,8 +34,6 @@ export function reactServerComponents(): Plugin {
 
 			if (!resolved || resolved.id.endsWith(".png")) return;
 
-			console.log(resolved.id);
-
 			if (
 				resolved.id.startsWith(root) &&
 				!resolved.external &&
@@ -58,8 +56,6 @@ export function reactServerComponents(): Plugin {
 				new Set(["node", "import", "react-server"]),
 				false,
 			);
-
-			console.log({ resolvedUrl });
 
 			if (resolvedUrl.protocol === "file:") {
 				const resolvedId = fileURLToPath(resolvedUrl);

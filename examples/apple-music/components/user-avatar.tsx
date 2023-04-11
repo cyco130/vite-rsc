@@ -3,7 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { DemoIndicator } from "../app/apple-music-demo";
 import { getSession } from "rsc-auth";
 import { SignInButton } from "rsc-auth/components";
-import { request } from "flight-router/server";
+import { request } from "stream-react/request";
 import { authOptions } from "@/lib/auth";
 import { UserDropdownMenu } from "@/components/user-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
