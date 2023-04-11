@@ -124,14 +124,31 @@ export function renderLinkTag(file: string) {
  */
 const createProdEnv = (): Env => {
 	setupWebpackEnv(async (chunk) => {
-		const url = join(
-			process.cwd(),
-			"dist",
-			"server",
-			globalThis.serverManifest[relative(process.cwd(), chunk)].file,
-		);
-		const mod = await import(/* @vite-ignore */ url);
-		return mod;
+		console.log("JEREEE");
+		const file = globalThis.serverManifest[relative(process.cwd(), chunk)];
+		if (file) {
+			const url = join(
+				process.cwd(),
+				"dist",
+				"server",
+				globalThis.serverManifest[relative(process.cwd(), chunk)].file,
+			);
+
+			console.log(url);
+			const mod = await import(/* @vite-ignore */ url);
+			return mod;
+		} else {
+			const url = join(
+				process.cwd(),
+				"dist",
+				"react-server",
+				globalThis.reactServerManifest[relative(process.cwd(), chunk)].file,
+			);
+
+			console.log(url);
+			const mod = await import(/* @vite-ignore */ url);
+			return mod;
+		}
 	});
 
 	const clientManifest = globalThis.clientManifest;

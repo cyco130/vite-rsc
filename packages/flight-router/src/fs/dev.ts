@@ -257,6 +257,7 @@ export function createFileSystemRoutes(rootDir: string) {
 		console.warn("No routes found");
 		return [];
 	}
+
 	const routeManifest = defineFileSystemRoutes(rootDir, ["**/*.css"]);
 	if (!fs.existsSync(".vite")) {
 		fs.mkdirSync(".vite");

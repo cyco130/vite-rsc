@@ -46,16 +46,16 @@ export const useMutation = () => {
 		throw state;
 	}
 
-	return useCallback(async function <T extends (...args: any[]) => void>(
-		fn: T,
-	) {
-		try {
-			return await router.mutate(() => {
-				return fn();
-			});
-		} catch (error: any) {
-			setState(error);
-		}
-	},
-	[]);
+	return useCallback(
+		async function <T extends (...args: any[]) => void>(fn: T) {
+			try {
+				return await router.mutate(() => {
+					return fn();
+				});
+			} catch (error: any) {
+				setState(error);
+			}
+		},
+		[router],
+	);
 };

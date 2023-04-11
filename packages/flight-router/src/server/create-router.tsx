@@ -81,8 +81,6 @@ export function createRouter(
 		);
 		let content = notFound;
 
-		console.log(matches);
-
 		if (matches) {
 			const params = matches.reduce((params, match) => {
 				return { ...params, ...match.params };

@@ -78,6 +78,7 @@ async function handleMessage(msg: string) {
 						"node:async_hooks",
 						"node:url",
 						"@prisma/client",
+						"@auth/core",
 					],
 				},
 			},

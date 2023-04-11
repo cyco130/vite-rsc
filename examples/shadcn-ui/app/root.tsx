@@ -1,8 +1,9 @@
 import { PageProps } from "flight-router";
-import { createRouter, InlineStyles } from "flight-router/server";
+import { createRouter } from "flight-router/server";
 import { Suspense } from "react";
 import HomePage from "./home";
 import { AppleMusicDemo } from "./apple-music-demo";
+import { Assets } from "stream-react/assets";
 
 import "cal-sans";
 import "./root.css";
@@ -29,19 +30,7 @@ async function Root({ children }: PageProps) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<script
-					type="module"
-					dangerouslySetInnerHTML={{
-						__html: `
-import RefreshRuntime from "/@react-refresh"
-RefreshRuntime.injectIntoGlobalHook(window)
-window.$RefreshReg$ = () => {}
-window.$RefreshSig$ = () => (type) => type
-window.__vite_plugin_react_preamble_installed__ = true
-`,
-					}}
-				></script>
-				<InlineStyles />
+				<Assets />
 			</head>
 			<body className="min-h-screen bg-white font-sans text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50">
 				{children}

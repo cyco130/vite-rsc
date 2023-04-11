@@ -6,8 +6,9 @@ import inspect from "vite-plugin-inspect";
 import { tsconfigPaths } from "vite-rsc/tsconfig-paths";
 import { exposeDevServer } from "./vite-dev-server";
 import reactRefresh from "@vitejs/plugin-react";
-import { cpSync, existsSync, readFileSync, readdirSync } from "node:fs";
+import { cpSync, existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { defineFileSystemRoutes } from "./fs-router";
 
 function makeDefaultNodeEntry(hattipEntry: string | undefined) {
 	if (!hattipEntry) {
@@ -81,7 +82,6 @@ export async function createRSCWorker(buildPath: string) {
 
 	return {
 		render(component: string, props: any) {
-			console.log("rendering", component, props);
 			const id = Math.random() + "";
 			worker.postMessage(
 				JSON.stringify({
@@ -222,7 +222,6 @@ export function react({
 				}
 
 				config.build ||= {};
-				config.build.manifest = true;
 
 				if (env.ssrBuild) {
 					if (!process.env.RSC_WORKER) {
@@ -234,12 +233,27 @@ export function react({
 						}
 						config.build.outDir ||= "dist/server";
 						config.build.ssrEmitAssets = true;
+						config.build.manifest = true;
 					} else {
 						config.build.rollupOptions ||= {};
 						config.build.rollupOptions.input = {};
 
+						config.build.manifest = true;
+
+						const routesConfig = defineFileSystemRoutes(
+							path.join(root, appRoot),
+						);
+
 						config.build.rollupOptions.input["react-server"] = rscEntry;
 						config.build.rollupOptions.input["root"] = "/app/root";
+
+						Object.entries(routesConfig).forEach(([name, route]) => {
+							let chunkName = name.replaceAll(":", "_").replaceAll("/", "_");
+							chunkName = chunkName.length > 0 ? chunkName : "root-layout";
+							// @ts-ignore
+							config.build!.rollupOptions!.input[chunkName] = route.file;
+						});
+
 						config.build.outDir ||= "dist/react-server";
 						config.build.ssrEmitAssets = true;
 					}
@@ -250,6 +264,7 @@ export function react({
 					config.build.rollupOptions.treeshake = false;
 					config.build.rollupOptions.preserveEntrySignatures = "exports-only";
 					config.build.rollupOptions.input ||= [clientEntry];
+					config.build.manifest = true;
 				}
 
 				return {

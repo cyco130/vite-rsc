@@ -17,7 +17,7 @@ export function createServerRoutes(
 			caseSensitive: route.caseSensitive,
 			children: undefined as any,
 			index: route.index,
-			component: lazy(() => import(/* @vite-ignore*/ route.file + "?rsc")),
+			component: lazy(() => __webpack_chunk_get__(route.file)),
 			// Note: we don't need loader/action/shouldRevalidate on these routes
 			// since they're for a static render
 		};

@@ -139,13 +139,15 @@ export default function Router({
 
 	useEffect(() => {
 		return addMutationListener((val) => {
-			if (enabledRef.current)
+			if (enabledRef.current) {
+				console.log(state.url, val);
+				state.cache.set(state.url, val);
 				startTransition(() => {
-					initialState.cache.set(initialState.url, val);
 					renrender();
 				});
+			}
 		});
-	}, [initialState.url, router, renrender]);
+	}, [state, router, renrender]);
 
 	const content = state.cache.get(state.url);
 

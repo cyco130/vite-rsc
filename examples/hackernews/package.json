@@ -3,18 +3,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "hattip serve",
-    "build": "hattip build",
+    "dev": "vite dev",
+    "build:server": "vite build --ssr",
+    "build:client": "vite build",
+    "build": "npm run build:server && npm run build:client",
+    "start": "node dist/server/index.js",
     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^4.12.0",
+    "flight-router": "^0.0.1",
     "minimatch": "^8.0.3",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-error-boundary": "^4.0.3",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
-    "flight-router": "^0.0.1"
+    "stream-react": "workspace:^"
   },
   "devDependencies": {
     "@hattip/adapter-node": "^0.0.33",

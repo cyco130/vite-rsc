@@ -58,7 +58,6 @@ export function createModuleMapProxy(
 		{
 			get(_, prop) {
 				const [id, name] = String(prop).split("#", 2);
-				console.log(id, name);
 				return {
 					id,
 					chunks: [resolve(id)],

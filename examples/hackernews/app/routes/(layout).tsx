@@ -1,4 +1,4 @@
-import { InlineStyles } from "flight-router/server";
+import { Assets } from "stream-react/assets";
 import { LayoutProps } from "./(layout).types";
 import { A } from "flight-router";
 
@@ -45,8 +45,7 @@ export default function Root({ children }: LayoutProps) {
 					name="description"
 					content="Hacker News Clone built with React Server Components"
 				/>
-				<link rel="manifest" href="/manifest.webmanifest" />
-				<InlineStyles />
+				<Assets />
 			</head>
 			<body>
 				<Nav />

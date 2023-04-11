@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "hattip serve",
-    "build": "hattip build"
+    "dev": "vite dev",
+    "build:server": "vite build --ssr",
+    "build:client": "vite build",
+    "build": "npm run build:server && npm run build:client",
+    "start": "node dist/server/index.js"
   },
   "dependencies": {
     "@radix-ui/react-accessible-icon": "^1.0.1",
@@ -35,14 +38,15 @@
     "@radix-ui/react-toggle": "^1.0.1",
     "@radix-ui/react-toggle-group": "^1.0.1",
     "@radix-ui/react-tooltip": "^1.0.5",
-    "flight-router": "^0.0.1",
     "cal-sans": "^1.0.1",
     "class-variance-authority": "^0.5.1",
     "clsx": "^1.2.1",
+    "flight-router": "^0.0.1",
     "lucide-react": "^0.130.0",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
+    "stream-react": "workspace:^",
     "tailwind-merge": "^1.11.0"
   },
   "devDependencies": {
@@ -51,17 +55,17 @@
     "@hattip/vite": "^0.0.33",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
     "match-sorter": "^6.3.1",
     "postcss": "^8.4.21",
     "sort-by": "^1.2.0",
     "tailwindcss": "^3.3.1",
+    "tailwindcss-animate": "^1.0.5",
     "typescript": "^5.0.3",
     "vite": "^4.2.1",
-    "vite-react-server": "^0.0.1",
-    "@vitejs/plugin-react": "^3.1.0",
-    "tailwindcss-animate": "^1.0.5",
     "vite-plugin-inspect": "^0.7.18",
+    "vite-react-server": "^0.0.1",
     "vite-tsconfig-paths": "^4.0.8"
   }
 }
