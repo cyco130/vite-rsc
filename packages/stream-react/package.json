@@ -26,6 +26,7 @@
     "./react-server": "./src/server/server-components.tsx",
     "./react-server-streams": "./src/server/server-streams.tsx",
     "./server/entry": "./src/server/entry.tsx",
+    "./link": "./src/client/router/link.tsx",
     "./fs": "./src/fs/index.ts",
     ".": "./src/client/index.ts"
   },
@@ -76,6 +77,9 @@
       ],
       "mutation": [
         "./src/client/mutation.ts"
+      ],
+      "link": [
+        "./src/client/router/link.tsx"
       ],
       "navigation": [
         "./src/shared/navigation.ts"

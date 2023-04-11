@@ -1,5 +1,5 @@
 import { createElementFromStream, callServer } from "../client/stream";
-import React, { use } from "react";
+import React, { Thenable, use } from "react";
 
 declare global {
 	interface Window {
@@ -32,7 +32,7 @@ export function ServerComponent({ url }: { url: string }) {
 
 export const serverElementCache = /*#__PURE__*/ new Map<
 	string,
-	Promise<JSX.Element>
+	Thenable<JSX.Element>
 >();
 
 export function useServerElement(url: string) {

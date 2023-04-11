@@ -1,8 +1,13 @@
 "use client";
 
-import { A, PageProps, useRouter } from "flight-router";
+import A from "stream-react/link";
+import { Assets } from "stream-react/assets";
+import { PageProps } from "stream-react/types";
+
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
+
+import "./root.css";
 
 const routes: Record<string, React.ComponentType> = {
 	"/": () => <Counter initialCount={42} sayHello={sayHello} />,
@@ -18,11 +23,12 @@ export default function Root({ url }: PageProps) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+				<Assets />
 			</head>
 			<body>
 				<div id="root">
 					<A href="/">Home</A> | <A href="/about">About</A>
-					<Route />
+					{Route ? <Route /> : <div>404</div>}
 				</div>
 			</body>
 		</html>

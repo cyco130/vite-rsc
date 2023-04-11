@@ -192,7 +192,7 @@ const createDevEnv = (): Env => {
 		bootstrapModules: [import.meta.env.CLIENT_ENTRY],
 		findAssets: async () => {
 			const { default: devServer } = await import("virtual:vite-dev-server");
-			const styles = await collectStyles(devServer, ["~/root?rsc"]);
+			const styles = await collectStyles(devServer, ["~/root"]);
 			return [
 				// @ts-ignore
 				...Object.entries(styles ?? {}).map(([key, value]) => ({

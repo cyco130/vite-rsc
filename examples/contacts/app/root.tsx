@@ -1,5 +1,6 @@
-import { InlineStyles, createRouter } from "flight-router/server";
+import { createRouter } from "flight-router/server";
 import { A, PageProps } from "flight-router";
+import { Assets } from "stream-react/assets";
 import { getContacts, getContact, Contact } from "./contacts";
 import "./root.css";
 
@@ -84,7 +85,7 @@ async function Root({ children }: { children: any }) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<InlineStyles />
+				<Assets />
 			</head>
 			<body>
 				<div id="root">

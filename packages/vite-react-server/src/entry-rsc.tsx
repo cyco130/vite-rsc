@@ -13,7 +13,7 @@ function createDevRenderer() {
 			const { default: devServer } = await import("virtual:vite-dev-server");
 			const { collectStyles } = await import("stream-react/dev");
 
-			const styles = await collectStyles(devServer, ["~/root?rsc"]);
+			const styles = await collectStyles(devServer, ["~/root"]);
 			return [
 				// @ts-ignore
 				...Object.entries(styles ?? {}).map(([key, value]) => ({

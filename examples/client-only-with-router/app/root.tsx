@@ -1,7 +1,9 @@
 "use client";
 
-import { A, createRouter, PageProps } from "flight-router";
+import { A, PageProps } from "flight-router";
+import { createRouter } from "flight-router/server";
 import Counter from "./Counter";
+import { Assets } from "stream-react/assets";
 import { sayHello } from "./sayHello";
 
 function CounterPage() {
@@ -16,6 +18,7 @@ export function Root({ children }: PageProps) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+				<Assets />
 			</head>
 			<body>
 				<div id="root">

@@ -1,6 +1,6 @@
 import React from "react";
 import { component } from "../server/component";
-import { ReactRefreshScript } from "../server/dev";
+import { ReactRefreshScript } from "../server/dev/react-refresh-script";
 
 type AssetDesc = string | { type: "style"; style: string; src?: string };
 declare global {
@@ -70,19 +70,25 @@ export const Assets = component(async function Assets({
 }: {
 	assets?: AssetDesc[];
 }) {
-	const allAssets = [
-		...new Set([...assets, ...(await globalThis.env.findAssets?.())]).values(),
-	];
+	if (import.meta.env.SSR) {
+		const allAssets = [
+			...new Set([
+				...assets,
+				...(await globalThis.env.findAssets?.()),
+			]).values(),
+		];
 
-	return (
-		<>
-			{allAssets.map((asset, index) => {
-				if (typeof asset === "string") {
-					return <Asset file={asset} key={asset} />;
-				}
-				return <Style style={asset.style} key={asset.src ?? `${index}`} />;
-			})}
-			{import.meta.env.DEV ? <ReactRefreshScript /> : null}
-		</>
-	);
+		return (
+			<>
+				{allAssets.map((asset, index) => {
+					if (typeof asset === "string") {
+						return <Asset file={asset} key={asset} />;
+					}
+					return <Style style={asset.style} key={asset.src ?? `${index}`} />;
+				})}
+				{import.meta.env.DEV ? <ReactRefreshScript /> : null}
+			</>
+		);
+	}
+	return null;
 });

@@ -5,14 +5,13 @@ import React, {
 	DetailedHTMLProps,
 	useCallback,
 } from "react";
-import { useRouter } from "./useRouter";
-import { LinkFn } from "../client/router/link";
+import { useRouter } from "./use-router";
 
 function isCtrlEvent(e: React.MouseEvent) {
 	return !!(e.metaKey || e.altKey || e.ctrlKey || e.shiftKey);
 }
 
-function useAnchorProps(props: Parameters<LinkFn<{}>>[0]) {
+function useAnchorProps(props: any) {
 	const router = useRouter();
 	const href = props.href ?? "";
 	// // const pathname = props.to ?? interpolatePath(props.to, props.params);
@@ -88,7 +87,7 @@ function useAnchorProps(props: Parameters<LinkFn<{}>>[0]) {
 	>;
 }
 
-export const A: LinkFn<{}> = function A({
+export function A({
 	activeProps = {},
 	inactiveProps = {},
 	...props
@@ -106,4 +105,6 @@ export const A: LinkFn<{}> = function A({
 	const anchorProps = useAnchorProps(props);
 	const isActive = router.url === anchorProps.href;
 	return <a {...anchorProps} {...(isActive ? activeProps : inactiveProps)} />;
-};
+}
+
+export default A;

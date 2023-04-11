@@ -12,6 +12,7 @@ import { useRerender } from "../client/hooks";
 import { ServerComponent, serverElementCache } from "./server-component";
 import { RouterAPI } from "../client/router/router-api";
 import { routerContext } from "../client/router/context";
+import { createElementFromServer } from "../client/stream";
 
 export function useBaseRouter() {
 	const [url, setURL] = useState(() => createPath(new URL(location.href)));
@@ -41,6 +42,14 @@ export function useBaseRouter() {
 			},
 			enable() {
 				enabledRef.current = true;
+			},
+			preload(url: string): React.Thenable<React.ReactElement> | Promise<any> {
+				if (!serverElementCache.has(url)) {
+					const promise = createElementFromServer(url);
+					serverElementCache.set(url, promise);
+					return promise;
+				}
+				return Promise.resolve();
 			},
 		} satisfies Omit<RouterAPI, "url">;
 	}, [setURL]);

@@ -81,7 +81,6 @@ export async function createRSCWorker(buildPath: string) {
 
 	return {
 		render(component: string, props: any) {
-			debugger;
 			console.log("rendering", component, props);
 			const id = Math.random() + "";
 			worker.postMessage(
@@ -357,22 +356,29 @@ export function react({
 					});
 				}
 				if (!isSsrBuild) {
-					cpSync(
-						join(process.cwd(), "dist/server/assets/"),
-						join(options!.dir!, "assets/"),
-						{
-							recursive: true,
-							filter: (src) => !src.endsWith(".js"),
-						},
-					);
-					cpSync(
-						join(process.cwd(), "dist/server/react-server/assets/"),
-						join(options!.dir!, "assets/"),
-						{
-							recursive: true,
-							filter: (src) => !src.endsWith(".js"),
-						},
-					);
+					if (existsSync(join(process.cwd(), "dist/server/assets/"))) {
+						cpSync(
+							join(process.cwd(), "dist/server/assets/"),
+							join(options!.dir!, "assets/"),
+							{
+								recursive: true,
+								filter: (src) => !src.endsWith(".js"),
+							},
+						);
+					}
+
+					if (
+						existsSync(join(process.cwd(), "dist/server/react-server/assets/"))
+					) {
+						cpSync(
+							join(process.cwd(), "dist/server/react-server/assets/"),
+							join(options!.dir!, "assets/"),
+							{
+								recursive: true,
+								filter: (src) => !src.endsWith(".js"),
+							},
+						);
+					}
 				}
 			},
 		} satisfies Plugin,
