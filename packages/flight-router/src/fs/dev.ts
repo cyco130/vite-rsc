@@ -1,10 +1,7 @@
-import { defineFileSystemRoutes } from "./router";
 import { createServerRoutes } from "./server-routes";
 import fs from "node:fs";
 import path, { relative } from "node:path";
-import { RouteManifest, stripFileExtension } from "./route";
-export * from "./route";
-export * from "./router";
+import { RouteManifest, stripFileExtension } from "./types";
 
 function prettyPrintRoutes(routes: any, tabs = 0) {
 	routes.forEach((r: any) => {
@@ -252,25 +249,25 @@ function generateTypes(
 	});
 }
 
-export function createFileSystemRoutes(rootDir: string) {
-	if (!fs.existsSync(rootDir) || !fs.existsSync(path.join(rootDir, "routes"))) {
-		console.warn("No routes found");
-		return [];
-	}
+// export function createFileSystemRoutes(rootDir: string) {
+// 	if (!fs.existsSync(rootDir) || !fs.existsSync(path.join(rootDir, "routes"))) {
+// 		console.warn("No routes found");
+// 		return [];
+// 	}
 
-	const routeManifest = defineFileSystemRoutes(rootDir, ["**/*.css"]);
-	if (!fs.existsSync(".vite")) {
-		fs.mkdirSync(".vite");
-	}
+// 	const routeManifest = defineFileSystemRoutes(rootDir, ["**/*.css"]);
+// 	if (!fs.existsSync(".vite")) {
+// 		fs.mkdirSync(".vite");
+// 	}
 
-	fs.writeFileSync(".vite/routes.json", JSON.stringify(routeManifest, null, 2));
-	const routes = createServerRoutes(routeManifest, "root");
-	prettyPrintRoutes(routes);
-	generateTypes(
-		routes,
-		rootDir,
-		rootDir.replace(/\/app$/, "/.vite/app"),
-		routeManifest,
-	);
-	return routes;
-}
+// 	fs.writeFileSync(".vite/routes.json", JSON.stringify(routeManifest, null, 2));
+// 	const routes = createServerRoutes(routeManifest, "root");
+// 	prettyPrintRoutes(routes);
+// 	generateTypes(
+// 		routes,
+// 		rootDir,
+// 		rootDir.replace(/\/app$/, "/.vite/app"),
+// 		routeManifest,
+// 	);
+// 	return routes;
+// }

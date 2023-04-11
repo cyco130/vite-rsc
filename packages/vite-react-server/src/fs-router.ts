@@ -191,7 +191,7 @@ export function createRouteId(file: string) {
 	file = file
 		.replace("/page", "/")
 		.replace("/route", "")
-		.replace("/(layout)", "");
+		.replace("/layout", "");
 	return normalizeSlashes(stripFileExtension(file));
 }
 
@@ -238,8 +238,8 @@ export function toPath(id: string, removePathlessLayouts = true) {
 		? idWithoutIndex.slice(0, -"/route".length)
 		: idWithoutIndex;
 
-	const idWithoutLayout = idWithoutRoute.endsWith("/(layout)")
-		? idWithoutRoute.slice(0, -"/(layout)".length)
+	const idWithoutLayout = idWithoutRoute.endsWith("/layout")
+		? idWithoutRoute.slice(0, -"/layout".length)
 		: idWithoutRoute;
 	return (
 		removePathlessLayouts
@@ -348,22 +348,6 @@ export function defineFileSystemRoutes(
 	}
 
 	return defineRoutes(defineNestedRoutes);
-}
-
-// Create a map of routes by parentId to use recursively instead of
-// repeatedly filtering the manifest.
-export function groupRoutesByParentId(manifest: RouteManifest) {
-	const routes: Record<string, Omit<any, "children">[]> = {};
-
-	Object.values(manifest).forEach((route) => {
-		const parentId = route.parentId || "";
-		if (!routes[parentId]) {
-			routes[parentId] = [];
-		}
-		routes[parentId].push(route);
-	});
-
-	return routes;
 }
 
 export const paramPrefixChar = "$" as const;

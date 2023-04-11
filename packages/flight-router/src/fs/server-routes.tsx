@@ -1,6 +1,21 @@
-import type { RouteManifest } from "./route";
+import type { RouteManifest } from "./types";
 import { lazy } from "react";
-import { groupRoutesByParentId } from "./router";
+
+// Create a map of routes by parentId to use recursively instead of
+// repeatedly filtering the manifest.
+export function groupRoutesByParentId(manifest: RouteManifest) {
+	const routes: Record<string, Omit<any, "children">[]> = {};
+
+	Object.values(manifest).forEach((route) => {
+		const parentId = route.parentId || "";
+		if (!routes[parentId]) {
+			routes[parentId] = [];
+		}
+		routes[parentId].push(route);
+	});
+
+	return routes;
+}
 
 export function createServerRoutes(
 	manifest: RouteManifest,
