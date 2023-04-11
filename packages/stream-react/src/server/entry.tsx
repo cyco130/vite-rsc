@@ -65,31 +65,6 @@ export const findAssetsInModuleNode = (moduleNode: ModuleNode) => {
 	return traverse(moduleNode);
 };
 
-/**
- * Traverses the module graph and generates link tags to either import or preload asets
- */
-export function renderLinkTagsForManifestChunk(
-	manifest: Manifest,
-	id: string,
-	cachedAssetMap?: Map<string, Array<string>>,
-): string {
-	const assets = findAssetsInManifest(manifest, id, cachedAssetMap);
-	return assets.map((asset) => renderLinkTag(`/${asset}`)).join("");
-}
-
-/**
- * Finds all the imported modules for a given module and generates link tags to
- * either import or preload them.
- */
-const renderLinkTagsForModuleNode = (node: ModuleNode): string => {
-	const assets = findAssetsInModuleNode(node);
-	return assets.map(renderLinkTag).join("");
-};
-
-function renderAssetLinkTags(assets: Array<string>): string {
-	return assets.map((asset) => renderLinkTag(`/${asset}`)).join("");
-}
-
 interface LinkProps {
 	rel: string;
 	as?: string;
@@ -143,79 +118,79 @@ export function renderLinkTag(file: string) {
 	return `<link href="${file}" ${attrs} />`;
 }
 
-function devHandler() {
+/**
+ * Create a server environement used for SSR. When used in production, it will
+ * @returns
+ */
+const createProdEnv = (): Env => {
+	setupWebpackEnv(async (chunk) => {
+		const url = join(
+			process.cwd(),
+			"dist",
+			"server",
+			globalThis.serverManifest[relative(process.cwd(), chunk)].file,
+		);
+		const mod = await import(/* @vite-ignore */ url);
+		return mod;
+	});
+
+	const clientManifest = globalThis.clientManifest;
+	const serverManifest = globalThis.serverManifest;
+	const reactServerManifest = globalThis.reactServerManifest;
+
+	return {
+		clientModuleMap: createModuleMapProxy(),
+		components: {},
+		bootstrapScriptContent: `window.manifest = ${JSON.stringify({
+			root: process.cwd(),
+			client: Object.fromEntries(
+				Object.entries(clientManifest)
+					.filter(([key, asset]) => asset.file)
+					.map(([key, asset]) => [key, asset.file]),
+			),
+		})};`,
+		bootstrapModules: [
+			`/${
+				clientManifest[
+					relative(import.meta.env.ROOT_DIR, import.meta.env.CLIENT_ENTRY)
+				].file
+			}`,
+		],
+		findAssets: async () => {
+			console.log(serverManifest, reactServerManifest);
+			const findAssets = (chunk: string) => {
+				return [
+					...findAssetsInManifest(serverManifest, chunk)
+						.filter((asset) => !asset.endsWith(".js"))
+						.map((asset) => `/${asset}`),
+					...findAssetsInManifest(reactServerManifest, chunk)
+						.filter((asset) => !asset.endsWith(".js"))
+						.map((asset) => `/${asset}`),
+				];
+			};
+
+			console.log(...findAssets("app/root.tsx"));
+
+			return [...findAssets("app/root.tsx")];
+		},
+	};
+};
+
+/**
+ * Create a server environement used for SSR. When used in production, it will
+ * @returns
+ */
+const createDevEnv = (): Env => {
 	setupWebpackEnv(async (chunk) => {
 		return await import(/* @vite-ignore */ chunk);
 	});
 
-	const clientModuleMap = createModuleMapProxy();
-
-	globalThis.findAssets = async () => {
-		const { default: devServer } = await import("virtual:vite-dev-server");
-		const styles = await collectStyles(devServer, ["~/root?rsc"]);
-		return [
-			// @ts-ignore
-			...Object.entries(styles ?? {}).map(([key, value]) => ({
-				type: "style" as const,
-				style: value,
-				src: key,
-			})),
-		];
-	};
-
-	console.log(relative(process.cwd(), import.meta.env.CLIENT_ENTRY));
-	// const assetMap = new Map<string, Array<string>>();
-	// const assets = findAssetsInManifest(serverManifest, "app/root.tsx", assetMap);
-	return createServerRouter({
-		clientModuleMap,
-		bootstrapScriptContent: import.meta.env.DEV
-			? undefined
-			: `window.manifest = ${JSON.stringify({
-					root: process.cwd(),
-					client: Object.fromEntries(
-						Object.entries(clientManifest)
-							.filter(([key, asset]) => asset.file)
-							.map(([key, asset]) => [key, asset.file]),
-					),
-			  })};`,
-		bootstrapModules: [
-			import.meta.env.DEV
-				? import.meta.env.CLIENT_ENTRY
-				: `/${
-						globalThis.clientManifest[
-							relative(import.meta.env.ROOT_DIR, import.meta.env.CLIENT_ENTRY)
-						].file
-				  }`,
-		],
-		components: { root: "~/root?rsc" },
-		routeHandlers: () => {},
-	}).buildHandler();
-}
-
-const createServerEnv = (): Env => {
-	setupWebpackEnv(async (chunk) => {
-		if (import.meta.env.PROD) {
-			console.log(chunk);
-			const url = join(
-				process.cwd(),
-				"dist",
-				"server",
-				globalThis.serverManifest[relative(process.cwd(), chunk)].file,
-			);
-			console.log(relative(process.cwd(), chunk), url);
-			const mod = await import(/* @vite-ignore */ url);
-			return mod;
-		} else {
-			return await import(/* @vite-ignore */ chunk);
-		}
-	});
-
-	const clientModuleMap = createModuleMapProxy();
-
-	const env: Env = {};
-
-	if (import.meta.env.DEV) {
-		env.findAssets = async () => {
+	return {
+		clientModuleMap: createModuleMapProxy(),
+		components: {},
+		bootstrapScriptContent: undefined,
+		bootstrapModules: [import.meta.env.CLIENT_ENTRY],
+		findAssets: async () => {
 			const { default: devServer } = await import("virtual:vite-dev-server");
 			const styles = await collectStyles(devServer, ["~/root?rsc"]);
 			return [
@@ -226,50 +201,14 @@ const createServerEnv = (): Env => {
 					src: key,
 				})),
 			];
-		};
-	} else {
-		env.findAssets = async () => {
-			const findAssets = (chunk: string) => {
-				return findAssetsInManifest(serverManifest, chunk)
-					.filter((asset) => !asset.endsWith(".js"))
-					.map((asset) => `/${asset}`);
-			};
-
-			return [...findAssets("app/root.tsx")];
-		};
-	}
-
-	return {
-		clientModuleMap,
-		components: {},
-		bootstrapScriptContent: import.meta.env.DEV
-			? undefined
-			: `window.manifest = ${JSON.stringify({
-					root: process.cwd(),
-					client: Object.fromEntries(
-						Object.entries(clientManifest)
-							.filter(([key, asset]) => asset.file)
-							.map(([key, asset]) => [key, asset.file]),
-					),
-			  })};`,
-		bootstrapModules: [
-			import.meta.env.DEV
-				? import.meta.env.CLIENT_ENTRY
-				: `/${
-						globalThis.clientManifest[
-							relative(import.meta.env.ROOT_DIR, import.meta.env.CLIENT_ENTRY)
-						].file
-				  }`,
-		],
+		},
 	};
 };
 
-export function createHandler({
-	apiRoutes,
-}: {
-	apiRoutes?: (router: Router) => void;
-} = {}) {
-	const env = createServerEnv();
+const createEnv = import.meta.env.PROD ? createProdEnv : createDevEnv;
 
+export function createHandler() {
+	const env = createEnv();
+	globalThis.env = env;
 	return createServerRouter(env).buildHandler();
 }

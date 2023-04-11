@@ -40,6 +40,9 @@ export async function createRSCWorker(buildPath: string) {
 		execArgv: ["--conditions", "react-server"],
 		env: {
 			RSC_WORKER: "true",
+			DEBUG: "vite:*",
+			NODE_ENV: "production",
+			MINIFY: process.argv.includes("--minify") ? "true" : "false",
 		},
 		workerData: {
 			buildPath,
@@ -55,18 +58,21 @@ export async function createRSCWorker(buildPath: string) {
 			}
 		}),
 	);
-	const responses = new Map<string, ReadableStreamDefaultController>();
+	const responses = new Map<string, (event: any) => void>();
 	const encoder = new TextEncoder();
 	worker.on("message", (msg) => {
-		const { id, chunk } = JSON.parse(msg);
+		const { id, ...event } = JSON.parse(msg);
 		const res = responses.get(id)!;
-		if (chunk === "end") {
-			res.close();
-			responses.delete(id);
-			return;
-		}
+		// if (chunk === "end") {
+		// 	res.close();
+		// 	responses.delete(id);
+		// 	return;
+		// }
 
-		res.enqueue(encoder.encode(chunk));
+		// if (chunk)
+
+		// res.enqueue(encoder.encode(chunk));
+		res(event);
 	});
 	worker.once("exit", (code) => {
 		console.log("RSC worker exited with code", code);
@@ -82,15 +88,43 @@ export async function createRSCWorker(buildPath: string) {
 				JSON.stringify({
 					component,
 					props,
+					type: "render",
 					id,
 				}),
 			);
 
 			return new ReadableStream({
 				start(controller) {
-					responses.set(id, controller);
+					responses.set(id, ({ chunk }) => {
+						if (chunk === "end") {
+							controller.close();
+							responses.delete(id);
+							return;
+						}
+
+						if (chunk) controller.enqueue(encoder.encode(chunk));
+					});
 				},
 			});
+		},
+		build: () => {
+			return new Promise((resolve) => {
+				const id = Math.random() + "";
+				responses.set(id, ({ status }) => {
+					if (status === "built") {
+						resolve("");
+					}
+				});
+				worker.postMessage(
+					JSON.stringify({
+						type: "build",
+						id,
+					}),
+				);
+			});
+		},
+		close: () => {
+			worker.unref();
 		},
 	};
 }
@@ -102,9 +136,11 @@ export function react({
 	tsconfigPaths: _tsconfigPaths = true,
 	serverEntry = "stream-react/entry-server",
 	clientEntry = undefined as string | null | undefined,
+	rscEntry = undefined as string | null | undefined,
 	appRoot = "app",
 } = {}) {
 	let isSsrBuild = false;
+	let worker: any;
 	return [
 		{
 			name: "flight-router",
@@ -112,7 +148,7 @@ export function react({
 				if (!process.env.RSC_WORKER) {
 					const rscWorker = await createRSCWorker("");
 					// @ts-ignore
-					server.rscServer = rscWorker;
+					server.rscWorker = rscWorker;
 					// const stream = rscWorker.render(
 					// 	new URL("/", "http://localhost:3000"),
 					// );
@@ -136,14 +172,33 @@ export function react({
 					return null;
 				};
 
-				let clientModules = [];
-				if (existsSync(join(root, "dist", "server", "client-manifest.json"))) {
-					clientModules = JSON.parse(
-						readFileSync(join(root, "dist", "server", "client-manifest.json"), {
-							encoding: "utf8",
-						}),
-					);
-				}
+				// let clientModules: string[] = [];
+				// let serverModules: string[] = [];
+				// if (
+				// 	existsSync(join(root, "dist", "react-server", "client-manifest.json"))
+				// ) {
+				// 	clientModules = JSON.parse(
+				// 		readFileSync(
+				// 			join(root, "dist", "react-server", "client-manifest.json"),
+				// 			{
+				// 				encoding: "utf8",
+				// 			},
+				// 		),
+				// 	);
+				// }
+
+				// if (
+				// 	existsSync(join(root, "dist", "react-server", "server-manifest.json"))
+				// ) {
+				// 	serverModules = JSON.parse(
+				// 		readFileSync(
+				// 			join(root, "dist", "react-server", "server-manifest.json"),
+				// 			{
+				// 				encoding: "utf8",
+				// 			},
+				// 		),
+				// 	);
+				// }
 
 				clientEntry =
 					clientEntry ?? findAny(join(root, appRoot), "entry-client");
@@ -151,40 +206,58 @@ export function react({
 					clientEntry = join(_dirname, "..", "dist", "entry-client.js");
 				}
 
+				rscEntry = rscEntry ?? findAny(join(root, appRoot), "entry-rsc");
+				if (!rscEntry) {
+					rscEntry = join(_dirname, "..", "dist", "entry-rsc.production.js");
+				}
+
 				config.build ||= {};
 				config.build.manifest = true;
 
 				if (env.ssrBuild) {
-					if (config.build.ssr === true) {
+					if (!process.env.RSC_WORKER) {
+						if (config.build.ssr === true) {
+							config.build.rollupOptions ||= {};
+							config.build.rollupOptions.input ||= {
+								index: "/virtual:vavite-connect-server",
+							};
+						}
+						config.build.outDir ||= "dist/server";
+						config.build.ssrEmitAssets = true;
+					} else {
 						config.build.rollupOptions ||= {};
-						config.build.rollupOptions.input = "/app/entry-server";
+						config.build.rollupOptions.input = {};
+
+						config.build.rollupOptions.input["react-server"] = rscEntry;
+						config.build.rollupOptions.input["root"] = "/app/root";
+						config.build.outDir ||= "dist/react-server";
+						config.build.ssrEmitAssets = true;
 					}
-					config.build.outDir ||= "dist/server";
-					config.build.ssrEmitAssets = true;
 				} else {
 					config.build.outDir ||= "dist/static";
 					config.build.ssrManifest = true;
 					config.build.rollupOptions ||= {};
 					config.build.rollupOptions.treeshake = false;
 					config.build.rollupOptions.preserveEntrySignatures = "exports-only";
-					config.build.rollupOptions.input ||= [clientEntry, ...clientModules];
+					config.build.rollupOptions.input ||= [clientEntry];
 				}
 
-				console.log(clientEntry);
 				return {
 					resolve: {
 						alias: {
 							"~": path.resolve(root, "app"),
-
 							"~react/entry-client": clientEntry,
 						},
 					},
 					define: {
 						"import.meta.env.CLIENT_ENTRY": JSON.stringify(clientEntry),
 						"import.meta.env.ROOT_DIR": JSON.stringify(root),
+						"import.meta.env.REACT_SERVER_PROD_ENTRY": JSON.stringify(
+							"dist/server/react-server/react-server.js",
+						),
+						"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
 					},
 					ssr: {
-						external: ["react-server-dom-webpack"],
 						noExternal: [
 							"flight-router",
 							"stream-react",
@@ -203,10 +276,97 @@ export function react({
 					`;
 				}
 			},
+			async buildStart(options) {
+				const root = process.cwd();
+
+				if (isSsrBuild) {
+					if (!process.env.RSC_WORKER) {
+						worker = await createRSCWorker("");
+						const built = await worker.build();
+						let clientModules: string[] = [];
+						let serverModules: string[] = [];
+						if (
+							existsSync(
+								join(root, "dist", "react-server", "client-manifest.json"),
+							)
+						) {
+							clientModules = JSON.parse(
+								readFileSync(
+									join(root, "dist", "react-server", "client-manifest.json"),
+									{
+										encoding: "utf8",
+									},
+								),
+							);
+						}
+
+						if (
+							existsSync(
+								join(root, "dist", "react-server", "server-manifest.json"),
+							)
+						) {
+							serverModules = JSON.parse(
+								readFileSync(
+									join(root, "dist", "react-server", "server-manifest.json"),
+									{
+										encoding: "utf8",
+									},
+								),
+							);
+						}
+
+						options.input = {
+							...options.input,
+							...Object.fromEntries([
+								...clientModules.map((m) => [path.basename(m), m]),
+								...serverModules.map((m) => [path.basename(m), m]),
+							]),
+						};
+					}
+				} else {
+					let clientModules: string[] = [];
+					if (
+						existsSync(
+							join(root, "dist", "react-server", "client-manifest.json"),
+						)
+					) {
+						clientModules = JSON.parse(
+							readFileSync(
+								join(root, "dist", "react-server", "client-manifest.json"),
+								{
+									encoding: "utf8",
+								},
+							),
+						);
+					}
+
+					options.input.push(...clientModules);
+				}
+			},
+
+			async buildEnd() {
+				if (!process.env.RSC_WORKER && isSsrBuild) {
+					worker.close();
+				}
+			},
 			generateBundle(options) {
+				if (isSsrBuild) {
+					console.log("copying");
+					cpSync("dist/react-server", "dist/server/react-server", {
+						recursive: true,
+					});
+				}
 				if (!isSsrBuild) {
 					cpSync(
 						join(process.cwd(), "dist/server/assets/"),
+						join(options!.dir!, "assets/"),
+						{
+							recursive: true,
+							filter: (src) => !src.endsWith(".js"),
+						},
+					);
+					cpSync(
+						join(process.cwd(), "dist/server/react-server/assets/"),
 						join(options!.dir!, "assets/"),
 						{
 							recursive: true,

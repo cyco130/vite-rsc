@@ -10,6 +10,7 @@ export function reactServerComponents(): Plugin {
 	let root: string;
 	let isBuild = false;
 	const clientModules = new Set();
+	const serverModules = new Set();
 	return {
 		name: "react-server-components",
 
@@ -21,6 +22,9 @@ export function reactServerComponents(): Plugin {
 		},
 
 		async resolveId(id, importer, options) {
+			if (process.env.RSC_WORKER) {
+				return;
+			}
 			if (!importer || !hasRscQuery(importer)) return;
 
 			const resolved = await this.resolve(id, importer, {
@@ -73,15 +77,16 @@ export function reactServerComponents(): Plugin {
 		},
 
 		transform(code, id, options) {
-			if (!options?.ssr || !hasRscQuery(id)) return;
+			if (!options?.ssr || (!process.env.RSC_WORKER && !hasRscQuery(id)))
+				return;
 
-			if (isBuild) {
-				// Emit the non-rsc version of the module as a chunk
-				this.emitFile({
-					type: "chunk",
-					id: removeRscQuery(id),
-				});
-			}
+			// if (isBuild) {
+			// 	// Emit the non-rsc version of the module as a chunk
+			// 	this.emitFile({
+			// 		type: "chunk",
+			// 		id: removeRscQuery(id),
+			// 	});
+			// }
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this;
 
@@ -186,6 +191,8 @@ export function reactServerComponents(): Plugin {
 				ast: any,
 				id: string,
 			): string {
+				serverModules.add(id);
+
 				// If the same local name is exported more than once, we only need one of the names.
 				const localNames: Map<string, string> = new Map();
 				const localTypes: Map<string, string> = new Map();
@@ -384,6 +391,10 @@ export function reactServerComponents(): Plugin {
 			writeFileSync(
 				join(options.dir!, "client-manifest.json"),
 				JSON.stringify([...clientModules.values()], null, 2),
+			);
+			writeFileSync(
+				join(options.dir!, "server-manifest.json"),
+				JSON.stringify([...serverModules.values()], null, 2),
 			);
 		},
 	};

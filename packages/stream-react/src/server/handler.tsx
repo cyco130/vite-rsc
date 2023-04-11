@@ -142,10 +142,7 @@ export async function handlePageRequest(request: Request, env: Env) {
 	);
 }
 
-export async function handleServerComponentRequest(
-	request: Request,
-	{ clientModuleMap }: Env,
-) {
+export async function handleServerComponentRequest(request: Request, env: Env) {
 	const url = new URL(request.headers.get("x-navigate") ?? "/", request.url);
 	const response: ResponseInit = {};
 	return requestAsyncContext.run({ request, response }, () =>
@@ -157,7 +154,7 @@ export async function handleServerComponentRequest(
 				headers: Object.fromEntries(request.headers.entries()),
 				params: {},
 			},
-			{ clientModuleMap, components: {} },
+			env,
 			response,
 		),
 	);

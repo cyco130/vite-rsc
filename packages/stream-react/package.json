@@ -23,6 +23,8 @@
     "./navigation": "./src/shared/navigation.ts",
     "./refresh": "./src/client/refresh.ts",
     "./request": "./src/server/request.ts",
+    "./react-server": "./src/server/server-components.tsx",
+    "./react-server-streams": "./src/server/server-streams.tsx",
     "./server/entry": "./src/server/entry.tsx",
     "./fs": "./src/fs/index.ts",
     ".": "./src/client/index.ts"
@@ -47,6 +49,12 @@
       ],
       "server": [
         "./src/server/index.ts"
+      ],
+      "react-server": [
+        "./src/server/server-components.tsx"
+      ],
+      "react-server-streams": [
+        "./src/server/server-streams.tsx"
       ],
       "client": [
         "./src/client/index.ts"

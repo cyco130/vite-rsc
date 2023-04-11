@@ -7,14 +7,16 @@ let handleExports: {
 	sirvOptions?: Options;
 };
 
-const clientDir = __VAVITE_CLIENT_BUILD_OUTPUT_DIR;
-
 globalThis.clientManifest = JSON.parse(
-	fs.readFileSync(`${clientDir}/manifest.json`, "utf-8"),
+	fs.readFileSync(`./dist/static/manifest.json`, "utf-8"),
 );
 
 globalThis.serverManifest = JSON.parse(
 	fs.readFileSync(`./dist/server/manifest.json`, "utf-8"),
+);
+
+globalThis.reactServerManifest = JSON.parse(
+	fs.readFileSync(`./dist/server/react-server/manifest.json`, "utf-8"),
 );
 
 let sirvHandler: RequestHandler;

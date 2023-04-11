@@ -1,18 +1,28 @@
-import { RenderToReadableStreamOptions } from "react-dom/server.edge";
+import type { RenderToReadableStreamOptions } from "react-dom/server.edge";
 import { renderToResultStream } from "./server-streams";
-import { Env } from "./env";
+import type { Env } from "./env";
 
-function renderServerComponentDev(
+async function renderServerComponentDev<T extends any = any>(
 	src: string,
-	props: any,
+	props: T,
 	env: Env,
-): ReadableStream {
-	// @ts-ignore
-	return __vite_dev_server__.rscServer.render(src, props, env);
+): Promise<ReadableStream> {
+	const { default: devServer } = await import("virtual:vite-dev-server");
+	return devServer.rscWorker.render(src, props, env);
 }
 
-function renderServerComponentProd(): ReadableStream {
-	return null as any;
+async function renderServerComponentProd<T extends any = any>(
+	src: string,
+	props: T,
+	env: Env,
+): Promise<ReadableStream> {
+	const { default: entry } = await import(
+		/* @vite-ignore */ import.meta.env.ROOT_DIR +
+			"/" +
+			import.meta.env.REACT_SERVER_PROD_ENTRY
+	);
+	const stream = await entry(src, props);
+	return stream;
 }
 
 export const renderServerComponent = import.meta.env.DEV
@@ -25,7 +35,7 @@ export async function createServerComponentResponse(
 	env: RenderToReadableStreamOptions & Env,
 	responseInit: ResponseInit = {},
 ) {
-	const serverElement = renderServerComponent(component, props, env);
+	const serverElement = await renderServerComponent(component, props, env);
 
 	return new Response(serverElement, {
 		...responseInit,
@@ -66,7 +76,7 @@ export async function createMutationResponse(
 ) {
 	try {
 		await action(...args);
-		return new Response(renderServerComponent(component, props, env), {
+		return new Response(await renderServerComponent(component, props, env), {
 			...responseInit,
 			headers: {
 				"Content-Type": "text/x-component",

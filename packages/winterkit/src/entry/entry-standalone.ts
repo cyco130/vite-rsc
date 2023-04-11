@@ -4,9 +4,8 @@ import fs from "node:fs";
 // eslint-disable-next-line import/no-unresolved
 import handler from "/virtual:vavite-connect-handler";
 
-const clientDir = process.env.__VAVITE_CLIENT_BUILD_OUTPUT_DIR;
 globalThis.clientManifest = JSON.parse(
-	fs.readFileSync(`${clientDir}/manifest.json`, "utf-8"),
+	fs.readFileSync(`./dist/static/manifest.json`, "utf-8"),
 );
 
 globalThis.serverManifest = JSON.parse(

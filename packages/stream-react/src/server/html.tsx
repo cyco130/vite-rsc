@@ -6,7 +6,10 @@ import React, { use, Thenable, useMemo } from "react";
 import { renderServerComponent } from "./server-components";
 import { sanitize } from "./htmlescape";
 
-import { createFromReadableStream as createElementFromStream } from "react-server-dom-webpack/client.edge";
+import {
+	createFromReadableStream as createElementFromStream,
+	createFromFetch as createElementFromFetch,
+} from "react-server-dom-webpack/client.edge";
 import type { Env } from "./env";
 
 export type FlightResponseRef = {
@@ -82,63 +85,66 @@ export function useServerElement(
 export function createServerComponentRenderer<Props extends any = any>(
 	src: string,
 	{
-		writable,
+		dataStream: writable,
 		...env
 	}: {
-		writable: WritableStream;
+		dataStream: WritableStream;
 	} & Env,
 ): (props: Props) => JSX.Element {
 	const flightResponseRef: FlightResponseRef = { current: null };
 
 	return function ServerComponentWrapper(props: Props): JSX.Element {
 		const response = useMemo(() => {
-			const serverElementStream = renderServerComponent(src, props, env);
-
 			if (!writable || writable.locked) {
-				return createElementFromStream(serverElementStream, {
+				return createElementFromFetch(
+					renderServerComponent(src, props, env).then(
+						(r) => ({ body: r } as Response),
+					),
+					{
+						callServer: (method, args) => {
+							throw new Error("Not implemented");
+						},
+					},
+				);
+			}
+
+			const res = createElementFromFetch(
+				renderServerComponent(src, props, env).then((r) => {
+					const [renderStream, forwardStream] = r.tee();
+
+					// We only attach CSS chunks to the inlined data.
+					const forwardReader = forwardStream.getReader();
+					const writer = writable.getWriter();
+
+					function read() {
+						forwardReader.read().then(({ done, value }) => {
+							if (value) {
+								// onChunk(value);
+							}
+
+							if (done) {
+								flightResponseRef.current = null;
+								writer.close();
+							} else {
+								writer.write(value);
+								read();
+							}
+						});
+					}
+					read();
+					return { body: renderStream } as Response;
+				}),
+				{
 					callServer: (method, args) => {
 						throw new Error("Not implemented");
 					},
-					// moduleMap: isEdgeRuntime
-					// 	? clientReferenceManifest.edgeSSRModuleMapping
-					// 	: clientReferenceManifest.ssrModuleMapping,
-				});
-			}
-			const [renderStream, forwardStream] = serverElementStream.tee();
-			const res = createElementFromStream(renderStream, {
-				callServer: (method, args) => {
-					throw new Error("Not implemented");
 				},
-				// moduleMap: isEdgeRuntime
-				// 	? clientReferenceManifest.edgeSSRModuleMapping
-				// 	: clientReferenceManifest.ssrModuleMapping,
-			});
+			);
 
 			flightResponseRef.current = res;
-
-			// We only attach CSS chunks to the inlined data.
-			const forwardReader = forwardStream.getReader();
-			const writer = writable.getWriter();
-
-			function read() {
-				forwardReader.read().then(({ done, value }) => {
-					if (value) {
-						// onChunk(value);
-					}
-
-					if (done) {
-						flightResponseRef.current = null;
-						writer.close();
-					} else {
-						writer.write(value);
-						read();
-					}
-				});
-			}
-			read();
-
 			return res;
 		}, [writable]);
+
 		if (!props) {
 			console.log("called with no props");
 			throw new Error("");
@@ -170,11 +176,10 @@ export async function renderToHTMLStream(
 			dataStream: WritableStream;
 		},
 ) {
-	const ServerComponent = createServerComponentRenderer(component, {
-		writable: renderOptions.dataStream,
-		clientModuleMap: renderOptions.clientModuleMap,
-		components: {},
-	});
+	const ServerComponent = createServerComponentRenderer(
+		component,
+		renderOptions,
+	);
 
 	const htmlStream = await _renderToHTMLStream(
 		<ServerComponent {...props} />,

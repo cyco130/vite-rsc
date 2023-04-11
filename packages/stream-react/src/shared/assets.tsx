@@ -71,7 +71,7 @@ export const Assets = component(async function Assets({
 	assets?: AssetDesc[];
 }) {
 	const allAssets = [
-		...new Set([...assets, ...(await globalThis.findAssets())]).values(),
+		...new Set([...assets, ...(await globalThis.env.findAssets?.())]).values(),
 	];
 
 	return (

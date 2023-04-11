@@ -89,19 +89,31 @@ export default function vaviteConnect(
 				};
 
 				if (env.command === "build" && config.build?.ssr) {
+					if (process.env.RSC_WORKER) {
+						return {
+							...common,
+							// build: {
+							// 	rollupOptions: {
+							// 		input: {
+							// 			index: rscEntry,
+							// 		},
+							// 	},
+							// },
+						};
+					}
 					return {
 						...common,
-						build: {
-							rollupOptions: {
-								input: {
-									index:
-										customServerEntry ||
-										(standalone
-											? "/virtual:vavite-connect-server"
-											: "/virtual:vavite-connect-handler"),
-								},
-							},
-						},
+						// build: {
+						// 	rollupOptions: {
+						// 		input: {
+						// 			index:
+						// 				customServerEntry ||
+						// 				(standalone
+						// 					? "/virtual:vavite-connect-server"
+						// 					: "/virtual:vavite-connect-handler"),
+						// 		},
+						// 	},
+						// },
 						define: clientAssetsDir
 							? {
 									__VAVITE_CLIENT_BUILD_OUTPUT_DIR:

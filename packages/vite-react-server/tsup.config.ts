@@ -37,9 +37,29 @@ export default defineConfig([
 	},
 	{
 		entry: {
-			"entry-rsc": "./src/entry-rsc.tsx",
+			"entry-rsc.development": "./src/entry-rsc.tsx",
+		},
+		env: {
+			NODE_ENV: "development",
 		},
 		dts: false,
+		format: ["esm"],
+		platform: "node",
+		target: "esnext",
+		treeshake: true,
+		shims: false,
+		external: ["stream-react", "virtual:vite-dev-server"],
+	},
+	{
+		entry: {
+			"entry-rsc.production": "./src/entry-rsc.tsx",
+		},
+		env: {
+			NODE_ENV: "production",
+		},
+		dts: false,
+		minify: true,
+		treeshake: true,
 		format: ["esm"],
 		platform: "node",
 		target: "esnext",

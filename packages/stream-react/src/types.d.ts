@@ -24,6 +24,17 @@ declare module "react-server-dom-webpack/server.edge" {
 	function decodeReply<T = any>(reply: string): Promise<T>;
 }
 
+declare module "vite" {
+	interface ViteDevServer {
+		rscWorker: {
+			render(
+				component: string,
+				props: any,
+				env: import("./server/env").Env,
+			): ReadableStream;
+		};
+	}
+}
 declare module "react-server-dom-webpack/client.browser" {
 	function createFromReadableStream(
 		stream: ReadableStream,
