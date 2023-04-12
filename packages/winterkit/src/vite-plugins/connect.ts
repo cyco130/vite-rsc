@@ -67,7 +67,7 @@ export default function vaviteConnect(
 							dirname,
 							clientAssetsDir
 								? bundleSirv
-									? "entry-standalone-bundled-sirv.js"
+									? "entry-vercel.js"
 									: "entry-standalone-imported-sirv.js"
 								: "entry-standalone.js",
 						)

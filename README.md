@@ -35,7 +35,7 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
   - [x] Nested routing on the server (using children prop)
   - [ ] Nested navigation on the client, i.e, only request RSC for the nested route
 - [ ] Typed router (ala tanstack router)
-- [ ] File system routing
+- [x] File system routing
 
 ### Mutations
 
@@ -71,11 +71,11 @@ Ideally hitting the sweet spot between full-fledged yet flexible. Can we design 
   - [ ] Inline imported CSS files in client components
   - [ ] Inline imported CSS Module files
   - [ ] Try to avoid having to send styles as hydration data
-- [ ] Build CSS manifest (importing CSS files)
+- [x] Build CSS manifest (importing CSS files)
 
 ### Build
 
-- [ ] Build
+- [x] Build
 - [ ] Build-time routing (static RSC output)
 
 ## How to run

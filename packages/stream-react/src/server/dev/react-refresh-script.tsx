@@ -1,3 +1,5 @@
+import React from "react";
+
 export const ReactRefreshScript = import.meta.env.DEV
 	? function ReactRefreshScript() {
 			if (!import.meta.env.DEV) {

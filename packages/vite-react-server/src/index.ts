@@ -43,7 +43,7 @@ export async function createRSCWorker(buildPath: string) {
 		env: {
 			RSC_WORKER: "true",
 			// DEBUG: "vite:*",
-			NODE_ENV: "production",
+			NODE_ENV: "development",
 			MINIFY: process.argv.includes("--minify") ? "true" : "false",
 		},
 		workerData: {
@@ -141,13 +141,14 @@ export function react({
 } = {}) {
 	let isSsrBuild = false;
 	let worker: any;
-	let routesConfig: any;
+	let routesConfig: any = {};
 	return [
 		{
 			name: "flight-router",
 			async configureServer(server) {
 				const root = server.config.root ?? process.cwd();
 
+				// @ts-ignore
 				server.routesConfig = routesConfig;
 				if (!process.env.RSC_WORKER) {
 					const rscWorker = await createRSCWorker("");
@@ -173,7 +174,11 @@ export function react({
 			config(config, env) {
 				const root = config.root ?? process.cwd();
 				isSsrBuild = env.ssrBuild ?? false;
-				routesConfig = defineFileSystemRoutes(path.join(root, appRoot));
+				if (existsSync(path.join(root, appRoot, "routes"))) {
+					routesConfig = defineFileSystemRoutes(path.join(root, appRoot));
+				}
+
+				// @ts-ignore
 				globalThis.routesConfig = routesConfig;
 
 				const findAny = (
@@ -248,19 +253,17 @@ export function react({
 
 						config.build.manifest = true;
 
-						const routesConfig = defineFileSystemRoutes(
-							path.join(root, appRoot),
-						);
-
 						config.build.rollupOptions.input["react-server"] = rscEntry;
 						config.build.rollupOptions.input["root"] = "/app/root";
 
-						Object.entries(routesConfig).forEach(([name, route]) => {
-							let chunkName = name.replaceAll(":", "_").replaceAll("/", "_");
-							chunkName = chunkName.length > 0 ? chunkName : "root-layout";
-							// @ts-ignore
-							config.build!.rollupOptions!.input[chunkName] = route.file;
-						});
+						if (routesConfig) {
+							Object.entries(routesConfig).forEach(([name, route]) => {
+								let chunkName = name.replaceAll(":", "_").replaceAll("/", "_");
+								chunkName = chunkName.length > 0 ? chunkName : "root-layout";
+								// @ts-ignore
+								config.build!.rollupOptions!.input[chunkName] = route.file;
+							});
+						}
 
 						config.build.outDir ||= "dist/react-server";
 						config.build.ssrEmitAssets = true;

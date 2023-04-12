@@ -7,7 +7,8 @@ declare global {
 	var clientManifest: { [key: string]: { file: string } };
 }
 
-import { basename, join, relative } from "node:path";
+import path, { basename, join, relative } from "node:path";
+import fs from "node:fs";
 import { ModuleNode, Manifest } from "vite";
 import { collectStyles } from "./dev/find-styles";
 import { Env } from "./env";
@@ -118,68 +119,98 @@ export function renderLinkTag(file: string) {
 	return `<link href="${file}" ${attrs} />`;
 }
 
+function readJSON(path: string) {
+	return JSON.parse(fs.readFileSync(path, "utf-8"));
+}
+
+function getManifests() {
+	const buildAppRoot = path.join(process.cwd(), process.env.ROOT_E);
+	const srcAppRoot = import.meta.env.ROOT_DIR;
+
+	const clientManifest = readJSON(
+		path.join(buildAppRoot, "dist", "server", "static-manifest.json"),
+	);
+
+	const serverManifest = readJSON(
+		path.join(buildAppRoot, "dist", "server", "manifest.json"),
+	);
+
+	const reactServerManifest = readJSON(
+		path.join(buildAppRoot, "dist", "server", "react-server", "manifest.json"),
+	);
+
+	const routesConfig = readJSON(
+		path.join(buildAppRoot, "dist", "server", "react-server", "routes.json"),
+	);
+
+	return {
+		buildAppRoot,
+		srcAppRoot,
+		clientManifest,
+		serverManifest,
+		reactServerManifest,
+		routesConfig,
+		findInServerManifest(chunk: string) {
+			const file = serverManifest[relative(srcAppRoot, chunk)];
+			if (file) {
+				return join(
+					buildAppRoot,
+					"dist",
+					"server",
+					serverManifest[relative(srcAppRoot, chunk)].file,
+				);
+			} else {
+				return join(
+					buildAppRoot,
+					"dist",
+					"server",
+					"react-server",
+					reactServerManifest[relative(srcAppRoot, chunk)].file,
+				);
+			}
+		},
+	};
+}
+
 /**
  * Create a server environement used for SSR. When used in production, it will
  * @returns
  */
 const createProdEnv = (): Env => {
+	const manifests = getManifests();
 	setupWebpackEnv(async (chunk) => {
-		const file = globalThis.serverManifest[relative(process.cwd(), chunk)];
-		if (file) {
-			const url = join(
-				process.cwd(),
-				"dist",
-				"server",
-				globalThis.serverManifest[relative(process.cwd(), chunk)].file,
-			);
-
-			console.log(url);
-			const mod = await import(/* @vite-ignore */ url);
-			return mod;
-		} else {
-			const url = join(
-				process.cwd(),
-				"dist",
-				"react-server",
-				globalThis.reactServerManifest[relative(process.cwd(), chunk)].file,
-			);
-
-			console.log(url);
-			const mod = await import(/* @vite-ignore */ url);
-			return mod;
-		}
+		const url = manifests.findInServerManifest(chunk);
+		const mod = await import(/* @vite-ignore */ url);
+		return mod;
 	});
-
-	const clientManifest = globalThis.clientManifest;
-	const serverManifest = globalThis.serverManifest;
-	const reactServerManifest = globalThis.reactServerManifest;
 
 	return {
 		clientModuleMap: createModuleMapProxy(),
 		components: {},
+		manifests,
 		bootstrapScriptContent: `window.manifest = ${JSON.stringify({
 			root: process.cwd(),
 			client: Object.fromEntries(
-				Object.entries(clientManifest)
+				Object.entries(manifests.clientManifest)
 					.filter(([key, asset]) => asset.file)
 					.map(([key, asset]) => [key, asset.file]),
 			),
 		})};`,
 		bootstrapModules: [
 			`/${
-				clientManifest[
+				manifests.clientManifest[
 					relative(import.meta.env.ROOT_DIR, import.meta.env.CLIENT_ENTRY)
 				].file
 			}`,
 		],
-		routesConfig: globalThis.routesConfig,
+		routesConfig: manifests.routesConfig,
 		findAssets: async () => {
 			const findAssets = (chunk: string) => {
 				return [
-					...findAssetsInManifest(serverManifest, chunk)
+					...findAssetsInManifest(manifests.serverManifest, chunk)
 						.filter((asset) => !asset.endsWith(".js"))
 						.map((asset) => `/${asset}`),
-					...findAssetsInManifest(reactServerManifest, chunk)
+					...findAssetsInManifest(manifests.reactServerManifest, chunk)
 						.filter((asset) => !asset.endsWith(".js"))
 						.map((asset) => `/${asset}`),
 				];
@@ -207,7 +238,7 @@ const createDevEnv = (): Env => {
 		routesConfig: __vite_dev_server__.routesConfig,
 		findAssets: async () => {
 			const { default: devServer } = await import("virtual:vite-dev-server");
-			const styles = await collectStyles(devServer, ["~/root"]);
+			const styles = await collectStyles(devServer, ["~/root?rsc"]);
 			return [
 				// @ts-ignore
 				...Object.entries(styles ?? {}).map(([key, value]) => ({

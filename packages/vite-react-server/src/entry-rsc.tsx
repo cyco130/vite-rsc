@@ -4,6 +4,7 @@ import { isNotFoundError, isRedirectError } from "stream-react/navigation";
 import { requestAsyncContext } from "stream-react/async-context";
 import { webcrypto } from "node:crypto";
 import React from "react";
+import type { Env } from "stream-react/server";
 
 function createDevRenderer() {
 	setupWebpackEnv();
@@ -56,11 +57,11 @@ function createDevRenderer() {
 	};
 }
 
-function createProdRenderer() {
+function createProdRenderer(env: Env) {
 	// assumes an environment has been setup by the SSR handler
-	return async (src: string, props: any) => {
+	return async (src: string, props: any, env: Env) => {
 		const component = await import(
-			"./" + globalThis.reactServerManifest["app/root.tsx"].file
+			"./" + env.manifests.reactServerManifest["app/root.tsx"].file
 		);
 		return renderToServerElementStream(
 			<component.default {...props} />,
@@ -78,10 +79,10 @@ function createProdRenderer() {
 	};
 }
 
-export default async function (src: string, props: any) {
+export default async function (src: string, props: any, env: Env) {
 	const render =
 		process.env.NODE_ENV === "development"
 			? createDevRenderer()
-			: createProdRenderer();
-	return await render(src, props);
+			: createProdRenderer(env);
+	return await render(src, props, env);
 }

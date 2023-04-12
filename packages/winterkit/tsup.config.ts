@@ -20,6 +20,7 @@ export default defineConfig([
 			"entry-standalone": "./src/entry/entry-standalone.ts",
 			"entry-standalone-imported-sirv":
 				"./src/entry/entry-standalone-with-sirv.ts",
+			"entry-vercel": "./src/entry/entry-vercel.ts",
 		},
 		format: ["esm"],
 		platform: "node",

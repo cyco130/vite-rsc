@@ -16,12 +16,15 @@ async function renderServerComponentProd<T extends any = any>(
 	props: T,
 	env: Env,
 ): Promise<ReadableStream> {
+	const path = await import("path");
 	const { default: entry } = await import(
-		/* @vite-ignore */ import.meta.env.ROOT_DIR +
-			"/" +
-			import.meta.env.REACT_SERVER_PROD_ENTRY
+		/* @vite-ignore */ path.join(
+			process.cwd(),
+			process.env.ROOT_E,
+			import.meta.env.REACT_SERVER_PROD_ENTRY,
+		)
 	);
-	const stream = await entry(src, props);
+	const stream = await entry(src, props, env);
 	return stream;
 }
 
