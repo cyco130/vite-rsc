@@ -25,15 +25,15 @@ export default async function Root() {
 			</head>
 			<body>
 				<div id="root">
-					<ErrorBoundary
+					{/* <ErrorBoundary
 						fallback={
 							<div>
 								Error<ResetButton>Reset</ResetButton>
 							</div>
 						}
-					>
-						<Counter />
-					</ErrorBoundary>
+					> */}
+					<Counter />
+					{/* </ErrorBoundary> */}
 				</div>
 			</body>
 		</html>

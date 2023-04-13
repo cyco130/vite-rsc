@@ -43,7 +43,7 @@ export async function createRSCWorker(buildPath: string) {
 		env: {
 			RSC_WORKER: "true",
 			// DEBUG: "vite:*",
-			NODE_ENV: "development",
+			NODE_ENV: process.env.NODE_ENV ?? "production",
 			MINIFY: process.argv.includes("--minify") ? "true" : "false",
 		},
 		workerData: {
