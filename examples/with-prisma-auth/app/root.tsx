@@ -1,10 +1,13 @@
-import Counter from "./Counter";
-import { increment, getCount } from "./api";
-import { component, InlineStyles, request } from "flight-router/server";
+import Counter from "./Button";
+import { sayHello } from "./api";
 import { getSession } from "rsc-auth";
 import { SignInButton, SignOutButton } from "rsc-auth/components";
 import { authOptions } from "./auth";
-import { ErrorBoundary, ResetButton } from "flight-router";
+import { ErrorBoundary, ResetButton } from "stream-react/error-boundary";
+import { request } from "stream-react/request";
+import { component } from "stream-react/server";
+import { Assets } from "stream-react/assets";
+import Button from "./Button";
 
 const Profile = component(async function Profile() {
 	const user = await getSession(request(), authOptions);
@@ -27,7 +30,7 @@ export default async function Root() {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<InlineStyles />
+				<Assets />
 			</head>
 			<body>
 				<div id="root">
@@ -39,7 +42,7 @@ export default async function Root() {
 							</div>
 						}
 					>
-						<Counter count={await getCount()} increment={increment} />
+						<Button onClick={sayHello} />
 					</ErrorBoundary>
 				</div>
 			</body>

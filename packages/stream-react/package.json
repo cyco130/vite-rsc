@@ -89,7 +89,7 @@
         "./src/shared/navigation.ts"
       ],
       "error-boundary": [
-        "./src/client/error-boundary.ts"
+        "./src/client/error-boundary.tsx"
       ],
       "form": [
         "./src/client/form/index.ts"

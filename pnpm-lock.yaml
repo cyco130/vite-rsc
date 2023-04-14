@@ -833,6 +833,9 @@ importers:
       rsc-auth:
         specifier: workspace:^0.0.1
         version: link:../../packages/rsc-auth
+      stream-react:
+        specifier: workspace:^
+        version: link:../../packages/stream-react
     devDependencies:
       '@hattip/adapter-node':
         specifier: ^0.0.33

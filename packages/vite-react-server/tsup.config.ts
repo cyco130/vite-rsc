@@ -6,6 +6,7 @@ export default defineConfig([
 		format: ["esm"],
 		platform: "node",
 		target: "node14",
+		external: [],
 		dts: true,
 	},
 	{

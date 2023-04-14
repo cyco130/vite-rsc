@@ -1,23 +1,16 @@
 "use client";
 
-import { useRouter } from "flight-router";
-import { useMutation } from "flight-router";
+import { useRouter } from "stream-react/router";
+import { useMutation } from "stream-react/mutation";
 
-export default function Counter({
-	count = 0,
-	increment,
-}: {
-	count: number;
-	increment: () => Promise<number>;
-}) {
+export default function Button({ onClick }: { onClick: () => Promise<any> }) {
 	const mutate = useMutation();
 	const router = useRouter();
 	return (
 		<div>
-			<p>Count: {count}</p>
 			<button
 				onClick={() => {
-					mutate(() => increment());
+					mutate(() => onClick());
 				}}
 			>
 				Increment
