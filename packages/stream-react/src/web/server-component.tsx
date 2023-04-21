@@ -1,5 +1,6 @@
+import { useRouter } from "../client/router";
 import { createElementFromStream, callServer } from "../client/stream";
-import React, { Thenable, use } from "react";
+import React, { Thenable, use, useEffect } from "react";
 
 declare global {
 	interface Window {
@@ -27,6 +28,15 @@ export function getServerElementStream(url: string) {
 }
 
 export function ServerComponent({ url }: { url: string }) {
+	const router = useRouter();
+	useEffect(() => {
+		if (import.meta.hot) {
+			import.meta.hot.on("reload-rsc", () => {
+				router.refresh();
+			});
+		}
+	}, [router]);
+
 	return use(useServerElement(url));
 }
 

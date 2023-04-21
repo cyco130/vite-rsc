@@ -35,7 +35,7 @@ export async function handleActionRequest(request: Request, env: Env) {
 
 	const [filePath, name] = actionId.split("#");
 
-	const action = (await __webpack_chunk_get__(filePath))[name];
+	const action = (await env.loadModule(filePath))[name];
 
 	const isMutating = request.headers.get("x-mutation") === "1";
 
@@ -122,9 +122,9 @@ export async function handleActionRequest(request: Request, env: Env) {
 
 export async function handlePageRequest(request: Request, env: Env) {
 	const url = new URL(request.url);
-	const response: ResponseInit = {};
-	return requestAsyncContext.run(
-		{ request, response },
+	const responseInit: ResponseInit = {};
+	const response = await requestAsyncContext.run(
+		{ request, response: responseInit },
 		async () =>
 			await createHTMLResponse(
 				"root",
@@ -135,9 +135,12 @@ export async function handlePageRequest(request: Request, env: Env) {
 					params: {},
 				},
 				env,
-				response,
+				responseInit,
 			),
 	);
+
+	console.log("response", response.status, response.url);
+	return response;
 }
 
 export async function handleServerComponentRequest(request: Request, env: Env) {
@@ -163,16 +166,15 @@ export function createServerRouter(env: Env): Router {
 
 	Object.entries(env.routesConfig).forEach(([entry, route]) => {
 		if (route.routeHandler) {
-			console.log(entry);
 			router.get(route.path, async (context) => {
-				const mod = await __webpack_chunk_get__(route.file);
+				const mod = await env.loadModule(route.file);
 
 				const handler = mod[context.request.method];
 				return await handler(context.request);
 			});
 
 			router.post(route.path, async (context) => {
-				const mod = await __webpack_chunk_get__(route.file);
+				const mod = await env.loadModule(route.file);
 
 				const handler = mod[context.request.method];
 				return await handler(context.request);

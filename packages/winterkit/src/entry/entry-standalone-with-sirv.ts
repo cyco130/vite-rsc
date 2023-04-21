@@ -1,57 +1,10 @@
 import { createServer } from "node:http";
 import sirv, { RequestHandler, Options } from "sirv";
-import fs from "node:fs";
-import path from "node:path";
 
 let handleExports: {
 	default: RequestHandler;
 	sirvOptions?: Options;
 };
-
-console.log(
-	"cwd" + process.cwd(),
-	process.env.ROOT_E,
-	path.join(process.cwd(), process.env.ROOT_E, "dist/static/manifest.json"),
-);
-globalThis.clientManifest = JSON.parse(
-	fs.readFileSync(
-		path.join(
-			process.cwd(),
-			process.env.ROOT_E,
-			"dist/server/static-manifest.json",
-		),
-		"utf-8",
-	),
-);
-
-globalThis.serverManifest = JSON.parse(
-	fs.readFileSync(
-		path.join(process.cwd(), process.env.ROOT_E, "dist/server/manifest.json"),
-		"utf-8",
-	),
-);
-
-globalThis.reactServerManifest = JSON.parse(
-	fs.readFileSync(
-		path.join(
-			process.cwd(),
-			process.env.ROOT_E,
-			"dist/server/react-server/manifest.json",
-		),
-		"utf-8",
-	),
-);
-
-globalThis.routesConfig = JSON.parse(
-	fs.readFileSync(
-		path.join(
-			process.cwd(),
-			process.env.ROOT_E,
-			"dist/server/react-server/routes.json",
-		),
-		"utf-8",
-	),
-);
 
 let sirvHandler: RequestHandler;
 

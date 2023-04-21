@@ -1,5 +1,5 @@
-import type { PageProps } from "flight-router";
-import { component } from "flight-router/server";
+import type { PageProps } from "fully-react";
+import { component } from "fully-react/server";
 import { Suspense } from "react";
 import Search from "./Search";
 

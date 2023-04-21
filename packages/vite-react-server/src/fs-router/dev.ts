@@ -1,13 +1,14 @@
-import { createServerRoutes } from "./server-routes";
 import fs from "node:fs";
 import path, { relative } from "node:path";
-import { RouteManifest, stripFileExtension } from "./types";
+import { stripFileExtension } from "./index";
+import { Route, RouteManifest } from "./types";
 
-function prettyPrintRoutes(routes: any, tabs = 0) {
+export function prettyPrintRoutes(routes: any, tabs = 0) {
 	routes.forEach((r: any) => {
 		const gap = Array.from({ length: tabs })
 			.map(() => "  ")
 			.join("");
+		console.log(gap + r.id, r.file);
 		if (r.children) {
 			prettyPrintRoutes(r.children, tabs + 1);
 		}
@@ -21,7 +22,7 @@ const rootLayoutTemplate = (
 	path: any,
 	fileName: any,
 ) => `
-import { TypedRouter, TypedRootRoute, TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "flight-router";
+import { TypedRouter, TypedRootRoute, TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "fully-react";
 ${paths
 	.map(
 		([c, bool], i) =>
@@ -48,7 +49,7 @@ export type LayoutProps = {
 
 export type LayoutConfig = TypedRouteOptions<RootRoute, "/">;
 
-declare module "flight-router" {
+declare module "fully-react" {
 	interface Register {
 		router: TypedRouter<routeWithChildren>;
 	}
@@ -57,12 +58,12 @@ declare module "flight-router" {
 
 const layoutTemplate = (
 	paths: any[],
-	names: any,
+	names: string[],
 	parent: any,
 	path: any,
 	fileName: any,
 	parentFilename: any,
-) => `import { TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "flight-router";
+) => `import { TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "fully-react";
 ${paths
 	.map(
 		([c, bool], i) =>
@@ -97,7 +98,7 @@ const pageTemplate = (
 	parentFileName: string,
 ) => `import * as page from "./${fileName}";
 import type { route as parentRoute } from "./${parentFileName}.types";
-import { TypedRouteModule, TypedRouteOptions } from "flight-router";
+import { TypedRouteModule, TypedRouteOptions } from "fully-react";
 
 export type route = TypedRouteModule<parentRoute, "${path}", typeof page>;
 
@@ -110,12 +111,13 @@ export type PageConfig = TypedRouteOptions<parentRoute, "${path}">;
 `;
 
 function generateTypeForRoute(
-	route: any,
+	route: Route,
 	rootDir: any,
 	outDir: any,
-	manifest: { [x: string]: { file: any; parentId: string } },
+	manifest: RouteManifest,
 ) {
 	const routeMan = manifest[route.id];
+	console.log(routeMan);
 	const typesPath = routeMan.file
 		.replace(rootDir, outDir)
 		.replace(".tsx", ".types.d.ts");
@@ -124,7 +126,7 @@ function generateTypeForRoute(
 		fs.mkdirSync(path.dirname(typesPath), { recursive: true });
 	}
 
-	if (route.id === "") {
+	if (routeMan.parentId === "root") {
 		if (route.children) {
 			fs.writeFileSync(
 				typesPath,
@@ -238,7 +240,7 @@ function generateTypeForRoute(
 	}
 }
 
-function generateTypes(
+export function generateTypes(
 	routes: any,
 	rootDir: string,
 	outDir: string,

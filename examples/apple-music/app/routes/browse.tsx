@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getCount, increment } from "../actions";
 import { Form } from "stream-react/form";
-import { A } from "flight-router";
+import { A } from "fully-react";
 import FormDemo from "../form";
 
 export default async function Browse() {

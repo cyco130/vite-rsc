@@ -17,10 +17,10 @@ async function renderServerComponentProd<T extends any = any>(
 	env: Env,
 ): Promise<ReadableStream> {
 	const path = await import("path");
+	const rootDir = path.join(process.cwd(), process.env.OUT_ROOT_DIR ?? ".");
 	const { default: entry } = await import(
 		/* @vite-ignore */ path.join(
-			process.cwd(),
-			process.env.ROOT_E,
+			rootDir,
 			import.meta.env.REACT_SERVER_PROD_ENTRY,
 		)
 	);

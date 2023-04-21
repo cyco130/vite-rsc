@@ -13,7 +13,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { A } from "flight-router";
+import { A } from "fully-react";
 
 interface MainNavProps {
 	items?: NavItem[];

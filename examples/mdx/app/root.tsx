@@ -1,6 +1,6 @@
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
-import { InlineStyles } from "flight-router/server";
+import { InlineStyles } from "fully-react/server";
 import Hello from "./hello.mdx";
 
 export default function Root() {

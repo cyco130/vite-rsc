@@ -1,6 +1,6 @@
 import { Assets } from "stream-react/assets";
 import { LayoutProps } from "./(layout).types";
-import { A } from "flight-router";
+import { A } from "fully-react";
 
 function Nav() {
 	return (

@@ -5,8 +5,8 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
-		"types": ["vite/client", "node"],
-		"lib": ["es2021"],
+		"types": ["vite/client", "node", "react/experimental"],
+		"lib": ["es2021", "dom"],
 		"skipLibCheck": true,
 		"moduleResolution": "Node",
 		"resolveJsonModule": true

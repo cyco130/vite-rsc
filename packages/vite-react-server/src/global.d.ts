@@ -1,13 +1,4 @@
-export type PageProps = {
-	params: { [key: string]: string };
-	searchParams: { [key: string]: string };
-	children?: React.ReactNode;
-	url: string;
-	headers: { [key: string]: string };
-};
-
-type ModuleSpec = {};
-type ModuleMap = { [key: string]: ModuleSpec };
+import { ModuleMap } from "./types";
 
 declare module "react-server-dom-webpack/server.edge" {
 	function renderToReadableStream(

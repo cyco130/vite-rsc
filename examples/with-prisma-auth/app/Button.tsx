@@ -13,7 +13,7 @@ export default function Button({ onClick }: { onClick: () => Promise<any> }) {
 					mutate(() => onClick());
 				}}
 			>
-				Increment
+				Say Hello
 			</button>
 			<button
 				onClick={() => {

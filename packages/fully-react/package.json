@@ -1,5 +1,5 @@
 {
-  "name": "flight-router",
+  "name": "fully-react",
   "version": "0.0.1",
   "type": "module",
   "files": [
@@ -83,7 +83,7 @@
     "stream-react": "workspace:^",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
-    "vite": "^4.2.1",
+    "vite": "^4.3",
     "vitest": "^0.29.8"
   },
   "dependencies": {

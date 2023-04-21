@@ -65,11 +65,7 @@ export default function vaviteConnect(
 					return path
 						.resolve(
 							dirname,
-							clientAssetsDir
-								? bundleSirv
-									? "entry-vercel.js"
-									: "entry-standalone-imported-sirv.js"
-								: "entry-standalone.js",
+							customServerEntry || "entry-standalone-bundled-sirv.js",
 						)
 						.replace(/\\/g, "/");
 				}

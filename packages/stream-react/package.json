@@ -38,7 +38,7 @@
         "./src/client/index.ts"
       ],
       "types": [
-        "./src/types.d.ts"
+        "./src/global.d.ts"
       ],
       "web/entry": [
         "./src/web/entry.tsx"
@@ -137,7 +137,7 @@
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
-    "vite": "^4.2.1",
+    "vite": "^4.3",
     "vitest": "^0.29.8"
   },
   "dependencies": {

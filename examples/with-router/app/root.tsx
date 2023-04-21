@@ -1,7 +1,7 @@
-import { PageProps, createRouter } from "flight-router/server";
+import { PageProps, createRouter } from "fully-react/server";
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
-import { A } from "flight-router";
+import { A } from "fully-react";
 import { notFound, redirect } from "stream-react/navigation";
 
 function CounterPage() {

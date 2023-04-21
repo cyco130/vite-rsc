@@ -1,5 +1,5 @@
-import { PageProps } from "flight-router";
-import { createRouter } from "flight-router/server";
+import { PageProps } from "fully-react";
+import { createRouter } from "fully-react/server";
 import { Suspense } from "react";
 import HomePage from "./home";
 import { AppleMusicDemo } from "./apple-music-demo";

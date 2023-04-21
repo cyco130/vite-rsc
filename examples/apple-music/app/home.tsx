@@ -1,7 +1,7 @@
 import { siteConfig } from "@/config/site";
 import { Layout } from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
-import { A } from "flight-router";
+import { A } from "fully-react";
 
 export default function IndexPage() {
 	return (

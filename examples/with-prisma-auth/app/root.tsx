@@ -1,6 +1,6 @@
 import Counter from "./Button";
 import { sayHello } from "./api";
-import { getSession } from "rsc-auth";
+import { getSession as getAuthSession } from "rsc-auth";
 import { SignInButton, SignOutButton } from "rsc-auth/components";
 import { authOptions } from "./auth";
 import { ErrorBoundary, ResetButton } from "stream-react/error-boundary";
@@ -8,14 +8,20 @@ import { request } from "stream-react/request";
 import { component } from "stream-react/server";
 import { Assets } from "stream-react/assets";
 import Button from "./Button";
+import { cache } from "react";
+
+const getSession = cache(async () => {
+	console.log("getSession");
+	return await getAuthSession(request(), authOptions);
+});
 
 const Profile = component(async function Profile() {
-	const user = await getSession(request(), authOptions);
+	const user = await getSession();
 	return user ? (
 		<>
 			<img src={user.user?.image ?? ""} />
 			{user.user?.name}
-			<SignOutButton>Sign Out</SignOutButton>
+			<SignOutButton>Sign Out!!</SignOutButton>
 		</>
 	) : (
 		<SignInButton>Sign In</SignInButton>
@@ -23,6 +29,7 @@ const Profile = component(async function Profile() {
 });
 
 export default async function Root() {
+	const user = await getSession();
 	return (
 		<html lang="en">
 			<head>

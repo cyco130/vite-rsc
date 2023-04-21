@@ -1,7 +1,4 @@
-import {
-	renderToReadableStream as _renderToHTMLStream,
-	RenderToReadableStreamOptions,
-} from "react-dom/server.edge";
+import { renderToReadableStream as _renderToHTMLStream } from "react-dom/server.edge";
 import React, { use, Thenable, useMemo } from "react";
 import { renderServerComponent } from "./server-components";
 import { sanitize } from "./htmlescape";
@@ -171,10 +168,9 @@ export function createServerComponentRenderer<Props extends any = any>(
 export async function renderToHTMLStream(
 	component: string,
 	props: any,
-	renderOptions: RenderToReadableStreamOptions &
-		Env & {
-			dataStream: WritableStream;
-		},
+	renderOptions: Env & {
+		dataStream: WritableStream;
+	},
 ) {
 	const ServerComponent = createServerComponentRenderer(
 		component,
@@ -192,7 +188,7 @@ export async function renderToHTMLStream(
 export async function createHTMLResponse(
 	component: string,
 	props: any,
-	renderOptions: RenderToReadableStreamOptions & Env,
+	renderOptions: Env,
 	responseInit: ResponseInit = {},
 ) {
 	const transformStream = new TransformStream();

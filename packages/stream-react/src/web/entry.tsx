@@ -57,7 +57,7 @@ export function mount(
 	setupWebpackEnv(_loadModule);
 	initMutation();
 	if (window.document.documentElement.id === "__error__") {
-		createRoot(document).render(element);
+		createRoot(document as unknown as HTMLElement).render(element);
 	} else {
 		startTransition(() => {
 			hydrateRoot(document, element, hydrationOptions);

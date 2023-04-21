@@ -1,7 +1,7 @@
 "use client";
 
-import { A, PageProps } from "flight-router";
-import { createRouter } from "flight-router/server";
+import { A, PageProps } from "fully-react";
+import { createRouter } from "fully-react/server";
 import Counter from "./Counter";
 import { Assets } from "stream-react/assets";
 import { sayHello } from "./sayHello";

@@ -1,4 +1,4 @@
-import { A } from "flight-router";
+import { A } from "fully-react";
 import { PageProps } from "./[id].types";
 import fetchAPI from "~/api";
 import Comment from "~/components/comment";

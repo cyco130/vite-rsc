@@ -36,7 +36,7 @@
     "winter.js"
   ],
   "peerDependencies": {
-    "vite": ">= 3"
+    "vite": ">= 4"
   },
   "devDependencies": {
     "rimraf": "^4.4.0",

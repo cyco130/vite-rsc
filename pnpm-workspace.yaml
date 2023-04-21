@@ -2,6 +2,7 @@ packages:
   - "packages/**"
   - "examples/**"
   - "test/**"
+  - "apps/**"
   - "!**/.tmp/**"
 options:
   prefer-workspace-packages: true

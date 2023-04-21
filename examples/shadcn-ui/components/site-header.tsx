@@ -3,7 +3,7 @@ import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
-import { A } from "flight-router";
+import { A } from "fully-react";
 
 export function SiteHeader() {
 	return (

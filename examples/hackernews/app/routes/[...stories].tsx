@@ -1,4 +1,4 @@
-import { A } from "flight-router";
+import { A } from "fully-react";
 import { PageConfig, PageProps } from "./[...stories].types";
 import Story from "~/components/story";
 import fetchAPI from "~/api";

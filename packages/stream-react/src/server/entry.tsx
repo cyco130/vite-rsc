@@ -1,18 +1,17 @@
+import type { Manifest, ModuleNode } from "vite";
 import { createModuleMapProxy, setupWebpackEnv } from "./webpack";
+import path, { basename, join, relative } from "node:path";
+
+import type { Env } from "./env";
+import type { RouteManifest } from "./router-types";
+import { collectStyles } from "./dev/find-styles";
 import { createServerRouter } from "./handler";
-import { Router } from "@hattip/router";
+import fs from "node:fs";
 
 declare global {
 	var serverManifest: { [key: string]: { file: string } };
 	var clientManifest: { [key: string]: { file: string } };
 }
-
-import path, { basename, join, relative } from "node:path";
-import fs from "node:fs";
-import { ModuleNode, Manifest } from "vite";
-import { collectStyles } from "./dev/find-styles";
-import { Env } from "./env";
-
 /**
  * Traverses the module graph and collects assets for a given chunk
  *
@@ -124,22 +123,25 @@ function readJSON(path: string) {
 }
 
 function getManifests() {
-	const buildAppRoot = path.join(process.cwd(), process.env.ROOT_E);
-	const srcAppRoot = import.meta.env.ROOT_DIR;
+	const buildAppRoot = path.join(
+		process.cwd(),
+		process.env.OUT_ROOT_DIR ?? ".",
+	);
+	const srcAppRoot = import.meta.env.ROOT_DIR as string;
 
-	const clientManifest = readJSON(
+	const clientManifest: Manifest = readJSON(
 		path.join(buildAppRoot, "dist", "server", "static-manifest.json"),
 	);
 
-	const serverManifest = readJSON(
+	const serverManifest: Manifest = readJSON(
 		path.join(buildAppRoot, "dist", "server", "manifest.json"),
 	);
 
-	const reactServerManifest = readJSON(
+	const reactServerManifest: Manifest = readJSON(
 		path.join(buildAppRoot, "dist", "server", "react-server", "manifest.json"),
 	);
 
-	const routesConfig = readJSON(
+	const routesConfig: RouteManifest = readJSON(
 		path.join(buildAppRoot, "dist", "server", "react-server", "routes.json"),
 	);
 
@@ -178,11 +180,21 @@ function getManifests() {
  */
 const createProdEnv = (): Env => {
 	const manifests = getManifests();
-	setupWebpackEnv(async (chunk) => {
+
+	const loadModule = async (chunk: string) => {
 		const url = manifests.findInServerManifest(chunk);
 		const mod = await import(/* @vite-ignore */ url);
 		return mod;
-	});
+	};
+
+	setupWebpackEnv(loadModule);
+
+	const routes = createServerRoutes(
+		env,
+		"root",
+	);
+
+	console.log(routes, globalThis.routesConfig);
 
 	return {
 		clientModuleMap: createModuleMapProxy(),
@@ -203,7 +215,9 @@ const createProdEnv = (): Env => {
 				].file
 			}`,
 		],
+		loadModule,
 		routesConfig: manifests.routesConfig,
+
 		findAssets: async () => {
 			const findAssets = (chunk: string) => {
 				return [
@@ -226,27 +240,32 @@ const createProdEnv = (): Env => {
  * @returns
  */
 const createDevEnv = (): Env => {
-	setupWebpackEnv(async (chunk) => {
+	const loader = setupWebpackEnv(async (chunk) => {
 		return await import(/* @vite-ignore */ chunk);
 	});
+
+	// @ts-expect-error __vite_dev_server__ is injected by Vite syncronously
+	const routesConfig = __vite_dev_server__.routesConfig;
 
 	return {
 		clientModuleMap: createModuleMapProxy(),
 		components: {},
 		bootstrapScriptContent: undefined,
 		bootstrapModules: [import.meta.env.CLIENT_ENTRY],
-		routesConfig: __vite_dev_server__.routesConfig,
+		routesConfig,
 		findAssets: async () => {
 			const { default: devServer } = await import("virtual:vite-dev-server");
 			const styles = await collectStyles(devServer, ["~/root?rsc"]);
 			return [
-				// @ts-ignore
 				...Object.entries(styles ?? {}).map(([key, value]) => ({
 					type: "style" as const,
 					style: value,
 					src: key,
 				})),
 			];
+		},
+		loadModule(id) {
+			return loader.load(id);
 		},
 	};
 };
@@ -255,6 +274,8 @@ const createEnv = import.meta.env.PROD ? createProdEnv : createDevEnv;
 
 export function createHandler() {
 	const env = createEnv();
+
+	// @ts-expect-error env is assigned globally for others to use
 	globalThis.env = env;
 
 	return createServerRouter(env).buildHandler();

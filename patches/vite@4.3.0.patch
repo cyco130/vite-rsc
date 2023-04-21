@@ -1,0 +1,28 @@
+diff --git a/dist/node/chunks/dep-33545781.js b/dist/node/chunks/dep-33545781.js
+index 1fd39f9db2b3cf1506aac2aadb513580f3513484..0bb34efe0ebbcbed9d05ecec7f4e0dac55b857a1 100644
+--- a/dist/node/chunks/dep-33545781.js
++++ b/dist/node/chunks/dep-33545781.js
+@@ -23368,7 +23368,7 @@ function packageEntryFailure(id, details) {
+         `The package may have incorrect main/module/exports specified in its package.json` +
+         (details ? ': ' + details : '.'));
+ }
+-const conditionalConditions = new Set(['production', 'development', 'module']);
++const conditionalConditions = new Set(['production', 'development', 'module', 'react-server', 'node']);
+ function resolveExportsOrImports(pkg, key, options, targetWeb, type) {
+     const overrideConditions = options.overrideConditions
+         ? new Set(options.overrideConditions)
+@@ -54268,12 +54268,12 @@ async function instantiateModule(url, server, context = { global }, urlStack = [
+     };
+     urlStack = urlStack.concat(url);
+     const isCircular = (url) => urlStack.includes(url);
+-    const { isProduction, resolve: { dedupe, preserveSymlinks }, root, } = server.config;
++    const { isProduction, resolve: { dedupe, preserveSymlinks, conditions }, root, } = server.config;
+     const resolveOptions = {
+         mainFields: ['main'],
+         browserField: true,
+         conditions: [],
+-        overrideConditions: ['production', 'development'],
++        overrideConditions: ['production', 'development', ...conditions],
+         extensions: ['.js', '.cjs', '.json'],
+         dedupe,
+         preserveSymlinks,

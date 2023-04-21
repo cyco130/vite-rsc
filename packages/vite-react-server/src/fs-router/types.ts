@@ -1,3 +1,12 @@
+export type Route = {
+	id: string;
+	path: string;
+	caseSensitive: boolean;
+	children: Route[];
+	index: boolean;
+	file: string;
+};
+
 /**
  * A route that was created using `defineRoutes` or created conventionally from
  * looking at the files on the filesystem.
@@ -28,7 +37,7 @@ export interface ConfigRoute {
 	/**
 	 * The unique `id` for this route's parent route, if there is one.
 	 */
-	parentId?: string;
+	parentId: string;
 
 	/**
 	 * The path to the entry point for this route, relative to

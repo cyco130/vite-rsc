@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import { renderToServerElementStream } from "stream-react/react-server-streams";
 import { createModuleMapProxy, setupWebpackEnv } from "stream-react/webpack";
 import { isNotFoundError, isRedirectError } from "stream-react/navigation";
@@ -10,8 +11,10 @@ function createDevRenderer() {
 	setupWebpackEnv();
 
 	const clientModuleMap = createModuleMapProxy();
-	globalThis.crypto = webcrypto;
-	globalThis.env = {
+	// need to polyfill crypto for react-server
+	globalThis.crypto = webcrypto as any;
+
+	const env = {
 		findAssets: async () => {
 			const { default: devServer } = await import("virtual:vite-dev-server");
 			const { collectStyles } = await import("stream-react/dev");
@@ -27,6 +30,9 @@ function createDevRenderer() {
 			];
 		},
 	};
+
+	// @ts-expect-error
+	globalThis.env = env;
 
 	return async (src: string, props: any) => {
 		return requestAsyncContext.run(

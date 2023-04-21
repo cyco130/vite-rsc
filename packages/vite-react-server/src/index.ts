@@ -1,14 +1,14 @@
 import { reactServerComponents } from "vite-rsc";
 import { hattip } from "winterkit";
-import type { Plugin } from "vite";
+import type { Plugin, PluginOption } from "vite";
 import path, { dirname, join } from "node:path";
 import inspect from "vite-plugin-inspect";
 import { tsconfigPaths } from "vite-rsc/tsconfig-paths";
-import { exposeDevServer } from "./vite-dev-server";
 import reactRefresh from "@vitejs/plugin-react";
 import { cpSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineFileSystemRoutes } from "./fs-router";
+import { exposeDevServer } from "./vite-dev-server";
 
 function makeDefaultNodeEntry(hattipEntry: string | undefined) {
 	if (!hattipEntry) {
@@ -27,6 +27,9 @@ const _dirname = dirname(fileURLToPath(import.meta.url));
 import { createRequire } from "node:module";
 import { Worker } from "node:worker_threads";
 import { ReadableStream } from "node:stream/web";
+import { generateTypes, prettyPrintRoutes } from "./fs-router/dev";
+import { createServerRoutes } from "./fs-router/server-routes";
+import { Env } from "./env";
 
 const require = createRequire(import.meta.url);
 
@@ -36,7 +39,7 @@ const require = createRequire(import.meta.url);
  * Create a worker thread that will be used to render RSC chunks.
  * @param buildPath Absolute path to the the built RSC bundle.
  */
-export async function createRSCWorker(buildPath: string) {
+export async function createRSCWorker(buildPath: string, onReload: () => void) {
 	const rscWorker = require.resolve("./rsc-worker");
 	const worker = new Worker(rscWorker, {
 		execArgv: ["--conditions", "react-server"],
@@ -64,6 +67,11 @@ export async function createRSCWorker(buildPath: string) {
 	const encoder = new TextEncoder();
 	worker.on("message", (msg) => {
 		const { id, ...event } = JSON.parse(msg);
+		if (event.type === "reload") {
+			onReload();
+			return;
+		}
+
 		const res = responses.get(id)!;
 		// if (chunk === "end") {
 		// 	res.close();
@@ -132,26 +140,28 @@ export async function createRSCWorker(buildPath: string) {
 export function react({
 	server = true,
 	inspect: _inspect = true,
-	reactRefresh: _reactRefresh = false,
+	reactRefresh: _reactRefresh = true,
 	tsconfigPaths: _tsconfigPaths = true,
-	serverEntry = "stream-react/entry-server",
+	serverEntry = "vite-react-server/entry-server",
 	clientEntry = undefined as string | null | undefined,
 	rscEntry = undefined as string | null | undefined,
 	appRoot = "app",
-} = {}) {
+} = {}): (Plugin | PluginOption[] | PluginOption | undefined)[] {
 	let isSsrBuild = false;
 	let worker: any;
 	let routesConfig: any = {};
 	return [
 		{
-			name: "flight-router",
+			name: "fully-react",
 			async configureServer(server) {
 				const root = server.config.root ?? process.cwd();
 
 				// @ts-ignore
 				server.routesConfig = routesConfig;
 				if (!process.env.RSC_WORKER) {
-					const rscWorker = await createRSCWorker("");
+					const rscWorker = await createRSCWorker("", () => {
+						server.ws.send("reload-rsc", { msg: "hello" });
+					});
 					// @ts-ignore
 					server.rscWorker = rscWorker;
 					worker = rscWorker;
@@ -174,8 +184,28 @@ export function react({
 			config(config, env) {
 				const root = config.root ?? process.cwd();
 				isSsrBuild = env.ssrBuild ?? false;
+				const absoluteAppRoot = path.join(root, appRoot);
 				if (existsSync(path.join(root, appRoot, "routes"))) {
 					routesConfig = defineFileSystemRoutes(path.join(root, appRoot));
+					const env: Env = {
+						manifests: {
+							routesConfig,
+						},
+						lazyComponent(id: string) {
+							return null;
+						},
+					} as unknown as Env;
+
+					const routes = createServerRoutes(env, "root");
+
+					prettyPrintRoutes(routes, 2);
+
+					generateTypes(
+						routes,
+						absoluteAppRoot,
+						absoluteAppRoot.replace(/\/app$/, "/.vite/app"),
+						env.manifests!.routesConfig,
+					);
 				}
 
 				// @ts-ignore
@@ -285,6 +315,9 @@ export function react({
 							"~": path.resolve(root, "app"),
 							"~react/entry-client": clientEntry,
 						},
+						conditions: process.env.RSC_WORKER
+							? ["node", "import", "react-server", "production"]
+							: [],
 					},
 					define: {
 						"import.meta.env.CLIENT_ENTRY": JSON.stringify(clientEntry),
@@ -295,11 +328,7 @@ export function react({
 						"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
 					},
 					ssr: {
-						noExternal: [
-							"flight-router",
-							"stream-react",
-							"react-error-boundary",
-						],
+						noExternal: ["fully-react", "stream-react", "react-error-boundary"],
 					},
 				};
 			},
@@ -318,8 +347,10 @@ export function react({
 
 				if (isSsrBuild) {
 					if (!process.env.RSC_WORKER) {
-						worker = await createRSCWorker("");
-						const built = await worker.build();
+						worker = await createRSCWorker("", () => {
+							throw new Error("RSC Worker should not reload while building");
+						});
+						await worker.build();
 						let clientModules: string[] = [];
 						let serverModules: string[] = [];
 						if (
@@ -387,6 +418,17 @@ export function react({
 					worker.close();
 				}
 			},
+			closeBundle: {
+				order: "post",
+				handler() {
+					if (!isSsrBuild) {
+						cpSync(
+							join(process.cwd(), "dist/static/manifest.json"),
+							join(process.cwd(), "dist/server/static-manifest.json"),
+						);
+					}
+				},
+			},
 			generateBundle(options) {
 				if (isSsrBuild && !process.env.RSC_WORKER) {
 					console.log("copying");
@@ -425,19 +467,20 @@ export function react({
 				}
 			},
 		} satisfies Plugin,
-		_tsconfigPaths && tsconfigPaths(),
-		_inspect &&
-			inspect({
-				build: true,
-			}),
-		_reactRefresh && reactRefresh(),
-		server
+		_tsconfigPaths ? tsconfigPaths() : undefined,
+		_inspect
+			? inspect({
+					build: true,
+			  })
+			: undefined,
+		_reactRefresh ? reactRefresh() : undefined,
+		(server
 			? hattip({
 					clientConfig: {},
 					hattipEntry: serverEntry,
 					devEntry: makeDefaultNodeEntry,
 			  })
-			: exposeDevServer(),
+			: exposeDevServer()) as Plugin,
 		reactServerComponents(),
 	];
 }

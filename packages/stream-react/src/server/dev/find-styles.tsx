@@ -1,5 +1,5 @@
 import path from "node:path";
-import { ModuleNode, ViteDevServer } from "vite";
+import type { ModuleNode, ViteDevServer } from "vite";
 
 async function find_deps(
 	vite: import("vite").ViteDevServer,

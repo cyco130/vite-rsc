@@ -14,13 +14,13 @@
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
     "stream-react": "workspace:^",
-    "flight-router": "workspace:^"
+    "fully-react": "workspace:^"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "typescript": "^5.0.3",
-    "vite": "^4.2.1",
+    "vite": "^4.3",
     "vite-react-server": "^0.0.1"
   }
 }

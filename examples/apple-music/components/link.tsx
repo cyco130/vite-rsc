@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { VariantProps } from "class-variance-authority";
-import { A, TypedLink, interpolatePath, useRouter } from "flight-router";
+import { A, TypedLink, interpolatePath, useRouter } from "fully-react";
 import { buttonVariants } from "./ui/button";
 
 export const Link: TypedLink<VariantProps<typeof buttonVariants>> = (

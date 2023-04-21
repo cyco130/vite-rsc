@@ -1,4 +1,4 @@
-import { A } from "flight-router";
+import { A } from "fully-react";
 import { IStory } from "~/types";
 
 function Story(props: { story: IStory }) {

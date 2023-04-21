@@ -22,6 +22,15 @@ async function handleMessage(msg: string) {
 					// It's recommended to disable deps optimization
 					disabled: true,
 				},
+				plugins: [
+					{
+						name: "vite-react-server-hmr",
+						handleHotUpdate(ctx) {
+							console.log(ctx);
+							parentPort?.postMessage(JSON.stringify({ type: "reload" }));
+						},
+					},
+				],
 			});
 
 			// this is need to initialize the plugins
@@ -86,7 +95,7 @@ async function handleMessage(msg: string) {
 				},
 			},
 			resolve: {
-				conditions: ["react-server", "production"],
+				conditions: ["node", "import", "react-server", "production"],
 			},
 			ssr: {
 				noExternal: true,

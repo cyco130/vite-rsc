@@ -1,10 +1,3 @@
-declare global {
-	var moduleCache: Map<string, any>;
-	function __webpack_chunk_load__(chunk: string): Promise<void>;
-	function __webpack_require__(id: string): any;
-	function __webpack_chunk_get__(id: string): any;
-}
-
 function dynamicImport(chunk: string) {
 	return import(/* @vite-ignore */ chunk);
 }
@@ -39,10 +32,12 @@ export function setupWebpackEnv(
 		return globalThis.moduleCache.get(id);
 	};
 
-	globalThis.__webpack_chunk_get__ = async (id: string) => {
+	(globalThis as any).__webpack_chunk_get__ = async (id: string) => {
 		if (!globalThis.moduleCache.has(id)) return await load(id);
 		return globalThis.moduleCache.get(id);
 	};
+
+	return { load };
 }
 
 /**

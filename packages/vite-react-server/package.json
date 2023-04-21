@@ -18,7 +18,8 @@
       "import": "./dist/fs-router.js",
       "require": "./dist/fs-router.cjs"
     },
-    "./node": "./dist/node.js"
+    "./node": "./dist/node.js",
+    "./entry-server": "./dist/entry-server.js"
   },
   "typesVersions": {
     "*": {
@@ -59,6 +60,7 @@
     "@cyco130/eslint-config": "^3.0.2",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
     "eslint": "^8.37.0",
     "publint": "^0.1.11",
     "react": "18.3.0-next-b14f8da15-20230403",
@@ -66,13 +68,12 @@
     "stream-react": "workspace:^",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
-    "vite": "^4.2.1",
+    "vite": "^4.3",
     "vitest": "^0.29.8"
   },
   "dependencies": {
     "@vercel/nft": "^0.22.6",
     "@vitejs/plugin-react": "^3.1.0",
-    "fs-router": "^0.5.0",
     "import-meta-resolve": "^2.2.2",
     "minimatch": "^8.0.3",
     "vite-node": "^0.30.0",

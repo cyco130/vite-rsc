@@ -3,6 +3,7 @@ import { removeDir, writeJson } from "./fs";
 import { copyDependenciesToFunction } from "./nft";
 import { pathToFileURL } from "url";
 import { join, relative } from "path";
+import { Manifest } from "vite";
 
 async function adapt() {
 	const buildTempFolder = pathToFileURL(process.cwd() + "/");
@@ -28,17 +29,17 @@ async function adapt() {
 	// 	mergeGlobbedIncludes(_config.vite.assetsInclude);
 	// }
 
-	const serverManifest = JSON.parse(
+	const serverManifest: Manifest = JSON.parse(
 		readFileSync("dist/server/manifest.json", "utf-8"),
 	);
-	const serverClientManifest = JSON.parse(
+	const serverClientManifest: string[] = JSON.parse(
 		readFileSync("dist/server/react-server/client-manifest.json", "utf-8"),
 	);
-	const serverServerManifest = JSON.parse(
+	const serverServerManifest: string[] = JSON.parse(
 		readFileSync("dist/server/react-server/server-manifest.json", "utf-8"),
 	);
 
-	const entries = [];
+	const entries: URL[] = [];
 	serverServerManifest.forEach((s) => {
 		console.log(s, serverManifest[relative(process.cwd(), s)]);
 		entries.push(
@@ -58,7 +59,9 @@ async function adapt() {
 		);
 	});
 
-	console.log(entries);
+	// Remove previous output folder
+	await removeDir(outDir);
+
 	// Copy necessary files (e.g. node_modules/)
 	const { handler } = await copyDependenciesToFunction({
 		entries: [
@@ -76,9 +79,6 @@ async function adapt() {
 
 	const root = handler.replace("dist/server/index.js", "");
 
-	// Remove temporary folder
-	// await removeDir(buildTempFolder);
-
 	// Enable ESM
 	// https://aws.amazon.com/blogs/compute/using-node-js-es-modules-and-top-level-await-in-aws-lambda/
 	await writeJson(new URL(`package.json`, functionFolder), {
@@ -91,7 +91,7 @@ async function adapt() {
 		runtime: getRuntime(),
 		handler,
 		environment: {
-			ROOT_E: root,
+			OUT_ROOT_DIR: root,
 		},
 		launcherType: "Nodejs",
 	});

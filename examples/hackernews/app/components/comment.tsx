@@ -1,4 +1,4 @@
-import { A } from "flight-router";
+import { A } from "fully-react";
 import Toggle from "./toggle";
 import { IComment } from "~/types";
 

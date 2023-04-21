@@ -1,3 +1,4 @@
+import { RouteObject } from "../client/router/utils";
 import type { RouteManifest } from "./types";
 import { lazy } from "react";
 
@@ -18,17 +19,17 @@ export function groupRoutesByParentId(manifest: RouteManifest) {
 }
 
 export function createServerRoutes(
-	manifest: RouteManifest,
+	env: Env,
 	parentId = "",
 	routesByParentId: Record<
 		string,
 		Omit<any, "children">[]
 	> = groupRoutesByParentId(manifest),
-) {
+): RouteObject[] {
 	return (routesByParentId[parentId] || [])
 		.map((route) => {
 			if (route.routeHandler) {
-				return;
+				return undefined as unknown as RouteObject;
 			}
 
 			const dataRoute = {
@@ -37,10 +38,10 @@ export function createServerRoutes(
 				caseSensitive: route.caseSensitive,
 				children: undefined as any,
 				index: route.index,
-				component: lazy(() => globalThis.__webpack_chunk_get__(route.file)),
+				component: lazy(() => __webpack_chunk_get__(route.file)),
 				// Note: we don't need loader/action/shouldRevalidate on these routes
 				// since they're for a static render
-			};
+			} satisfies RouteObject;
 
 			const children = createServerRoutes(manifest, route.id, routesByParentId);
 			if (children.length > 0) dataRoute.children = children;

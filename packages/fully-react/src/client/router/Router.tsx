@@ -14,11 +14,11 @@ import {
 } from "react";
 import * as React from "react";
 import { routerContext } from "stream-react/router";
-import { RedirectBoundary } from "./RedirectBoundary";
 import { createElementFromServer } from "stream-react/client";
 import { refresh } from "stream-react/refresh";
 import { addMutationListener } from "stream-react/mutation";
 import { NotFoundBoundary } from "../NotFoundBoundary";
+import { RedirectBoundary } from "./RedirectBoundary";
 
 export function useRerender() {
 	const [_, rerender] = useState(() => 0);
@@ -63,6 +63,7 @@ export default function Router({
 }: {
 	children: React.ReactNode;
 	initialURL: string;
+	notFound?: React.ReactNode;
 }) {
 	const existingRouter = use(routerContext);
 	const [cache] = useState(
@@ -161,9 +162,15 @@ export default function Router({
 		</routerContext.Provider>
 	);
 }
-const layoutContext = React.createContext();
+const layoutContext = React.createContext<{}>({});
 
-export function LayoutRouter({ child, segment }: { child: any }) {
+export function LayoutRouter({
+	child,
+	segment,
+}: {
+	child: any;
+	segment?: string;
+}) {
 	return (
 		<layoutContext.Provider key={segment} value={{}}>
 			<RedirectBoundary>
@@ -175,7 +182,7 @@ export function LayoutRouter({ child, segment }: { child: any }) {
 	);
 }
 
-function InnerLayoutRouter({ child }: { children: any }) {
+function InnerLayoutRouter({ child }: { child: any }) {
 	const resolvedContext = child?.then ? use(child) : child ?? (null as any);
 	return resolvedContext;
 }

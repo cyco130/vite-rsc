@@ -7,7 +7,7 @@
     "build": "hattip build"
   },
   "dependencies": {
-    "flight-router": "^0.0.1",
+    "fully-react": "^0.0.1",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403"
@@ -23,7 +23,7 @@
     "match-sorter": "^6.3.1",
     "sort-by": "^1.2.0",
     "typescript": "^5.0.3",
-    "vite": "^4.2.1",
+    "vite": "^4.3",
     "vite-react-server": "^0.0.1"
   }
 }
