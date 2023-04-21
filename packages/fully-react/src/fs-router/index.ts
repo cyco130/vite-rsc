@@ -1,7 +1,9 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { minimatch } from "minimatch";
+
 import { ConfigRoute, RouteManifest } from "./types";
+
+import { minimatch } from "minimatch";
 
 export interface DefineRouteOptions {
 	/**
@@ -185,7 +187,6 @@ export function isRouteModuleFile(filename: string): boolean {
 }
 
 export function toPath(id: string, removePathlessLayouts = true) {
-	console.log({ id });
 	const idWithoutIndex = id.endsWith("/page")
 		? id.slice(0, -"page".length)
 		: id;

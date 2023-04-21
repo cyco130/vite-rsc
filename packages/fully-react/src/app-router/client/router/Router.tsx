@@ -143,7 +143,6 @@ export default function Router({
 	useEffect(() => {
 		return addMutationListener((val) => {
 			if (enabledRef.current) {
-				console.log(state.url, val);
 				state.cache.set(state.url, val);
 				startTransition(() => {
 					renrender();

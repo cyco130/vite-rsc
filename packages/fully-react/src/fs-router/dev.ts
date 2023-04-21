@@ -9,7 +9,6 @@ export function prettyPrintRoutes(routes: any, tabs = 0) {
 		const gap = Array.from({ length: tabs })
 			.map(() => "  ")
 			.join("");
-		console.log(gap + r.id, r.file);
 		if (r.children) {
 			prettyPrintRoutes(r.children, tabs + 1);
 		}
@@ -118,7 +117,6 @@ function generateTypeForRoute(
 	manifest: RouteManifest,
 ) {
 	const routeMan = manifest[route.id];
-	console.log(routeMan);
 	const typesPath = routeMan.file
 		.replace(rootDir, outDir)
 		.replace(".tsx", ".types.d.ts");

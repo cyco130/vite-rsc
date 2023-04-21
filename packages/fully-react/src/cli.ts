@@ -45,7 +45,6 @@ async function adapt() {
 
 	const entries: URL[] = [];
 	serverServerManifest.forEach((s) => {
-		console.log(s, serverManifest[relative(process.cwd(), s)]);
 		entries.push(
 			new URL(
 				`./` + serverManifest[relative(process.cwd(), s)].file,
@@ -54,7 +53,6 @@ async function adapt() {
 		);
 	});
 	serverClientManifest.forEach((s) => {
-		console.log(s, serverManifest[relative(process.cwd(), s)]);
 		entries.push(
 			new URL(
 				`./` + serverManifest[relative(process.cwd(), s)].file,
