@@ -1,0 +1,137 @@
+diff --git a/experimental.d.ts b/experimental.d.ts
+index f0c016095b978b805df648f45dbc1b11745832cc..3ae818124a248db2eb94437660bbeb27d62b9695 100755
+--- a/experimental.d.ts
++++ b/experimental.d.ts
+@@ -39,6 +39,12 @@ import React = require('./next');
+ export {};
+ 
+ declare module '.' {
++    // Need an interface to not cause ReactNode to be a self-referential type.
++    interface PromiseLikeOfReactNode extends PromiseLike<ReactNode> {}
++    interface DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES {
++        promises: PromiseLikeOfReactNode;
++    }
++
+     export interface SuspenseProps {
+         /**
+          * The presence of this prop indicates that the content is computationally expensive to render.
+diff --git a/index.d.ts b/index.d.ts
+index bcb2d15a368d30ae53ef39bb44b30bc8a9773179..3d1c81ca4f30c24d5b35337e00065060fc65f63b 100755
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1,5 +1,5 @@
+ // Type definitions for React 18.0
+-// Project: http://facebook.github.io/react/
++// Project: https://react.dev/
+ // Definitions by: Asana <https://asana.com>
+ //                 AssureSign <http://www.assuresign.com>
+ //                 Microsoft <https://microsoft.com>
+@@ -76,7 +76,7 @@ declare namespace React {
+     type ComponentType<P = {}> = ComponentClass<P> | FunctionComponent<P>;
+ 
+     type JSXElementConstructor<P> =
+-        | ((props: P) => ReactElement<any, any> | null)
++        | ((props: P) => ReactNode)
+         | (new (props: P) => Component<any, any>);
+ 
+     interface RefObject<T> {
+@@ -107,7 +107,7 @@ declare namespace React {
+         C extends
+             | ForwardRefExoticComponent<any>
+             | { new (props: any): Component<any> }
+-            | ((props: any, context?: any) => ReactElement | null)
++            | ((props: any, context?: any) => ReactNode)
+             | keyof JSX.IntrinsicElements
+     > =
+         // need to check first if `ref` is a valid prop for ts@3.0
+@@ -238,7 +238,23 @@ declare namespace React {
+      */
+     interface ReactNodeArray extends ReadonlyArray<ReactNode> {}
+     type ReactFragment = Iterable<ReactNode>;
+-    type ReactNode = ReactElement | string | number | ReactFragment | ReactPortal | boolean | null | undefined;
++
++    /**
++     * For internal usage only.
++     * Different release channels declare additional types of ReactNode this particular release channel accepts.
++     * App or library types should never augment this interface.
++     */
++    interface DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES {}
++    type ReactNode =
++        | ReactElement
++        | string
++        | number
++        | ReactFragment
++        | ReactPortal
++        | boolean
++        | null
++        | undefined
++        | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES];
+ 
+     //
+     // Top Level API
+@@ -358,7 +374,7 @@ declare namespace React {
+         /**
+          * **NOTE**: Exotic components are not callable.
+          */
+-        (props: P): (ReactElement|null);
++        (props: P): ReactNode;
+         readonly $$typeof: symbol;
+     }
+ 
+@@ -528,7 +544,7 @@ declare namespace React {
+     type FC<P = {}> = FunctionComponent<P>;
+ 
+     interface FunctionComponent<P = {}> {
+-        (props: P, context?: any): ReactElement<any, any> | null;
++        (props: P, context?: any): ReactNode;
+         propTypes?: WeakValidationMap<P> | undefined;
+         contextTypes?: ValidationMap<any> | undefined;
+         defaultProps?: Partial<P> | undefined;
+@@ -544,7 +560,7 @@ declare namespace React {
+      * @deprecated - Equivalent with `React.FunctionComponent`.
+      */
+     interface VoidFunctionComponent<P = {}> {
+-        (props: P, context?: any): ReactElement<any, any> | null;
++        (props: P, context?: any): ReactNode;
+         propTypes?: WeakValidationMap<P> | undefined;
+         contextTypes?: ValidationMap<any> | undefined;
+         defaultProps?: Partial<P> | undefined;
+@@ -554,7 +570,7 @@ declare namespace React {
+     type ForwardedRef<T> = ((instance: T | null) => void) | MutableRefObject<T | null> | null;
+ 
+     interface ForwardRefRenderFunction<T, P = {}> {
+-        (props: P, ref: ForwardedRef<T>): ReactElement | null;
++        (props: P, ref: ForwardedRef<T>): ReactNode;
+         displayName?: string | undefined;
+         // explicit rejected with `never` required due to
+         // https://github.com/microsoft/TypeScript/issues/36826
+@@ -1385,7 +1401,9 @@ declare namespace React {
+     interface DOMAttributes<T> {
+         children?: ReactNode | undefined;
+         dangerouslySetInnerHTML?: {
+-            __html: string;
++            // Should be InnerHTML['innerHTML'].
++            // But unfortunately we're mixing renderer-specific type declarations.
++            __html: string | TrustedHTML;
+         } | undefined;
+ 
+         // Clipboard Events
+@@ -3123,6 +3141,18 @@ type ReactManagedAttributes<C, P> = C extends { propTypes: infer T; defaultProps
+ 
+ declare global {
+     namespace JSX {
++        // We don't just alias React.ElementType because React.ElementType
++        // historically does more than we need it to.
++        // E.g. it also contains .propTypes and so TS also verifies the declared
++        // props type does match the declared .propTypes.
++        // But if libraries declared their .propTypes but not props type,
++        // or they mismatch, you won't be able to use the class component
++        // as a JSX.ElementType.
++        // We could fix this everywhere but we're ultimately not interested in
++        // .propTypes assignability so we might as well drop it entirely here to
++        //  reduce the work of the type-checker.
++        // TODO: Check impact of making React.ElementType<P = any> = React.JSXElementConstructor<P>
++        type ElementType = string | React.JSXElementConstructor<any>;
+         interface Element extends React.ReactElement<any, any> { }
+         interface ElementClass extends React.Component<any> {
+             render(): React.ReactNode;

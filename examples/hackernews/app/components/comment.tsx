@@ -1,6 +1,6 @@
-import { A } from "fully-react";
-import Toggle from "./toggle";
+import { A } from "fully-react/link";
 import { IComment } from "~/types";
+import Toggle from "./toggle";
 
 function Comment(props: { comment: IComment }) {
 	return (

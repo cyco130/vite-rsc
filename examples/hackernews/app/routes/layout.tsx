@@ -1,6 +1,6 @@
-import { Assets } from "stream-react/assets";
-import { LayoutProps } from "./(layout).types";
-import { A } from "fully-react";
+import { A } from "fully-react/link";
+import { Assets } from "fully-react/assets";
+import { LayoutProps } from "./layout.types";
 
 function Nav() {
 	return (

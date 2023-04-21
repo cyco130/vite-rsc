@@ -1,8 +1,8 @@
-import { A } from "fully-react";
-import { PageProps } from "./[id].types";
-import fetchAPI from "~/api";
+import { A } from "fully-react/link";
 import Comment from "~/components/comment";
 import { IStory } from "~/types";
+import { PageProps } from "./[id].types";
+import fetchAPI from "~/api";
 
 export default async function StoryPage({ params }: PageProps) {
 	const story = await fetchAPI<IStory>(`item/${params.id}`);

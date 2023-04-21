@@ -1,8 +1,10 @@
-import { increment, getCount } from "./api";
-import { Assets } from "stream-react/assets";
-import { Form } from "stream-react/form";
-import { ErrorBoundary, ResetButton } from "stream-react/error-boundary";
 import "./root.css";
+
+import { ErrorBoundary, ResetButton } from "fully-react/error-boundary";
+import { getCount, increment } from "./api";
+
+import { Assets } from "fully-react/assets";
+import { Form } from "fully-react/form";
 
 async function Counter() {
 	return (
@@ -25,15 +27,15 @@ export default async function Root() {
 			</head>
 			<body>
 				<div id="root">
-					{/* <ErrorBoundary
+					<ErrorBoundary
 						fallback={
 							<div>
 								Error<ResetButton>Reset</ResetButton>
 							</div>
 						}
-					> */}
-					<Counter />
-					{/* </ErrorBoundary> */}
+					>
+						<Counter />
+					</ErrorBoundary>
 				</div>
 			</body>
 		</html>

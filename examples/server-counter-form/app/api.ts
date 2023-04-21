@@ -1,7 +1,7 @@
 "use server";
 
-import { redirect } from "stream-react/navigation";
 import db from "./db";
+import { redirect } from "fully-react/navigation";
 
 export async function increment() {
 	let count = await getCount();

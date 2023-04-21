@@ -2,42 +2,93 @@
   "name": "fully-react",
   "version": "0.0.1",
   "type": "module",
+  "bin": {
+    "react": "./dist/cli.cjs"
+  },
   "files": [
     "dist",
+    "src",
     "*.d.ts"
   ],
   "exports": {
-    "./entry-server": "./src/entry-server.ts",
-    "./streams": "./src/server/streams.tsx",
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./fs-router": {
+      "import": "./dist/fs-router.js",
+      "require": "./dist/fs-router.cjs"
+    },
+    "./node": "./dist/node.js",
+    "./entry-server": "./dist/entry-server.js",
     "./webpack": "./src/server/webpack.ts",
+    "./mutation": "./src/client/mutation.ts",
+    "./form": "./src/client/form/index.ts",
+    "./error-boundary": "./src/client/error-boundary.tsx",
     "./entry-client": "./src/entry-client.ts",
     "./server": "./src/server/index.ts",
+    "./client": "./src/client/index.ts",
     "./dev": "./src/server/dev/index.ts",
-    "./client/entry": "./src/client/entry.tsx",
-    "./server/entry": "./src/server/entry.tsx",
-    "./fs": "./src/fs/index.ts",
-    ".": "./src/client/index.ts"
+    "./assets": "./src/shared/assets.tsx",
+    "./web/entry": "./src/web/entry.ts",
+    "./web/router": "./src/web/router.ts",
+    "./router": "./src/client/router/index.ts",
+    "./navigation": "./src/shared/navigation.ts",
+    "./refresh": "./src/client/refresh.ts",
+    "./request": "./src/server/request.ts",
+    "./react-server": "./src/server/server-components.tsx",
+    "./async-context": "./src/server/async-context.ts",
+    "./react-server-streams": "./src/server/server-streams.tsx",
+    "./server/entry": "./dist/server/entry.js",
+    "./link": "./src/client/router/link.tsx",
+    "./fs": "./src/app-router/fs.ts"
   },
-  "types": "./src/client/index.ts",
   "typesVersions": {
     "*": {
+      "*": [
+        "dist/*.d.ts"
+      ],
+      "node": [
+        "dist/node.d.ts"
+      ],
+      "fs-router": [
+        "dist/fs-router.d.ts"
+      ],
       ".": [
         "./src/client/index.ts"
       ],
-      "server": [
-        "./src/server/index.ts"
+      "types": [
+        "./src/global.d.ts"
       ],
-      "dev": [
-        "./src/server/dev/index.ts"
+      "web/entry": [
+        "./src/web/entry.tsx"
       ],
-      "client/entry": [
-        "./src/client/entry.tsx"
+      "web/router": [
+        "./src/web/router.tsx"
       ],
       "server/entry": [
         "./src/server/entry.tsx"
       ],
-      "streams": [
-        "./src/server/streams.tsx"
+      "async-context": [
+        "./src/server/async-context.ts"
+      ],
+      "server": [
+        "./src/server/index.ts"
+      ],
+      "react-server": [
+        "./src/server/server-components.tsx"
+      ],
+      "react-server-streams": [
+        "./src/server/server-streams.tsx"
+      ],
+      "client": [
+        "./src/client/index.ts"
+      ],
+      "refresh": [
+        "./src/client/refresh.ts"
+      ],
+      "assets": [
+        "./src/shared/assets.tsx"
       ],
       "webpack": [
         "./src/server/webpack.ts"
@@ -45,26 +96,55 @@
       "entry-server": [
         "./src/entry-server.ts"
       ],
-      "fs": [
-        "./src/fs/index.ts"
+      "entry-client": [
+        "./src/entry-client.tsx"
+      ],
+      "mutation": [
+        "./src/client/mutation.ts"
+      ],
+      "link": [
+        "./src/client/router/link.tsx"
+      ],
+      "navigation": [
+        "./src/shared/navigation.ts"
+      ],
+      "error-boundary": [
+        "./src/client/error-boundary.tsx"
+      ],
+      "form": [
+        "./src/client/form/index.ts"
+      ],
+      "router": [
+        "./src/client/router/index.ts"
+      ],
+      "request": [
+        "./src/server/request.ts"
+      ],
+      "dev": [
+        "./src/server/dev/index.ts"
+      ],
+      "./fs": [
+        "./src/app-router/fs.ts"
       ]
     }
   },
   "scripts": {
-    "build": "# tsup",
-    "dev": "# tsup --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "prepack": "rm -rf dist && pnpm build",
     "test": "pnpm test:typecheck && pnpm test:lint && pnpm test:unit && pnpm test:package",
     "test:unit": "vitest run",
-    "test:typecheck": "tsc -p tsconfig.json",
+    "test:typecheck": "tsc -p tsconfig.json --noEmit",
     "test:lint": "eslint . --max-warnings 0 --ignore-pattern dist",
     "test:package": "publint"
   },
-  "description": "React Server Components Router",
+  "description": "React Server for Vite",
   "license": "MIT",
   "repository": "https://github.com/cyco130/vite-rsc",
   "keywords": [
     "react",
+    "react-server",
+    "react-architecture",
     "vite",
     "server-components",
     "rsc",
@@ -73,26 +153,39 @@
   "devDependencies": {
     "@cyco130/eslint-config": "^3.0.2",
     "@types/node": "^18.15.11",
-    "@types/react": "^18.0.31",
+    "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "eslint": "^8.37.0",
+    "minimatch": "^8.0.3",
     "publint": "^0.1.11",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
-    "stream-react": "workspace:^",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.3",
+    "typescript": "5.1.0-beta",
     "vite": "^4.3",
     "vitest": "^0.29.8"
   },
   "dependencies": {
+    "@hattip/adapter-node": "^0.0.33",
     "@hattip/router": "^0.0.33",
+    "@vercel/nft": "^0.22.6",
+    "@vitejs/plugin-react": "^3.1.0",
+    "cac": "^6.7.14",
+    "acorn-loose": "^8.3.0",
     "history": "^5.3.0",
-    "minimatch": "^8.0.3",
+    "import-meta-resolve": "^2.2.2",
+    "picocolors": "^1.0.0",
     "react-error-boundary": "^4.0.3",
-    "tiny-invariant": "^1.3.1",
-    "tiny-warning": "^1.0.3",
-    "vite-react-server": "workspace:^"
+    "resolve.exports": "^2.0.0",
+    "sirv": "^2.0.2",
+    "vite-plugin-inspect": "^0.7.18",
+    "vite-tsconfig-paths": "^4.0.8"
+  },
+  "peerDependencies": {
+    "react": "18.3.0-next-b14f8da15-20230403",
+    "react-dom": "18.3.0-next-b14f8da15-20230403",
+    "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
+    "vite": "^4.3"
   }
 }

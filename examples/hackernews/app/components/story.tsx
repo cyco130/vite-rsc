@@ -1,4 +1,4 @@
-import { A } from "fully-react";
+import { A } from "fully-react/link";
 import { IStory } from "~/types";
 
 function Story(props: { story: IStory }) {

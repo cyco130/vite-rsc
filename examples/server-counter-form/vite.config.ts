@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
-import react from "vite-react-server";
+
+import react from "fully-react";
 
 process.env = {
 	...process.env,

@@ -1,13 +1,15 @@
 {
 	"compilerOptions": {
-		"target": "es2020",
+		"target": "es2022",
 		"module": "ESNext",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
-		"types": ["react/experimental", "vite/client"],
+		"types": ["vite/client", "node", "react/experimental"],
+		"lib": ["es2021", "dom", "DOM.Iterable"],
 		"skipLibCheck": true,
 		"moduleResolution": "Node",
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"jsx": "react-jsx"
 	}
 }

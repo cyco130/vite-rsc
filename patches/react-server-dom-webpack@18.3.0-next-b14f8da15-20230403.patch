@@ -1,0 +1,65 @@
+diff --git a/client.browser.d.ts b/client.browser.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..0d59a3cea951c3d7463b87c739d9506eeb6784b0
+--- /dev/null
++++ b/client.browser.d.ts
+@@ -0,0 +1,13 @@
++export function createFromReadableStream(
++  stream: ReadableStream,
++  config?: {
++    callServer: (...args: any[]) => void;
++  }
++): React.Thenable<JSX.Element>;
++export function createFromFetch(
++  fetchResponse: Promise<Response>,
++  config?: {
++    callServer: (...args: any[]) => void;
++  }
++): React.Thenable<JSX.Element>;
++export function encodeReply(body: any): Promise<ReadableStream>;
+diff --git a/client.edge.d.ts b/client.edge.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..0d59a3cea951c3d7463b87c739d9506eeb6784b0
+--- /dev/null
++++ b/client.edge.d.ts
+@@ -0,0 +1,13 @@
++export function createFromReadableStream(
++  stream: ReadableStream,
++  config?: {
++    callServer: (...args: any[]) => void;
++  }
++): React.Thenable<JSX.Element>;
++export function createFromFetch(
++  fetchResponse: Promise<Response>,
++  config?: {
++    callServer: (...args: any[]) => void;
++  }
++): React.Thenable<JSX.Element>;
++export function encodeReply(body: any): Promise<ReadableStream>;
+diff --git a/server.edge.d.ts b/server.edge.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..4d33219abea64add1d7dea9a1d280434b3522401
+--- /dev/null
++++ b/server.edge.d.ts
+@@ -0,0 +1,21 @@
++export interface ModuleMap {
++  [key: string]: {
++    id: string;
++    chunks: string[];
++    name: string;
++    async?: boolean;
++  };
++}
++
++export function renderToReadableStream(
++  element: React.ReactElement,
++  clientModuleMap: ModuleMap,
++  options?: {
++    onError?: (error: Error) => void;
++    context?: any;
++    identifierPrefix?: string;
++    signal?: AbortSignal;
++  }
++): ReadableStream;
++
++export function decodeReply<T = any>(reply: string): Promise<T>;
