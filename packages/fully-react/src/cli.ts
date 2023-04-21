@@ -1,9 +1,12 @@
-import { cpSync, readFileSync } from "fs";
+import { cpSync, existsSync, readFileSync, writeFileSync } from "fs";
 import { join, relative } from "path";
 import { removeDir, writeJson } from "./fs";
 
 import { Manifest } from "vite";
+import { RouteManifest } from "./fs-router/types";
 import { copyDependenciesToFunction } from "./nft";
+import { defineFileSystemRoutes } from "./fs-router";
+import { getRedirects } from "./redirects";
 import { pathToFileURL } from "url";
 
 async function adapt() {
@@ -128,4 +131,57 @@ function getRuntime() {
 	return `nodejs${major}.x`;
 }
 
-adapt();
+async function generate() {
+	const handlerPath = join(process.cwd(), "/dist/server/handler.js");
+	const staticOutDir = join(process.cwd(), "/dist/static");
+	const { default: handler } = await import(handlerPath);
+
+	let routes: RouteManifest = {
+		"/": {
+			file: join(process.cwd(), "app", "root.tsx"),
+			id: "/",
+			path: "/",
+			parentId: "root",
+			index: true,
+		},
+	};
+
+	if (existsSync(join(process.cwd(), "app", "routes"))) {
+		routes = defineFileSystemRoutes(join(process.cwd(), "app"));
+	}
+
+	const getUrl = (url: string) =>
+		url.endsWith("/") ? `${url.slice(1)}index.html` : `${url.slice(1)}.html`;
+	const urls = ["/", "/new", "/show"];
+
+	// console.log(urls.map(getUrl));
+
+	for await (const url of urls) {
+		const html = await (
+			await handler({
+				request: new Request("https://example.com" + url),
+			})
+		).text();
+
+		writeFileSync(join(staticOutDir, getUrl(url)), html);
+	}
+
+	for await (const url of urls) {
+		const html = await (
+			await handler({
+				request: new Request("https://example.com" + url + ".rsc", {
+					headers: {
+						accept: "text/x-component",
+					},
+				}),
+			})
+		).text();
+
+		writeFileSync(
+			join(staticOutDir, getUrl(url).replace(".html", ".rsc")),
+			html,
+		);
+	}
+}
+
+generate();

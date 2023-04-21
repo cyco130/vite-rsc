@@ -1,7 +1,7 @@
 import {
 	createFromFetch,
-	encodeReply as encodeActionArgs,
 	createFromReadableStream,
+	encodeReply as encodeActionArgs,
 } from "react-server-dom-webpack/client.browser";
 
 export async function callServer(id: string, args: any[]) {
@@ -34,7 +34,7 @@ export async function callServer(id: string, args: any[]) {
 
 export function createElementFromServer(url = "") {
 	return createFromFetch(
-		fetch(url, {
+		fetch(url + ".rsc", {
 			headers: {
 				Accept: "text/x-component",
 				"x-rsc": "1",

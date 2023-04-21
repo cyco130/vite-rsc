@@ -144,13 +144,14 @@ export async function handlePageRequest(request: Request, env: Env) {
 }
 
 export async function handleServerComponentRequest(request: Request, env: Env) {
-	const url = new URL(request.headers.get("x-navigate") ?? "/", request.url);
+	const cleanedUrl = request.url.replace(/\.rsc$/, "");
+	const url = new URL(request.headers.get("x-navigate") ?? "/", cleanedUrl);
 	const response: ResponseInit = {};
 	return requestAsyncContext.run({ request, response }, () =>
 		createServerComponentResponse(
 			"root",
 			{
-				url: request.url,
+				url: cleanedUrl,
 				searchParams: Object.fromEntries(url.searchParams.entries()),
 				headers: Object.fromEntries(request.headers.entries()),
 				params: {},

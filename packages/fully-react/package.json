@@ -1,6 +1,6 @@
 {
   "name": "fully-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "bin": {
     "react": "./dist/cli.cjs"
@@ -172,6 +172,7 @@
   },
   "dependencies": {
     "@hattip/adapter-node": "^0.0.33",
+    "@hattip/core": "^0.0.33",
     "@hattip/router": "^0.0.33",
     "@vercel/nft": "^0.22.6",
     "@vitejs/plugin-react": "^3.1.0",

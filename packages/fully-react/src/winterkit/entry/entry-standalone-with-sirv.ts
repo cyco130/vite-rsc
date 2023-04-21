@@ -1,8 +1,11 @@
+import sirv, { Options, RequestHandler } from "sirv";
+
+import { HattipHandler } from "@hattip/core";
+import { createMiddleware } from "@hattip/adapter-node";
 import { createServer } from "node:http";
-import sirv, { RequestHandler, Options } from "sirv";
 
 let handleExports: {
-	default: RequestHandler;
+	default: HattipHandler;
 	sirvOptions?: Options;
 };
 
@@ -13,9 +16,11 @@ async function init() {
 	// eslint-disable-next-line import/no-unresolved
 	handleExports = await import("/virtual:vavite-connect-handler");
 
+	const middleware = createMiddleware(handleExports.default);
+
 	sirvHandler = sirv(
 		// @ts-expect-error: This will be defined by the plugin
-		__VAVITE_CLIENT_BUILD_OUTPUT_DIR,
+		CLIENT_BUILD_OUTPUT_DIR,
 		handleExports.sirvOptions,
 	);
 
@@ -24,7 +29,7 @@ async function init() {
 
 	createServer((req, res) =>
 		sirvHandler(req, res, () => {
-			handleExports.default(req, res, () => {
+			middleware(req, res, () => {
 				if (!res.writableEnded) {
 					res.statusCode = 404;
 					res.end();

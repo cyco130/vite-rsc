@@ -248,7 +248,7 @@ importers:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.21)
       fully-react:
-        specifier: ^0.0.1
+        specifier: ^0.0.2
         version: link:../../packages/fully-react
       postcss:
         specifier: ^8.4.21
@@ -386,7 +386,7 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       fully-react:
-        specifier: ^0.0.1
+        specifier: ^0.0.2
         version: link:../../packages/fully-react
       lucide-react:
         specifier: ^0.130.0
@@ -444,6 +444,40 @@ importers:
         specifier: ^4.3
         version: 4.3.0(patch_hash=pzwmkiwldkldkeu74ygswc3xkm)(@types/node@18.15.11)
 
+  examples/docs:
+    dependencies:
+      '@prisma/client':
+        specifier: ^4.12.0
+        version: 4.12.0(prisma@4.12.0)
+      react:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403
+      react-dom:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(react@18.3.0-next-b14f8da15-20230403)
+      react-server-dom-webpack:
+        specifier: 18.3.0-next-b14f8da15-20230403
+        version: 18.3.0-next-b14f8da15-20230403(patch_hash=2x2tjef7g7xx52xigfdjhgg4qm)(react-dom@18.3.0-next-b14f8da15-20230403)(react@18.3.0-next-b14f8da15-20230403)(webpack@5.78.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.0.33
+        version: 18.0.33(patch_hash=n3nkju7pgzgd2scropjzt7a6qe)
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11(patch_hash=5dyqwrrc5cygun5qihuotyxl6e)
+      fully-react:
+        specifier: ^0.0.2
+        version: link:../../packages/fully-react
+      prisma:
+        specifier: ^4.12.0
+        version: 4.12.0
+      typescript:
+        specifier: ^5.0.3
+        version: 5.0.3
+      vite:
+        specifier: ^4.3
+        version: 4.3.0(patch_hash=pzwmkiwldkldkeu74ygswc3xkm)(@types/node@18.15.11)
+
   examples/hackernews:
     dependencies:
       '@prisma/client':
@@ -466,7 +500,7 @@ importers:
         specifier: ^18.0.11
         version: 18.0.11(patch_hash=5dyqwrrc5cygun5qihuotyxl6e)
       fully-react:
-        specifier: ^0.0.1
+        specifier: ^0.0.2
         version: link:../../packages/fully-react
       prisma:
         specifier: ^4.12.0
@@ -503,7 +537,7 @@ importers:
         specifier: ^18.0.11
         version: 18.0.11(patch_hash=5dyqwrrc5cygun5qihuotyxl6e)
       fully-react:
-        specifier: ^0.0.1
+        specifier: ^0.0.2
         version: link:../../packages/fully-react
       prisma:
         specifier: ^4.12.0
@@ -518,6 +552,9 @@ importers:
   packages/fully-react:
     dependencies:
       '@hattip/adapter-node':
+        specifier: ^0.0.33
+        version: 0.0.33
+      '@hattip/core':
         specifier: ^0.0.33
         version: 0.0.33
       '@hattip/router':
@@ -750,7 +787,7 @@ importers:
         specifier: ^18.0.11
         version: 18.0.11(patch_hash=5dyqwrrc5cygun5qihuotyxl6e)
       fully-react:
-        specifier: ^0.0.1
+        specifier: ^0.0.2
         version: link:../../packages/fully-react
       typescript:
         specifier: ^5.0.3

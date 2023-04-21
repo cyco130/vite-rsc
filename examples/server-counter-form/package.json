@@ -23,6 +23,6 @@
     "prisma": "^4.12.0",
     "typescript": "5.1.0-beta",
     "vite": "^4.3",
-    "fully-react": "^0.0.1"
+    "fully-react": "^0.0.2"
   }
 }

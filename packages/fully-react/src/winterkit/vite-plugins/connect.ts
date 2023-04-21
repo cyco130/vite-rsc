@@ -1,4 +1,7 @@
+import type { IncomingMessage, ServerResponse } from "node:http";
 import type { Plugin, UserConfig } from "vite";
+
+import type { Stats } from "node:fs";
 import path from "node:path";
 import url from "node:url";
 
@@ -40,18 +43,7 @@ export interface VaviteConnectOptions {
 	bundleSirv?: boolean;
 }
 
-export default function vaviteConnect(
-	options: VaviteConnectOptions = {},
-): Plugin[] {
-	const {
-		handlerEntry = "/handler",
-		customServerEntry,
-		serveClientAssetsInDev = false,
-		standalone = true,
-		clientAssetsDir = null,
-		bundleSirv = true,
-	} = options;
-
+export default function connect(): Plugin[] {
 	return [
 		{
 			name: "@vavite/connect:resolve",
@@ -60,13 +52,10 @@ export default function vaviteConnect(
 
 			async resolveId(id) {
 				if (id === "/virtual:vavite-connect-handler") {
-					return this.resolve(handlerEntry);
+					return this.resolve("fully-react/entry-server");
 				} else if (id === "/virtual:vavite-connect-server") {
 					return path
-						.resolve(
-							dirname,
-							customServerEntry || "entry-standalone-bundled-sirv.js",
-						)
+						.resolve(dirname, "entry-standalone-bundled-sirv.js")
 						.replace(/\\/g, "/");
 				}
 			},
@@ -88,34 +77,13 @@ export default function vaviteConnect(
 					if (process.env.RSC_WORKER) {
 						return {
 							...common,
-							// build: {
-							// 	rollupOptions: {
-							// 		input: {
-							// 			index: rscEntry,
-							// 		},
-							// 	},
-							// },
 						};
 					}
 					return {
 						...common,
-						// build: {
-						// 	rollupOptions: {
-						// 		input: {
-						// 			index:
-						// 				customServerEntry ||
-						// 				(standalone
-						// 					? "/virtual:vavite-connect-server"
-						// 					: "/virtual:vavite-connect-handler"),
-						// 		},
-						// 	},
-						// },
-						define: clientAssetsDir
-							? {
-									__VAVITE_CLIENT_BUILD_OUTPUT_DIR:
-										JSON.stringify(clientAssetsDir),
-							  }
-							: {},
+						define: {
+							CLIENT_BUILD_OUTPUT_DIR: JSON.stringify("dist/static"),
+						},
 					};
 				}
 
@@ -134,7 +102,9 @@ export default function vaviteConnect(
 						req.url = req.originalUrl || req.url;
 
 						try {
-							const module = await server.ssrLoadModule(handlerEntry);
+							const module = await server.ssrLoadModule(
+								"virtual:hattip:dev-entry",
+							);
 
 							await module.default(req, res, () => {
 								if (!res.writableEnded) renderError(404, "Not found");
@@ -150,18 +120,11 @@ export default function vaviteConnect(
 					});
 				}
 
-				if (serveClientAssetsInDev) {
-					return addMiddleware;
-				} else {
-					addMiddleware();
-				}
+				return addMiddleware;
 			},
 		},
 	];
 }
-
-import type { Stats } from "node:fs";
-import type { IncomingMessage, ServerResponse } from "node:http";
 
 type Arrayable<T> = T | T[];
 

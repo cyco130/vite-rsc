@@ -46,7 +46,7 @@
     "cal-sans": "^1.0.1",
     "class-variance-authority": "^0.5.1",
     "clsx": "^1.2.1",
-    "fully-react": "^0.0.1",
+    "fully-react": "^0.0.2",
     "lucide-react": "^0.130.0",
     "minimatch": "^8.0.3",
     "prisma": "^4.12.0",
