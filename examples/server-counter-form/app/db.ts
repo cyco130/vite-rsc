@@ -1,6 +1,5 @@
 import { Connection, connect } from "@planetscale/database";
 
-console.log(process.env.DATABASE_URL);
 declare global {
 	var db: Connection;
 }
