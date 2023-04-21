@@ -1,7 +1,7 @@
-import { siteConfig } from "@/config/site";
+import { A } from "fully-react/link";
 import { Layout } from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
-import { A } from "fully-react";
+import { siteConfig } from "@/config/site";
 
 export default function IndexPage() {
 	return (

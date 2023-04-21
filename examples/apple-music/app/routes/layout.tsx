@@ -1,6 +1,7 @@
-import { Assets } from "stream-react/assets";
+import { LayoutConfig, LayoutProps } from "./layout.types";
+
 import { AppleMusicDemo } from "../apple-music-demo";
-import { LayoutConfig, LayoutProps } from "./(layout).types";
+import { Assets } from "fully-react/assets";
 
 export default async function Root({ children }: LayoutProps) {
 	return (

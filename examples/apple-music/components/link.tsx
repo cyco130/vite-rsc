@@ -1,9 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { A, TypedLink, interpolatePath } from "fully-react/app-router";
+
 import { VariantProps } from "class-variance-authority";
-import { A, TypedLink, interpolatePath, useRouter } from "fully-react";
 import { buttonVariants } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { useRouter } from "fully-react/router";
 
 export const Link: TypedLink<VariantProps<typeof buttonVariants>> = (
 	props: React.ComponentProps<typeof A> &
@@ -18,6 +20,7 @@ export const Link: TypedLink<VariantProps<typeof buttonVariants>> = (
 	return (
 		<A
 			{...props}
+			href={href}
 			className={cn(
 				buttonVariants({
 					variant: props.variant,

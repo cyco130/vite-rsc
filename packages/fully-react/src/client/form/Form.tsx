@@ -1,7 +1,7 @@
 import { ClientForm } from "./Form.client";
 import React from "react";
 
-export function ActionIDInput({
+export function FormAction({
 	action,
 }: {
 	action: ((formData: FormData) => void) & { $$id?: string };
@@ -19,10 +19,10 @@ export function Form({
 }) {
 	return (
 		<ClientForm {...props}>
-			<ActionIDInput action={action} />
+			<FormAction action={action} />
 			{props.children}
 		</ClientForm>
 	);
 }
 
-Form.ActionId = ActionIDInput;
+Form.Action = FormAction;

@@ -1,9 +1,9 @@
-import { siteConfig } from "@/config/site";
+import { A } from "fully-react/link";
 import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
-import { A } from "fully-react";
+import { siteConfig } from "@/config/site";
 
 export function SiteHeader() {
 	return (

@@ -1,7 +1,8 @@
-import fs from "node:fs";
-import path, { relative } from "node:path";
-import { stripFileExtension } from "./index";
 import { Route, RouteManifest } from "./types";
+import path, { relative } from "node:path";
+
+import fs from "node:fs";
+import { stripFileExtension } from "./index";
 
 export function prettyPrintRoutes(routes: any, tabs = 0) {
 	routes.forEach((r: any) => {
@@ -22,7 +23,7 @@ const rootLayoutTemplate = (
 	path: any,
 	fileName: any,
 ) => `
-import { TypedRouter, TypedRootRoute, TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "fully-react";
+import { TypedRouter, TypedRootRoute, TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "fully-react/app-router";
 ${paths
 	.map(
 		([c, bool], i) =>
@@ -63,7 +64,7 @@ const layoutTemplate = (
 	path: any,
 	fileName: any,
 	parentFilename: any,
-) => `import { TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "fully-react";
+) => `import { TypedRouteModule, TypedRouteOptions, RouteWithChildren } from "fully-react/app-router";
 ${paths
 	.map(
 		([c, bool], i) =>
@@ -98,7 +99,7 @@ const pageTemplate = (
 	parentFileName: string,
 ) => `import * as page from "./${fileName}";
 import type { route as parentRoute } from "./${parentFileName}.types";
-import { TypedRouteModule, TypedRouteOptions } from "fully-react";
+import { TypedRouteModule, TypedRouteOptions } from "fully-react/app-router";
 
 export type route = TypedRouteModule<parentRoute, "${path}", typeof page>;
 

@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { getCount, increment } from "../actions";
-import { Form } from "stream-react/form";
-import { A } from "fully-react";
+
+import { Button } from "@/components/ui/button";
+import { Form } from "fully-react/form";
 import FormDemo from "../form";
+import { Link } from "@/components/link";
 
 export default async function Browse() {
 	return (
@@ -12,14 +13,13 @@ export default async function Browse() {
 				<Button>Increment</Button>
 			</Form>
 			<FormDemo>
-				<Form.ActionId action={increment} />
+				<Form.Action action={increment} />
 			</FormDemo>
-			<A
-				href=""
-				// to=""
-				// search={{
-				// 	page: 1,
-				// }}
+			<Link
+				to="/library/:library"
+				params={{
+					library: "test",
+				}}
 			/>
 		</div>
 	);

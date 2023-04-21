@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
 	ContextMenu,
 	ContextMenuContent,
@@ -12,6 +10,20 @@ import {
 	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import {
+	Globe,
+	LayoutGrid,
+	Library,
+	ListMusic,
+	Mic,
+	Mic2,
+	Music,
+	Music2,
+	PlayCircle,
+	PlusCircle,
+	Radio,
+	User,
+} from "lucide-react";
 import {
 	Menubar,
 	MenubarCheckboxItem,
@@ -28,23 +40,12 @@ import {
 	MenubarSubTrigger,
 	MenubarTrigger,
 } from "@/components/ui/menubar";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-	Globe,
-	LayoutGrid,
-	Library,
-	ListMusic,
-	Mic,
-	Mic2,
-	Music,
-	Music2,
-	PlayCircle,
-	PlusCircle,
-	Radio,
-	User,
-} from "lucide-react";
+
+import { A } from "fully-react/link";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Link } from "@/components/link";
-import { A } from "fully-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 const playlists = [
 	"Recently Added",

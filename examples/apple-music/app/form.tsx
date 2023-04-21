@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
 import * as Form from "@radix-ui/react-form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+
 import { Button } from "@/components/ui/button";
-import { useSubmitForm } from "stream-react/form";
+import { Input } from "@/components/ui/input";
+import React from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { useSubmitForm } from "fully-react/form";
 
 export const FormDemo = ({ children }: { children: React.ReactNode }) => {
 	const submitForm = useSubmitForm();

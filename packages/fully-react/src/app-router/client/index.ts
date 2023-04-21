@@ -2,16 +2,15 @@ import {
 	AnyRoute,
 	ParsePathParams,
 	RootRoute,
-	RouteOptions as RouteOptionsBase,
 	TypedRoute,
 } from "./router/types";
 
 export { A } from "../shared/A";
-export * from "../shared/useRouter";
+export * from "../../client/router";
 export { default as Router } from "./router/Router";
 export { interpolatePath } from "./router/types/path";
 export type { LinkFn as TypedLink } from "./router/link";
-export type { PageProps } from "../types";
+export type { PageProps } from "../../types";
 
 export type TypedRouteModule<
 	TParentRoute extends AnyRoute = AnyRoute,
