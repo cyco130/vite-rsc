@@ -1,11 +1,6 @@
 import { defineConfig } from "vite";
-import react from "fully-react/rsc-plugin";
+import react from "fully-react";
 
 export default defineConfig({
-	build: {
-		rollupOptions: {
-			input: { root: "app/root.tsx" },
-		},
-	},
 	plugins: [react()],
 });

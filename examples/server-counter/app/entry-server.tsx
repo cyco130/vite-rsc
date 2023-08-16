@@ -1,3 +1,3 @@
-import { createHandler } from "stream-react/server/entry";
+import { createHandler } from "fully-react/server/entry";
 
 export default createHandler();

@@ -1,6 +1,6 @@
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
-import { Assets } from "stream-react/assets";
+import { Assets } from "fully-react/assets";
 import "./root.css";
 export default function Root() {
 	return (

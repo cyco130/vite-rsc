@@ -3,7 +3,7 @@ import { createRouter } from "fully-react/server";
 import { Suspense } from "react";
 import HomePage from "./home";
 import { AppleMusicDemo } from "./apple-music-demo";
-import { Assets } from "stream-react/assets";
+import { Assets } from "fully-react/assets";
 
 import "cal-sans";
 import "./root.css";

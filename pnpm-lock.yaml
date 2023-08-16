@@ -370,6 +370,7 @@ importers:
     specifiers:
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
+      '@vitejs/plugin-react': ^3.1.0
       fully-react: ^0.0.2
       react: 18.3.0-next-b14f8da15-20230403
       react-dom: 18.3.0-next-b14f8da15-20230403
@@ -384,6 +385,7 @@ importers:
     devDependencies:
       '@types/react': 18.0.33_n3nkju7pgzgd2scropjzt7a6qe
       '@types/react-dom': 18.0.11_5dyqwrrc5cygun5qihuotyxl6e
+      '@vitejs/plugin-react': 3.1.0_vite@4.3.0
       typescript: 5.1.6
       vite: 4.3.0_pzwmkiwldkldkeu74ygswc3xkm
 
@@ -392,21 +394,21 @@ importers:
       '@prisma/client': ^4.12.0
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
+      fully-react: ^0.0.2
       prisma: ^4.12.0
       react: 18.3.0-next-b14f8da15-20230403
       react-dom: 18.3.0-next-b14f8da15-20230403
       react-error-boundary: ^4.0.3
       react-server-dom-webpack: 18.3.0-next-b14f8da15-20230403
-      stream-react: ^0.0.1
       typescript: ^5.0.3
       vite: 4.3.0
     dependencies:
       '@prisma/client': 4.16.2_prisma@4.16.2
+      fully-react: link:../../packages/fully-react
       react: 18.3.0-next-b14f8da15-20230403
       react-dom: 18.3.0-next-b14f8da15-20230403_ofa6wqx4hdiriqsbsgzpdfumle
       react-error-boundary: 4.0.11_ofa6wqx4hdiriqsbsgzpdfumle
       react-server-dom-webpack: 18.3.0-next-b14f8da15-20230403_2x2tjef7g7xx52xigfdjhgg4qm_3sjfv4i2tt6m45nfj3asqbemne
-      stream-react: 0.0.1_ofa6wqx4hdiriqsbsgzpdfumle
     devDependencies:
       '@types/react': 18.0.33_n3nkju7pgzgd2scropjzt7a6qe
       '@types/react-dom': 18.0.11_5dyqwrrc5cygun5qihuotyxl6e

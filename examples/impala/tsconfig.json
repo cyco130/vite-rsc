@@ -16,7 +16,7 @@
 		"noEmit": true,
 		"jsx": "react-jsx"
 	},
-	"include": ["src", "../../packages/stream-react/src/shared/assets.tsx"],
+	"include": ["src", "../../packages/fully-react/src/shared/assets.tsx"],
 	"references": [
 		{
 			"path": "./tsconfig.node.json"

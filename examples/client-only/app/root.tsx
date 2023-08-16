@@ -1,8 +1,8 @@
 "use client";
 
-import A from "stream-react/link";
-import { Assets } from "stream-react/assets";
-import { PageProps } from "stream-react/types";
+import A from "fully-react/link";
+import { Assets } from "fully-react/assets";
+import { PageProps } from "fully-react/types";
 
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
