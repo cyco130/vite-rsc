@@ -1,5 +1,5 @@
-import { createRouter } from "fully-react/server";
-import { A, PageProps } from "fully-react";
+import { createRouter } from "fully-react/create-router";
+import { A, type PageProps } from "fully-react/app-router";
 import { Assets } from "stream-react/assets";
 import { getContacts, getContact, Contact } from "./contacts";
 import "./root.css";

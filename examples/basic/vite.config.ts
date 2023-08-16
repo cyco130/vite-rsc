@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import { reactServerComponents } from "vite-rsc";
+import reactServerComponents from "fully-react/rsc-plugin";
 import inspect from "vite-plugin-inspect";
 
 export default defineConfig((env) => ({

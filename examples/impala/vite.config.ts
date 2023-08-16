@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import impala from "@impalajs/core/plugin";
-import react from "vite-react-server";
+import react from "fully-react/rsc-plugin";
 import path from "path";
 
 export default defineConfig({
