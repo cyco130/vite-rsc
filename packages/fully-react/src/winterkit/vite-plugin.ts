@@ -7,7 +7,7 @@ import { injectConfig } from "./vite-plugins/inject-config";
 
 interface HattipOptions {
 	hattipEntry: string;
-	nodeEntry: string;
+	nodeEntry?: string;
 	devEntry: (devServer: any) => string;
 	extraServerEntries?: string | string[] | Record<string, string>;
 	clientEntries?: boolean | string | string[] | Record<string, string>;
