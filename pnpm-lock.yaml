@@ -309,6 +309,7 @@ importers:
       '@mdx-js/rollup': ^2.3.0
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
+      '@vitejs/plugin-react': ^3.1.0
       fully-react: ^0.0.2
       match-sorter: ^6.3.1
       react: 18.3.0-next-b14f8da15-20230403
@@ -330,6 +331,7 @@ importers:
       '@mdx-js/rollup': 2.3.0
       '@types/react': 18.0.33_n3nkju7pgzgd2scropjzt7a6qe
       '@types/react-dom': 18.0.11_5dyqwrrc5cygun5qihuotyxl6e
+      '@vitejs/plugin-react': 3.1.0_vite@4.3.0
       match-sorter: 6.3.1
       sort-by: 1.2.0
       typescript: 5.1.6
