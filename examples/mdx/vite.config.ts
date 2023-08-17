@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
-import react from "vite-react-server";
+import reactServerComponents from "fully-react";
 import mdx from "@cyco130/vite-plugin-mdx";
+
 export default defineConfig({
-	plugins: [mdx({}), react()],
+	plugins: [mdx({}), reactServerComponents()],
 });

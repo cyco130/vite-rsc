@@ -2,7 +2,7 @@ import { PageProps, createRouter } from "fully-react/server";
 import Counter from "./Counter";
 import { sayHello } from "./sayHello";
 import { A } from "fully-react";
-import { notFound, redirect } from "stream-react/navigation";
+import { notFound, redirect } from "fully-react/navigation";
 
 function CounterPage() {
 	return <Counter initialCount={42} sayHello={sayHello} />;

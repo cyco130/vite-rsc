@@ -1,4 +1,4 @@
-import { reactServerComponents } from "./rsc-plugin";
+import reactServerComponents from "./rsc-plugin";
 import { hattip } from "./winterkit/vite-plugin";
 import type { Plugin, PluginOption } from "vite";
 import path, { dirname, join } from "node:path";

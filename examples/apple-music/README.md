@@ -1,9 +1,8 @@
-# Vite Shadcn-ui RSC Example
-
-Go give love to [Shadcn-UI](https://ui.shadcn.com/). It's awesome and designed to be used with RSCs.
+# Vite Apple Music RSC Example
 
 ## How to run
 
 ```bash
+npm exec prisma generate
 pnpm dev
 ```

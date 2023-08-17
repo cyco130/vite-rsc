@@ -383,6 +383,7 @@ export function reactServerComponents(): Plugin {
 			}
 		},
 		generateBundle(options) {
+			console.log("CALLING GENERATE!");
 			mkdirSync(options.dir!, { recursive: true });
 			writeFileSync(
 				join(options.dir!, "client-manifest.json"),

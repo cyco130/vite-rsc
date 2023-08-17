@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import react from "vite-react-server";
+import react from "fully-react";
 
 export default defineConfig({
 	plugins: [react()],

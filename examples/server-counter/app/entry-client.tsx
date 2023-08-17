@@ -1,4 +1,4 @@
-import { mount } from "stream-react/web/entry";
-import { Router } from "stream-react/web/router";
+import { mount } from "fully-react/web/entry";
+import { Router } from "fully-react/web/router";
 
 mount(<Router />);

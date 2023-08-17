@@ -1,7 +1,10 @@
 import { Assets } from "fully-react/assets";
-import "./root.css";
 
-export default function Root() {
+import Hello from "../hello.mdx";
+import Counter from "../Counter";
+import { sayHello } from "../sayHello";
+
+export default function Layout() {
 	return (
 		<html lang="en">
 			<head>
@@ -12,7 +15,10 @@ export default function Root() {
 				<Assets />
 			</head>
 			<body>
-				<div id="root">Hello World</div>
+				<div id="root">
+					<Counter initialCount={42} sayHello={sayHello} />
+					<Hello />
+				</div>
 			</body>
 		</html>
 	);

@@ -21,5 +21,8 @@
       "@types/react-dom@18.0.11": "patches/@types__react-dom@18.0.11.patch",
       "@types/react@18.0.33": "patches/@types__react@18.0.33.patch"
     }
+  },
+  "volta": {
+    "node": "18.17.1"
   }
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import { getSession } from "rsc-auth";
-import { request } from "stream-react/request";
+import { request } from "fully-react/request";
 import { authOptions } from "./auth";
 
 export async function sayHello() {

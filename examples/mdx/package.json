@@ -4,10 +4,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "hattip build"
+    "build:server": "vite build --ssr",
+    "build:client": "vite build",
+    "build:http": "hattip build",
+    "build": "npm run build:server && npm run build:client && npm run build:http"
   },
   "dependencies": {
-    "fully-react": "^0.0.1",
+    "fully-react": "^0.0.2",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403"
@@ -18,12 +21,12 @@
     "@hattip/adapter-node": "^0.0.33",
     "@hattip/vite": "^0.0.33",
     "@mdx-js/rollup": "^2.3.0",
-    "@types/react": "^18.0.33",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "18.0.33",
+    "@types/react-dom": "18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
     "match-sorter": "^6.3.1",
     "sort-by": "^1.2.0",
     "typescript": "^5.0.3",
-    "vite": "^4.3",
-    "vite-react-server": "^0.0.1"
+    "vite": "4.3.0"
   }
 }

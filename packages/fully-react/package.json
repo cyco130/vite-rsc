@@ -36,6 +36,7 @@
     "./navigation": "./src/shared/navigation.ts",
     "./refresh": "./src/client/refresh.ts",
     "./request": "./src/server/request.ts",
+    "./rsc-plugin": "./dist/rsc-plugin.js",
     "./react-server": "./src/server/server-components.tsx",
     "./async-context": "./src/server/async-context.ts",
     "./react-server-streams": "./src/server/server-streams.tsx",
@@ -157,8 +158,8 @@
   "devDependencies": {
     "@cyco130/eslint-config": "^3.0.2",
     "@types/node": "^18.15.11",
-    "@types/react": "^18.0.33",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "18.0.33",
+    "@types/react-dom": "18.0.11",
     "eslint": "^8.37.0",
     "minimatch": "^8.0.3",
     "publint": "^0.1.11",
@@ -167,7 +168,7 @@
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
     "tsup": "^6.7.0",
     "typescript": "5.1.0-beta",
-    "vite": "^4.3",
+    "vite": "4.3.0",
     "vitest": "^0.29.8"
   },
   "dependencies": {
@@ -193,6 +194,6 @@
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",
     "react-server-dom-webpack": "18.3.0-next-b14f8da15-20230403",
-    "vite": "^4.3"
+    "vite": "4.3.0"
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
-import { Asset } from "stream-react/assets";
-import { InlineStyles } from "stream-react/dev";
+import { Asset } from "fully-react/assets";
+import { InlineStyles } from "fully-react/dev";
 
 interface AppProps {
 	title?: string;

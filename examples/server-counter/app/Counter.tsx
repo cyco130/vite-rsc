@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "stream-react/router";
-import { useMutation } from "stream-react/mutation";
+import { useRouter } from "fully-react/router";
+import { useMutation } from "fully-react/mutation";
 
 export default function Counter({
 	count = 0,

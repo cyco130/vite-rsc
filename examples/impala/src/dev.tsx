@@ -1,9 +1,9 @@
 import type { ElementType } from "react";
 import { Context, RouteModule } from "@impalajs/core";
-import { renderToHTMLStream } from "stream-react/server";
-import { createModuleMapProxy, setupWebpackEnv } from "stream-react/webpack";
+import { renderToHTMLStream } from "fully-react/server";
+import { createModuleMapProxy, setupWebpackEnv } from "fully-react/webpack";
 import consumers from "node:stream/consumers";
-import { collectStyles } from "stream-react/dev";
+import { collectStyles } from "fully-react/dev";
 
 export async function renderDev(
 	context: Context,

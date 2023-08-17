@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import react from "vite-react-server";
+import react from "fully-react";
 import reactRefresh from "@vitejs/plugin-react";
 
 export default defineConfig({

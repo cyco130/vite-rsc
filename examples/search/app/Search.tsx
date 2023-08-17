@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "stream-react/router";
+import { useRouter } from "fully-react/router";
 import { useTransition } from "react";
 
 export default function Search({ initialSearch }: { initialSearch: string }) {
@@ -11,6 +11,7 @@ export default function Search({ initialSearch }: { initialSearch: string }) {
 			<input
 				defaultValue={initialSearch}
 				onChange={(e) => {
+					console.log(e);
 					startTransition(() => {
 						router.replace("/?q=" + e.target.value);
 					});

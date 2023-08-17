@@ -1,6 +1,6 @@
 // vite.config.ts
 import { defineConfig } from "file:///Users/nikhilsaraf/garage/scraps/vite-rsc/node_modules/.pnpm/vite@4.3_@types+node@18.15.11/node_modules/vite/dist/node/index.js";
-import react from "file:///Users/nikhilsaraf/garage/scraps/vite-rsc/packages/vite-react-server/dist/index.js";
+import react from "file:///Users/nikhilsaraf/garage/scraps/vite-rsc/packages/fully-react/rsc-plugin/dist/index.js";
 var vite_config_default = defineConfig({
 	plugins: [react()],
 	ssr: {

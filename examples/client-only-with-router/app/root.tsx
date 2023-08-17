@@ -3,7 +3,7 @@
 import { A, PageProps } from "fully-react";
 import { createRouter } from "fully-react/server";
 import Counter from "./Counter";
-import { Assets } from "stream-react/assets";
+import { Assets } from "fully-react/assets";
 import { sayHello } from "./sayHello";
 
 function CounterPage() {
