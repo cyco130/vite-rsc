@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Counter({
 	initialCount = 0,
@@ -16,6 +16,7 @@ export default function Counter({
 			<p>Count: {count}</p>
 			<button
 				onClick={() => {
+					console.log("hiiii");
 					setCount(count + 1);
 					sayHello(`Incremented to ${count + 1}`, "App").then((res) => {
 						console.log(res);

@@ -1,4 +1,4 @@
-import { InlineStyles } from "fully-react/dev";
+import { Assets } from "fully-react/assets";
 
 import Hello from "../hello.mdx";
 import Counter from "../Counter";
@@ -12,7 +12,7 @@ export default function Layout() {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-				<InlineStyles />
+				<Assets />
 			</head>
 			<body>
 				<div id="root">
