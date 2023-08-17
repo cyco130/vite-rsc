@@ -12,6 +12,7 @@
     "start": "vite preview"
   },
   "dependencies": {
+    "fully-react": "^0.0.2",
     "@impalajs/core": "^0.0.9",
     "react": "18.3.0-next-b14f8da15-20230403",
     "react-dom": "18.3.0-next-b14f8da15-20230403",

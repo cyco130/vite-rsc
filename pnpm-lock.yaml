@@ -233,6 +233,7 @@ importers:
     specifiers:
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
+      fully-react: ^0.0.2
       react: 18.3.0-next-b14f8da15-20230403
       react-dom: 18.3.0-next-b14f8da15-20230403
       react-server-dom-webpack: 18.3.0-next-b14f8da15-20230403
@@ -240,6 +241,7 @@ importers:
       typescript: ^5.0.3
       vite: 4.3.0
     dependencies:
+      fully-react: link:../../packages/fully-react
       react: 18.3.0-next-b14f8da15-20230403
       react-dom: 18.3.0-next-b14f8da15-20230403_ofa6wqx4hdiriqsbsgzpdfumle
       react-server-dom-webpack: 18.3.0-next-b14f8da15-20230403_2x2tjef7g7xx52xigfdjhgg4qm_3sjfv4i2tt6m45nfj3asqbemne
@@ -282,6 +284,7 @@ importers:
       '@types/react': ^18.0.28
       '@types/react-dom': 18.0.11
       '@vitejs/plugin-react': ^3.1.0
+      fully-react: ^0.0.2
       react: 18.3.0-next-b14f8da15-20230403
       react-dom: 18.3.0-next-b14f8da15-20230403
       react-server-dom-webpack: 18.3.0-next-b14f8da15-20230403
@@ -289,6 +292,7 @@ importers:
       vite: 4.3.0
     dependencies:
       '@impalajs/core': 0.0.9_vite@4.3.0
+      fully-react: link:../../packages/fully-react
       react: 18.3.0-next-b14f8da15-20230403
       react-dom: 18.3.0-next-b14f8da15-20230403_ofa6wqx4hdiriqsbsgzpdfumle
       react-server-dom-webpack: 18.3.0-next-b14f8da15-20230403_2x2tjef7g7xx52xigfdjhgg4qm_3sjfv4i2tt6m45nfj3asqbemne
